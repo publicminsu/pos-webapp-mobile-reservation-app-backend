@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.StoreRepository">
+    <select id="getStores" resultType="com.hknusc.web.dto.StoreDTO">
+        SELECT *
+        FROM STORE
+    </select>
+    <insert id="saveStore" parameterType="com.hknusc.web.dto.StoreDTO">
+        INSERT INTO STORE(ACCOUNT_ID,NAME,OPEN_TIME,CLOSE_TIME,ADDRESS,INFO,PHONE_NUMBER,CAN_RESERVATION)
+        VALUES (#{accountId},#{name},#{openTime},#{closeTime},#{address},#{info},#{phoneNumber},#{carReservation})
+    </insert>
+</mapper>

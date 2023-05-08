@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper
 @Mapper
 interface UserRepository {
     fun getUsers():List<UserDTO>
-    fun save(userDTO: UserDTO)
+    fun saveUser(userDTO: UserDTO)
     fun getUser(id:Int):UserDTO
+    fun editUser(userDTO: UserDTO)
+    fun deleteUser(id:Int)
 }

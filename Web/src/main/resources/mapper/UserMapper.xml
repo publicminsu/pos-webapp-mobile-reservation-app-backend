@@ -5,13 +5,24 @@
         SELECT *
         FROM ACCOUNT
     </select>
-    <insert id="save" parameterType="com.hknusc.web.dto.UserDTO">
+    <insert id="saveUser" parameterType="com.hknusc.web.dto.UserDTO">
         INSERT INTO ACCOUNT(EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-        values (#{email},#{password},#{nickname},#{phone_number},#{wish_list},#{coupon_list},#{payment_card})
+        VALUES (#{email},#{password},#{nickname},#{phone_number},#{wish_list},#{coupon_list},#{payment_card})
     </insert>
     <select id="getUser" parameterType="int" resultType="com.hknusc.web.dto.UserDTO">
         SELECT *
         FROM ACCOUNT
         WHERE id=#{id}
     </select>
+    <update id="editUser" parameterType="com.hknusc.web.dto.UserDTO">
+        UPDATE ACCOUNT
+        SET (EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
+        =(#{email},#{password},#{nickname},#{phone_number},#{wish_list},#{coupon_list},#{payment_card})
+        WHERE id=#{id}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        DELETE
+        FROM ACCOUNT
+        WHERE id=#{id}
+    </delete>
 </mapper>
