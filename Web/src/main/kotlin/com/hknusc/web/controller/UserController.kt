@@ -3,6 +3,7 @@ import com.hknusc.web.dto.UserDTO
 import com.hknusc.web.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -16,5 +17,6 @@ class UserController {
     fun getUsers()=userService.getUsers()
     @PostMapping
     fun save(userDTO: UserDTO)=userService.save(userDTO)
-
+    @GetMapping("/{id}")
+    fun getUser(@PathVariable("id") id:Int)=userService.getUser(id)
 }

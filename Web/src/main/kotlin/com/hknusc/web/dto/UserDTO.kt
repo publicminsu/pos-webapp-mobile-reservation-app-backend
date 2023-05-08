@@ -1,7 +1,6 @@
 package com.hknusc.web.dto
-
 data class UserDTO(
-    var id:Int,
+    var id:Int=0,
     var email:String,
     var password:String,
     var nickname:String,

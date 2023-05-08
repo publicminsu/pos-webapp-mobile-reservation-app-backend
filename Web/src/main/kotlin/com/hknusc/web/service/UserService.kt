@@ -10,4 +10,6 @@ class UserService {
     lateinit var userRepository: UserRepository
     fun getUsers()=userRepository.getUsers()
     fun save(userDTO: UserDTO)=userRepository.save(userDTO)
+    fun getUser(id:Int)=userRepository.getUser(id)
+
 }
