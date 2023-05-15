@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("users")
 class UserController {
     //비밀번호의 암호화 필요
+    //아마도 jwt를 활용
     @Autowired
     lateinit var userService: UserService
     @GetMapping //계획상 사용할 일이 없다. 테스트용으로 두었다.
@@ -24,6 +25,8 @@ class UserController {
     fun getUser(@PathVariable("id") id:Int)=userService.getUser(id)
     @PatchMapping("{id}")
     fun editUser(@PathVariable("id") id:Int,userDTO: UserDTO)=userService.editUser(userDTO)
-    @DeleteMapping("{id}") //삭제하는 것이 맞는가?
+    @GetMapping("deletedUser") // 테스트용
+    fun getDeletedUser()=userService.getDeletedUser()
+    @DeleteMapping("{id}") //삭제 과정은 더 생각해봐야 할 요소, ex. 비밀번호 확인
     fun deleteUser(@PathVariable("id") id:Int)=userService.deleteUser(id)
 }

@@ -23,6 +23,14 @@
     <delete id="deleteUser" parameterType="int">
         DELETE
         FROM ACCOUNT
-        WHERE id=#{id}
+        WHERE ID=#{id}
     </delete>
+    <select id="getDeletedUsers" resultType="com.hknusc.web.dto.UserDTO">
+        SELECT ID,EMAIL,'NULL' AS PASSWORD,CONCAT('deletedUser',ID) AS NICKNAME,PHONE_NUMBER,NULL AS WISH_LIST,NULL AS COUPON_LIST,NULL AS PAYMENT_CARD
+        FROM DELETED_ACCOUNT
+    </select>
+    <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.UserDTO">
+        INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER)
+        VALUES (#{email},#{phone_number})
+    </insert>
 </mapper>

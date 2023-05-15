@@ -10,4 +10,5 @@ data class StoreDTO(
     var info:String?,
     var phoneNumber:String?,
     var canReservation:Boolean?,
+    var isOpen:Boolean=false,
 )

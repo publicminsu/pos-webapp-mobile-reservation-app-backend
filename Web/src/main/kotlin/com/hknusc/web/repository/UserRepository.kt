@@ -9,4 +9,6 @@ interface UserRepository {
     fun getUser(id:Int):UserDTO
     fun editUser(userDTO: UserDTO)
     fun deleteUser(id:Int)
+    fun getDeletedUsers():List<UserDTO>
+    fun saveDeletedUser(userDTO: UserDTO)
 }
