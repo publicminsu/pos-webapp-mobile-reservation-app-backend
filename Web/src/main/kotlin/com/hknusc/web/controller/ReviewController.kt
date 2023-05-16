@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class ReviewController {
     @Autowired
     lateinit var reviewService: ReviewService
+
     @GetMapping("{storeId}")
-    fun getStoreReviews(@PathVariable("storeId") storeId:Int)=reviewService.getStoreReviews(storeId)
+    fun getStoreReviews(@PathVariable("storeId") storeId: Int) = reviewService.getStoreReviews(storeId)
 }

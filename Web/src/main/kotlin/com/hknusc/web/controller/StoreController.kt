@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.RestController
 class StoreController {
     @Autowired
     lateinit var storeService: StoreService
+
     @GetMapping
-    fun getStores()=storeService.getStores()
+    fun getStores() = storeService.getStores()
+
     @PostMapping
-    fun saveStore(storeDTO: StoreDTO)=storeService.saveStore(storeDTO)
+    fun saveStore(storeDTO: StoreDTO) = storeService.saveStore(storeDTO)
+
+    @PostMapping("open")//나누어야 하는가?
+    fun setOpen(id: Int, isOpen: Boolean) = storeService.setOpen(id, isOpen)
 }

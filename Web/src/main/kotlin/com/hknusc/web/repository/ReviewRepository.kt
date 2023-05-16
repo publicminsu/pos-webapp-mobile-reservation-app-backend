@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface ReviewRepository {
-    fun getStoreReviews(storeId:Int):List<ReviewDTO>
+    fun getStoreReviews(storeId: Int): List<ReviewDTO>
 }

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service
 class ReviewService {
     @Autowired
     lateinit var reviewRepository: ReviewRepository
-    fun getStoreReviews(storeId:Int)=reviewRepository.getStoreReviews(storeId)
+    fun getStoreReviews(storeId: Int) = reviewRepository.getStoreReviews(storeId)
 }

@@ -7,30 +7,37 @@
     </select>
     <insert id="saveUser" parameterType="com.hknusc.web.dto.UserDTO">
         INSERT INTO ACCOUNT(EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-        VALUES (#{email},#{password},#{nickname},#{phone_number},#{wish_list},#{coupon_list},#{payment_card})
+        VALUES (#{email}, #{password}, #{nickname}, #{phone_number}, #{wish_list}, #{coupon_list}, #{payment_card})
     </insert>
     <select id="getUser" parameterType="int" resultType="com.hknusc.web.dto.UserDTO">
         SELECT *
         FROM ACCOUNT
-        WHERE id=#{id}
+        WHERE id = #{id}
     </select>
     <update id="editUser" parameterType="com.hknusc.web.dto.UserDTO">
         UPDATE ACCOUNT
         SET (EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-        =(#{email},#{password},#{nickname},#{phone_number},#{wish_list},#{coupon_list},#{payment_card})
-        WHERE id=#{id}
+                = (#{email}, #{password}, #{nickname}, #{phone_number}, #{wish_list}, #{coupon_list}, #{payment_card})
+        WHERE id = #{id}
     </update>
     <delete id="deleteUser" parameterType="int">
         DELETE
         FROM ACCOUNT
-        WHERE ID=#{id}
+        WHERE ID = #{id}
     </delete>
     <select id="getDeletedUsers" resultType="com.hknusc.web.dto.UserDTO">
-        SELECT ID,EMAIL,'NULL' AS PASSWORD,CONCAT('deletedUser',ID) AS NICKNAME,PHONE_NUMBER,NULL AS WISH_LIST,NULL AS COUPON_LIST,NULL AS PAYMENT_CARD
+        SELECT ID,
+               EMAIL,
+               'NULL'                    AS PASSWORD,
+               CONCAT('deletedUser', ID) AS NICKNAME,
+               PHONE_NUMBER,
+               NULL                      AS WISH_LIST,
+               NULL                      AS COUPON_LIST,
+               NULL                      AS PAYMENT_CARD
         FROM DELETED_ACCOUNT
     </select>
     <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.UserDTO">
         INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER)
-        VALUES (#{email},#{phone_number})
+        VALUES (#{email}, #{phone_number})
     </insert>
 </mapper>
