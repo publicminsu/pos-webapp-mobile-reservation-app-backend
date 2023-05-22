@@ -25,19 +25,12 @@
         FROM ACCOUNT
         WHERE ID = #{id}
     </delete>
-    <select id="getDeletedUsers" resultType="com.hknusc.web.dto.UserDTO">
-        SELECT ID,
-               EMAIL,
-               'NULL'                    AS PASSWORD,
-               CONCAT('deletedUser', ID) AS NICKNAME,
-               PHONE_NUMBER,
-               NULL                      AS WISH_LIST,
-               NULL                      AS COUPON_LIST,
-               NULL                      AS PAYMENT_CARD
+    <select id="getDeletedUsers" resultType="com.hknusc.web.dto.DeletedUserDTO">
+        SELECT *
         FROM DELETED_ACCOUNT
     </select>
-    <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.UserDTO">
-        INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER)
-        VALUES (#{email}, #{phoneNumber})
+    <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.DeletedUserDTO">
+        INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER, DELETE_TIME)
+        VALUES (#{email}, #{phoneNumber},#{deleteTime})
     </insert>
 </mapper>
