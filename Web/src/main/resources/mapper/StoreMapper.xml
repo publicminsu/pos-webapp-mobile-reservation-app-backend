@@ -6,10 +6,10 @@
         FROM STORE
     </select>
     <insert id="saveStore" parameterType="com.hknusc.web.dto.StoreDTO">
-        INSERT INTO STORE(ACCOUNT_ID, NAME, OPEN_TIME, CLOSE_TIME, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
-                          IS_OPEN)
-        VALUES (#{accountId}, #{name}, #{openTime}, #{closeTime}, #{address}, #{info}, #{phoneNumber},
-                #{canReservation}, #{isOpen})
+        INSERT INTO STORE(ACCOUNT_ID, NAME, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
+                          IS_OPEN, OPERATING_TIME)
+        VALUES (#{accountId}, #{name}, #{address}, #{info}, #{phoneNumber},
+                #{canReservation}, #{isOpen},#{operatingTime})
     </insert>
     <update id="setOpen" parameterType="map">
         UPDATE STORE

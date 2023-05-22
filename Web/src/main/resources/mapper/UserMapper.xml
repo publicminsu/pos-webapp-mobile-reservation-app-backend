@@ -7,7 +7,7 @@
     </select>
     <insert id="saveUser" parameterType="com.hknusc.web.dto.UserDTO">
         INSERT INTO ACCOUNT(EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-        VALUES (#{email}, #{password}, #{nickname}, #{phone_number}, #{wish_list}, #{coupon_list}, #{payment_card})
+        VALUES (#{email}, #{password}, #{nickname}, #{phoneNumber}, #{wishList}, #{couponList}, #{paymentCard})
     </insert>
     <select id="getUser" parameterType="int" resultType="com.hknusc.web.dto.UserDTO">
         SELECT *
@@ -17,7 +17,7 @@
     <update id="editUser" parameterType="com.hknusc.web.dto.UserDTO">
         UPDATE ACCOUNT
         SET (EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-                = (#{email}, #{password}, #{nickname}, #{phone_number}, #{wish_list}, #{coupon_list}, #{payment_card})
+                = (#{email}, #{password}, #{nickname}, #{phoneNumber}, #{wishList}, #{couponList}, #{paymentCard})
         WHERE id = #{id}
     </update>
     <delete id="deleteUser" parameterType="int">
@@ -38,6 +38,6 @@
     </select>
     <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.UserDTO">
         INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER)
-        VALUES (#{email}, #{phone_number})
+        VALUES (#{email}, #{phoneNumber})
     </insert>
 </mapper>
