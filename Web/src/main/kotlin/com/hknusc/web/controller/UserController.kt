@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("users")
 class UserController {
-    //비밀번호의 암호화 필요
-    //아마도 jwt를 활용
     @Autowired
     lateinit var userService: UserService
 
@@ -27,7 +25,7 @@ class UserController {
 
     @GetMapping("{id}")
     fun getUser(@PathVariable("id") id: Int) = userService.getUser(id)
-
+    
     @PatchMapping("{id}")
     fun editUser(@PathVariable("id") id: Int, userDTO: UserDTO) = userService.editUser(userDTO)
 
