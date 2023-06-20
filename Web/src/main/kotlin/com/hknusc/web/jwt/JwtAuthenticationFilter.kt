@@ -18,11 +18,7 @@ class JwtAuthenticationFilter(val jwtTokenProvider: JwtTokenProvider):GenericFil
         var httpRequest:HttpServletRequest=request as HttpServletRequest
         var httpResponse:HttpServletResponse=response as HttpServletResponse
 
-        var token:String?=null
-        if(httpRequest.getHeader(JwtTokenProvider.Access_Key)!=null&&
-                httpRequest.getHeader(JwtTokenProvider.Access_Key).startsWith("Bearer ")){
-            token=httpRequest.getHeader(JwtTokenProvider.Access_Key).split(" ")[1]
-        }
+        var token:String?=jwtTokenProvider.resolveToken(httpRequest);
         if(token!=null&&jwtTokenProvider.validateToken(token)){
             var authentication:Authentication=jwtTokenProvider.getAuthentication(token)
             SecurityContextHolder.getContext().authentication=authentication

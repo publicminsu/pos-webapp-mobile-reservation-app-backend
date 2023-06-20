@@ -2,26 +2,18 @@ package com.hknusc.web.jwt
 
 import com.hknusc.web.dto.UserDTO
 import com.hknusc.web.service.UserDetailService
-import com.hknusc.web.service.UserService
-import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
-import jakarta.annotation.PostConstruct
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import java.security.Key
 import java.util.*
-import java.util.stream.Collectors
 
 @Component
 class JwtTokenProvider(
@@ -49,7 +41,7 @@ class JwtTokenProvider(
     fun generateAccessToken(userDTO: UserDTO):String{
         var now=Date()
         return Jwts.builder()
-            .setHeaderParam("typ","REFRESH_TOKEN")
+            .setHeaderParam("typ","ACCESS_TOKEN")
             .setHeaderParam("alg","HS256")
             .setSubject(userDTO.id.toString())
             .setIssuedAt(now)
@@ -74,12 +66,20 @@ class JwtTokenProvider(
         }
         return false
     }
+
     fun getAuthentication(token: String):Authentication{
         var userDetails=userDetailService.loadUserByUsername(findUserIdByJWT(token).toString())
         return UsernamePasswordAuthenticationToken(userDetails,"",userDetails.authorities)
     }
+    fun resolveToken(request:HttpServletRequest):String?{
+        val bearerToken: String? = request.getHeader(Access_Key);
+        if(bearerToken!=null&&bearerToken.startsWith("Bearer ")){
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
     companion object{
-        const val Access_Key="access"
-        const val Refresh_Key="refresh"
+        const val Access_Key="access_token"
+        const val Refresh_Key="refresh_token"
     }
 }

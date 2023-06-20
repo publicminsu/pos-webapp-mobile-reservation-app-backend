@@ -30,8 +30,8 @@ class AuthController(
         val accessToken=tokenProvider.generateAccessToken(user);
         val refreshToken=tokenProvider.generateRefreshToken(user);
         var httpHeaders:HttpHeaders= HttpHeaders()
-        httpHeaders.add(JwtTokenProvider.Access_Key,accessToken)
-        httpHeaders.add(JwtTokenProvider.Refresh_Key,refreshToken)
+        httpHeaders.add(JwtTokenProvider.Access_Key, "Bearer $accessToken")
+        httpHeaders.add(JwtTokenProvider.Refresh_Key, "Bearer $refreshToken")
         return ResponseEntity(httpHeaders,HttpStatus.OK)
     }
 }
