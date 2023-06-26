@@ -27,36 +27,36 @@ class JwtTokenProvider(
     override fun afterPropertiesSet() {
         key= Keys.hmacShaKeyFor(secretKey.toByteArray())
     }
-    fun generateRefreshToken(userDTO: UserDTO):String{
-        var now=Date()
+    fun generateRefreshToken(jwtAuthInfo: JwtAuthInfo):String{
+        val now=Date()
         return Jwts.builder()
             .setHeaderParam("typ","REFRESH_TOKEN")
             .setHeaderParam("alg","HS256")
-            .setSubject(userDTO.id.toString())
+            .setSubject(jwtAuthInfo.id.toString())
             .setIssuedAt(now)
             .setExpiration(Date(now.time+refreshTokenExpireTime))
             .signWith(key,SignatureAlgorithm.HS256)
             .compact()
     }
-    fun generateAccessToken(userDTO: UserDTO):String{
-        var now=Date()
+    fun generateAccessToken(jwtAuthInfo: JwtAuthInfo):String{
+        val now=Date()
         return Jwts.builder()
             .setHeaderParam("typ","ACCESS_TOKEN")
             .setHeaderParam("alg","HS256")
-            .setSubject(userDTO.id.toString())
+            .setSubject(jwtAuthInfo.id.toString())
             .setIssuedAt(now)
             .setExpiration(Date(now.time+accessTokenExpireTime))
-            .claim("userId",userDTO.id)
-            .claim("userEmail",userDTO.email)
+            .claim("userId",jwtAuthInfo.id)
+            .claim("userEmail",jwtAuthInfo.email)
             .signWith(key,SignatureAlgorithm.HS256)
             .compact()
     }
     fun findUserIdByJWT(token:String):Int{
-        var claims=Jwts.parserBuilder()
+        val claims=Jwts.parserBuilder()
             .setSigningKey(key).build()
             .parseClaimsJws(token)
             .body
-        var userId=claims.subject.toInt()
+        val userId=claims.subject.toInt()
         return userId
     }
     fun validateToken(token: String):Boolean{
@@ -70,7 +70,7 @@ class JwtTokenProvider(
     }
 
     fun getAuthentication(token: String):Authentication{
-        var userDetails=userDetailService.loadUserByUsername(findUserIdByJWT(token).toString())
+        val userDetails=userDetailService.loadUserByUsername(findUserIdByJWT(token).toString())
         return UsernamePasswordAuthenticationToken(userDetails,"",userDetails.authorities)
     }
     fun resolveToken(request:HttpServletRequest):String?{

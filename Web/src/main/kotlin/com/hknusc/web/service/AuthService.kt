@@ -2,6 +2,7 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.LoginDTO
 import com.hknusc.web.dto.TokenDTO
+import com.hknusc.web.jwt.JwtAuthInfo
 import com.hknusc.web.jwt.JwtTokenProvider
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -21,9 +22,9 @@ class AuthService(
         if (!passwordEncoder.matches(loginDTO.password, user.password)) {
             return ResponseEntity(TokenDTO("WrongPassword"), HttpStatus.UNAUTHORIZED)
         }
-
-        val accessToken = tokenProvider.generateAccessToken(user);
-        val refreshToken = tokenProvider.generateRefreshToken(user);
+        val jwtAuthInfo=JwtAuthInfo(user.id,user.email)
+        val accessToken = tokenProvider.generateAccessToken(jwtAuthInfo)
+        val refreshToken = tokenProvider.generateRefreshToken(jwtAuthInfo)
 
         val httpHeaders: HttpHeaders = HttpHeaders()
         httpHeaders.add(JwtTokenProvider.Access_Key, "Bearer $accessToken")
