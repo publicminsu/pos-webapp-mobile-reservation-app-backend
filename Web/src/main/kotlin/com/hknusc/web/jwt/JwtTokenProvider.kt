@@ -46,6 +46,8 @@ class JwtTokenProvider(
             .setSubject(userDTO.id.toString())
             .setIssuedAt(now)
             .setExpiration(Date(now.time+accessTokenExpireTime))
+            .claim("userId",userDTO.id)
+            .claim("userEmail",userDTO.email)
             .signWith(key,SignatureAlgorithm.HS256)
             .compact()
     }
