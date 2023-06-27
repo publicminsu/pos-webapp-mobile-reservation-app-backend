@@ -2,6 +2,7 @@ package com.hknusc.web.jwt
 
 import com.hknusc.web.service.UserDetailService
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
@@ -54,10 +55,14 @@ class JwtTokenProvider(
     }
 
     fun findClaimsByJWT(token: String?): Claims {
-        return Jwts.parserBuilder()
-            .setSigningKey(key).build()
-            .parseClaimsJws(token)
-            .body
+        try {
+            return Jwts.parserBuilder()
+                .setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .body
+        } catch (e: ExpiredJwtException) {
+            return e.claims
+        }
     }
 
     fun findUserIdByJWT(token: String?): Int {

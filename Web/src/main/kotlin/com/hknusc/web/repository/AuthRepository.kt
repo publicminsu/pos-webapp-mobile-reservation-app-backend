@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface AuthRepository {
-    fun getRefreshToken(userId: Int): RefreshTokenDTO
+    fun getRefreshToken(accountId: Int): RefreshTokenDTO
     fun saveRefreshToken(refreshTokenDTO: RefreshTokenDTO)
 }

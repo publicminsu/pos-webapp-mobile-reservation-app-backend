@@ -4,7 +4,7 @@
     <select id="getRefreshToken" parameterType="int" resultType="com.hknusc.web.dto.RefreshTokenDTO">
         SELECT *
         FROM AUTH
-        WHERE ID = #{userId}
+        WHERE ACCOUNT_ID = #{accountId}
     </select>
     <insert id="saveRefreshToken" parameterType="com.hknusc.web.dto.RefreshTokenDTO">
         INSERT INTO AUTH (ACCOUNT_ID, REFRESH_TOKEN)
