@@ -12,17 +12,18 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 import java.io.IOException
 
-class JwtAuthenticationFilter(val jwtTokenProvider: JwtTokenProvider):GenericFilterBean() {
-    @Throws(IOException::class,ServletException::class)
+class JwtAuthenticationFilter(val jwtTokenProvider: JwtTokenProvider) : GenericFilterBean() {
+    @Throws(IOException::class, ServletException::class)
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
-        var httpRequest:HttpServletRequest=request as HttpServletRequest
-        var httpResponse:HttpServletResponse=response as HttpServletResponse
+        val httpRequest: HttpServletRequest = request as HttpServletRequest
+        val httpResponse: HttpServletResponse = response as HttpServletResponse
 
-        var token:String?=jwtTokenProvider.resolveToken(httpRequest);
-        if(token!=null&&jwtTokenProvider.validateToken(token)){
-            var authentication:Authentication=jwtTokenProvider.getAuthentication(token)
-            SecurityContextHolder.getContext().authentication=authentication
+        val bearerToken = httpRequest.getHeader(JwtTokenProvider.Access_Key)
+        val accessToken: String? = jwtTokenProvider.resolveToken(bearerToken)
+        if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
+            val authentication: Authentication = jwtTokenProvider.getAuthentication(accessToken)
+            SecurityContextHolder.getContext().authentication = authentication
         }
-        chain.doFilter(httpRequest,httpResponse)
+        chain.doFilter(httpRequest, httpResponse)
     }
 }

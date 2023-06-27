@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.AuthRepository">
+    <select id="getRefreshToken" parameterType="int" resultType="com.hknusc.web.dto.RefreshTokenDTO">
+        SELECT *
+        FROM AUTH
+        WHERE ID = #{userId}
+    </select>
+    <insert id="saveRefreshToken" parameterType="com.hknusc.web.dto.RefreshTokenDTO">
+        INSERT INTO AUTH (ACCOUNT_ID, REFRESH_TOKEN)
+        VALUES (#{accountId}, #{refreshToken}) ON CONFLICT (ACCOUNT_ID)
+        DO
+        UPDATE
+            SET REFRESH_TOKEN=#{refreshToken}
+    </insert>
+</mapper>
