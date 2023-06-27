@@ -11,6 +11,11 @@
         VALUES (#{accountId}, #{refreshToken}) ON CONFLICT (ACCOUNT_ID)
         DO
         UPDATE
-            SET REFRESH_TOKEN=#{refreshToken}
+            SET REFRESH_TOKEN = #{refreshToken}
     </insert>
+    <update id="removeRefreshToken" parameterType="com.hknusc.web.dto.RefreshTokenDTO">
+        UPDATE AUTH
+        SET REFRESH_TOKEN = #{refreshToken}
+        WHERE ID = #{id}
+    </update>
 </mapper>
