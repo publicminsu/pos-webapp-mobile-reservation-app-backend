@@ -23,5 +23,4 @@ class AuthController() {
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         @RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String
     ) = authService.refresh(accessToken, refreshToken)
-
 }

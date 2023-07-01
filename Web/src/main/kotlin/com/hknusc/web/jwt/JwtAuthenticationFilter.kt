@@ -6,7 +6,6 @@ import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
@@ -20,9 +19,11 @@ class JwtAuthenticationFilter(val jwtTokenProvider: JwtTokenProvider) : GenericF
 
         val bearerToken = httpRequest.getHeader(JwtTokenProvider.Access_Key)
         val accessToken: String? = jwtTokenProvider.resolveToken(bearerToken)
-        if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
-            val authentication: Authentication = jwtTokenProvider.getAuthentication(accessToken)
+        try {
+            jwtTokenProvider.validateToken(accessToken)
+            val authentication: Authentication = jwtTokenProvider.getAuthentication(accessToken.toString())
             SecurityContextHolder.getContext().authentication = authentication
+        } catch (_: Exception) {
         }
         chain.doFilter(httpRequest, httpResponse)
     }

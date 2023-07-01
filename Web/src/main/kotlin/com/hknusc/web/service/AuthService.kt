@@ -2,7 +2,8 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.LoginDTO
 import com.hknusc.web.dto.RefreshTokenDTO
-import com.hknusc.web.dto.ResponseDTO
+import com.hknusc.web.exception.CustomException
+import com.hknusc.web.exception.ErrorCode
 import com.hknusc.web.jwt.JwtAuthInfo
 import com.hknusc.web.jwt.JwtTokenProvider
 import com.hknusc.web.repository.AuthRepository
@@ -25,7 +26,7 @@ class AuthService(
         val user = userRepository.getUserByUserEmail(loginDTO.email)
 
         if (!passwordEncoder.matches(loginDTO.password, user.password)) {
-            return ResponseEntity(ResponseDTO("WrongPassword"), HttpStatus.UNAUTHORIZED)
+            throw CustomException(ErrorCode.LOGIN_FAIL)
         }
 
         val httpHeaders: HttpHeaders = generateTokenHeader(user.id, user.email)
@@ -35,9 +36,7 @@ class AuthService(
     fun logout(bearerRefreshToken: String): ResponseEntity<Any> {
         val refreshToken = tokenProvider.resolveToken(bearerRefreshToken);
 
-        if (!tokenProvider.validateToken(refreshToken.toString())) {
-            return ResponseEntity(ResponseDTO("Authentication Is Not Valid"), HttpStatus.UNAUTHORIZED)
-        }
+        tokenProvider.validateToken(refreshToken)
 
         val userId = tokenProvider.findUserIdByJWT(refreshToken)
         val savedRefreshTokenDTO = authRepository.getRefreshToken(userId)
@@ -45,9 +44,9 @@ class AuthService(
 
         //갱신해둔 값 그대로가 아니면 잘못된 인증
         if (refreshToken != savedRefreshToken) {
-            return ResponseEntity(ResponseDTO("Authentication Is Not Valid"), HttpStatus.UNAUTHORIZED)
+            throw CustomException(ErrorCode.INVALID_TOKEN)
         }
-        savedRefreshTokenDTO.refreshToken=null
+        savedRefreshTokenDTO.refreshToken = null
         authRepository.removeRefreshToken(savedRefreshTokenDTO)
         return ResponseEntity(HttpStatus.OK)
     }
@@ -58,9 +57,10 @@ class AuthService(
         val oldRefreshToken = tokenProvider.resolveToken(oldBearerRefreshToken);
 
         //RefreshToken 검증.
-        if (!tokenProvider.validateToken(oldRefreshToken.toString())) {
-            return ResponseEntity(ResponseDTO("Authentication Is Not Valid"), HttpStatus.UNAUTHORIZED)
-        }
+        tokenProvider.validateToken(oldRefreshToken.toString())
+//        if (!tokenProvider.validateToken(oldRefreshToken.toString())) {
+//            return ResponseEntity(ResponseDTO("Authentication Is Not Valid"), HttpStatus.UNAUTHORIZED)
+//        }
 
         //AccessToken 정보 가져오기
         val claims = tokenProvider.findClaimsByJWT(oldAccessToken)
@@ -70,9 +70,12 @@ class AuthService(
         //가져온 정보를 토대로 DB에 저장된 RefreshToken 가져오기
         val savedRefreshToken = authRepository.getRefreshToken(userId).refreshToken.toString()
 
-        //저장된 RefreshToken 기한 지났는지 확인, 동일하지 않은 토큰인지 확인
-        if (!tokenProvider.validateToken(savedRefreshToken) || oldRefreshToken != savedRefreshToken) {
-            return ResponseEntity(ResponseDTO("Authentication Is Not Valid"), HttpStatus.UNAUTHORIZED)
+        //저장된 RefreshToken 올바른지 확인
+        tokenProvider.validateToken(savedRefreshToken)
+
+        //동일하지 않은 토큰인지 확인
+        if (oldRefreshToken != savedRefreshToken) {
+            throw CustomException(ErrorCode.INVALID_TOKEN)
         }
 
         val httpHeaders: HttpHeaders = generateTokenHeader(userId, userEmail)

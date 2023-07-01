@@ -1,5 +1,7 @@
 package com.hknusc.web.jwt
 
+import com.hknusc.web.exception.CustomException
+import com.hknusc.web.exception.ErrorCode
 import com.hknusc.web.service.UserDetailService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
@@ -77,14 +79,15 @@ class JwtTokenProvider(
         return claims["userEmail"].toString()
     }
 
-    fun validateToken(token: String): Boolean {
+    fun validateToken(token: String?) {
+        if (token.isNullOrEmpty())
+            throw CustomException(ErrorCode.EMPTY_TOKEN)
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
-            return true
         } catch (e: Exception) {
-            logger.error(e.message)
+            print(e.message)
+            throw CustomException(ErrorCode.INVALID_TOKEN)
         }
-        return false
     }
 
     fun getAuthentication(token: String): Authentication {
