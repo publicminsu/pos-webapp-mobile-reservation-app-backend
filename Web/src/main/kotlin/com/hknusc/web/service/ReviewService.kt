@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ReviewService {
-    @Autowired
-    lateinit var reviewRepository: ReviewRepository
+class ReviewService(private val reviewRepository: ReviewRepository) {
     fun getReviews(storeId: Int) = reviewRepository.getReviews(storeId)
     fun getReview(reviewId: Int) = reviewRepository.getReview(reviewId)
 }

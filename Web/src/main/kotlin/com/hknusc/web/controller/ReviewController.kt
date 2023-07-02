@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("reviews")
-class ReviewController {
-    @Autowired
-    lateinit var reviewService: ReviewService
-
+class ReviewController(private val reviewService: ReviewService) {
     @GetMapping("{storeId}")
     fun getReviews(@PathVariable("storeId") storeId: Int) = reviewService.getReviews(storeId)
+
     @GetMapping("{storeId}/{reviewId}")
     fun getReview(@PathVariable("reviewId") reviewId: Int) = reviewService.getReview(reviewId)
 }

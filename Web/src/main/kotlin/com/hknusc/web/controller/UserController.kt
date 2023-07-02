@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("users")
-class UserController {
-    @Autowired
-    lateinit var userService: UserService
-
+class UserController(private val userService: UserService) {
     @GetMapping //계획상 사용할 일이 없다. 테스트용으로 두었다.
     fun getUsers() = userService.getUsers()
 

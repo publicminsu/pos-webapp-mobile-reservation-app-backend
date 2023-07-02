@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("stores")
-class StoreController {
-    @Autowired
-    lateinit var storeService: StoreService
-
+class StoreController(private val storeService: StoreService) {
     @GetMapping
     fun getStores() = storeService.getStores()
 
