@@ -14,7 +14,7 @@ class AuthController(private val authService: AuthService) {
     @DeleteMapping
     fun logout(@RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String) = authService.logout(refreshToken)
 
-    @GetMapping("/refresh")
+    @GetMapping("refresh")
     fun refresh(
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         @RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String
