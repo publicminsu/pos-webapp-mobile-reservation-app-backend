@@ -2,6 +2,7 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.LoginDTO
 import com.hknusc.web.dto.RefreshTokenDTO
+import com.hknusc.web.dto.UserDTO
 import com.hknusc.web.exception.CustomException
 import com.hknusc.web.exception.ErrorCode
 import com.hknusc.web.jwt.JwtAuthInfo
@@ -23,7 +24,12 @@ class AuthService(
 ) {
 
     fun authorize(loginDTO: LoginDTO): ResponseEntity<Any> {
-        val user = userRepository.getUserByUserEmail(loginDTO.email)
+        lateinit var user: UserDTO
+        try{
+            user=userRepository.getUserByUserEmail(loginDTO.email)!!
+        }catch (e:Exception){
+            throw CustomException(ErrorCode.LOGIN_FAIL)
+        }
 
         if (!passwordEncoder.matches(loginDTO.password, user.password)) {
             throw CustomException(ErrorCode.LOGIN_FAIL)
@@ -58,9 +64,6 @@ class AuthService(
 
         //RefreshToken 검증.
         tokenProvider.validateToken(oldRefreshToken.toString())
-//        if (!tokenProvider.validateToken(oldRefreshToken.toString())) {
-//            return ResponseEntity(ResponseDTO("Authentication Is Not Valid"), HttpStatus.UNAUTHORIZED)
-//        }
 
         //AccessToken 정보 가져오기
         val claims = tokenProvider.findClaimsByJWT(oldAccessToken)

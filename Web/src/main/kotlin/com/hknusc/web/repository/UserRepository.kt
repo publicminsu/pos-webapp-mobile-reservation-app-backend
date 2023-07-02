@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Mapper
 interface UserRepository {
     fun getUsers(): List<UserDTO>
     fun saveUser(userDTO: UserDTO)
-    fun getUser(id: Int): UserDTO
-    fun getUserByUserEmail(email:String):UserDTO
+    fun getUser(id: Int): UserDTO?
+    fun getUserByUserEmail(email:String):UserDTO?
     fun editUser(userDTO: UserDTO)
     fun deleteUser(id: Int)
     fun getDeletedUsers(): List<DeletedUserDTO>

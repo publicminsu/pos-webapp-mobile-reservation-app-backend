@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service
 @Service
 class UserDetailService(
     private val userRepository: UserRepository
-    ): UserDetailsService {
-
+) : UserDetailsService {
     override fun loadUserByUsername(id: String): UserDetails {
-        val user=userRepository.getUser(id.toInt())
+        val user = userRepository.getUser(id.toInt())!!
         return User.builder()
             .username(user.email)
             .password(user.password)
