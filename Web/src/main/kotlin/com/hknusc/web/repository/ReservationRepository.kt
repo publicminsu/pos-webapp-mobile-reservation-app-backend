@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Mapper
 @Mapper
 interface ReservationRepository {
     fun getReservations(): List<ReservationDTO>
-    fun getReservation(): ReservationDTO
+    fun getReservation(reservationId: Int): ReservationDTO
     fun saveReservation(reservationDTO: ReservationDTO)
 }

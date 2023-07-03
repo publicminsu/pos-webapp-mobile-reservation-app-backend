@@ -11,5 +11,5 @@ data class ReservationDTO(
     var reservationTime: Timestamp,
     var numberOfGuests: Int,
     var items: String?,
-    var isCancelled: Boolean
+    var isCancelled: Boolean = false
 )
