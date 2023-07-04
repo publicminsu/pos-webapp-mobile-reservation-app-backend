@@ -14,6 +14,7 @@ class ReservationController(private val reservationService: ReservationService) 
     @GetMapping("{reservationId}")
     fun getReservation(@PathVariable("reservationId") reservationId: Int) = reservationService.getReservation(reservationId)
 
+    //예약 처리로 작성해야 했다.
     @PostMapping
     fun saveReservation(reservationDTO: ReservationDTO) = reservationService.saveReservation(reservationDTO)
 }

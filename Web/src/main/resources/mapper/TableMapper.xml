@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hknusc.web.repository.TableRepository">
+    <select id="getTables" resultType="com.hknusc.web.dto.TableDTO">
+        SELECT *
+        FROM TABLE_ITEM
+    </select>
+    <select id="getTable" parameterType="int" resultType="com.hknusc.web.dto.TableDTO">
+        SELECT *
+        FROM TABLE_ITEM
+        WHERE ID = #{tableId}
+    </select>
+    <insert id="saveTable" parameterType="com.hknusc.web.dto.TableDTO">
+        INSERT INTO TABLE_ITEM(STORE_ID, NAME, COORD_X, COORD_Y, WIDTH, HEIGHT, PRIVATE_KEY)
+        VALUES (#{storeId}, #{name}, #{coordX}, #{coordY}, #{width}, #{height}, #{privateKey})
+    </insert>
+    <update id="editTable" parameterType="com.hknusc.web.dto.TableDTO">
+        UPDATE TABLE_ITEM
+        SET (NAME, COORD_X, COORD_Y, WIDTH, HEIGHT)
+                = (#{storeId}, #{name}, #{coordX}, #{coordY}, #{width}, #{height})
+        WHERE ID = #{id}
+    </update>
+    <delete id="deleteTable" parameterType="int">
+        DELETE
+        FROM TABLE_ITEM
+        WHERE ID = #{tableId}
+    </delete>
 </mapper>

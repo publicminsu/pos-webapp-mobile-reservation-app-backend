@@ -23,6 +23,7 @@ class TableController(private val tableService: TableService) {
     fun editTable(@PathVariable("tableId") tableDTO: TableDTO) = tableService.editTable(tableDTO)
 
     //토큰으로 자격 확인
+    //테이블은 예약이 사라질 때까지 지워지지 않는다.
     @DeleteMapping("{tableId}")
     fun deleteTable(@PathVariable("tableId") tableId: Int) = tableService.deleteTable(tableId)
 }
