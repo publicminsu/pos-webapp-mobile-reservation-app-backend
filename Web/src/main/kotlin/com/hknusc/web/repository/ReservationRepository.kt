@@ -1,11 +1,11 @@
 package com.hknusc.web.repository
 
-import com.hknusc.web.dto.ReservationDTO
+import com.hknusc.web.dto.ReservationApplyDTO
 import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface ReservationRepository {
-    fun getReservations(): List<ReservationDTO>
-    fun getReservation(reservationId: Int): ReservationDTO
-    fun saveReservation(reservationDTO: ReservationDTO)
+    fun getReservations(): List<ReservationApplyDTO>
+    fun getReservation(reservationId: Int): ReservationApplyDTO
+    fun saveReservation(reservationApplyDTO: ReservationApplyDTO)
 }

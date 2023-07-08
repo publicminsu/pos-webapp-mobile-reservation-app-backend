@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hknusc.web.repository.ReservationRepository">
-    <select id="getReservations" resultType="com.hknusc.web.dto.ReservationDTO">
+    <select id="getReservations" resultType="com.hknusc.web.dto.OrderDTO">
         SELECT *
-        FROM RESERVATION
+        FROM ORDER_ITEM
     </select>
-    <select id="getReservation" parameterType="int" resultType="com.hknusc.web.dto.ReservationDTO">
+    <select id="getReservation" parameterType="int" resultType="com.hknusc.web.dto.OrderDTO">
         SELECT *
-        FROM RESERVATION
+        FROM ORDER_ITEM
         WHERE ID = #{reservationId}
     </select>
-    <insert id="saveReservation" parameterType="com.hknusc.web.dto.ReservationDTO">
-        INSERT INTO RESERVATION(ACCOUNT_ID, STORE_ID, TABLE_ID, ACCOUNT_NAME, RESERVATION_TIME, NUMBER_OF_GUESTS, ITEMS, IS_CANCELLED)
-        VALUES (#{accountId}, #{storeId}, #{tableId}, #{accountName}, #{reservationTime}, #{numberOfGuests}, #{items}, #{isCancelled})
+    <insert id="saveReservation" parameterType="com.hknusc.web.dto.ReservationApplyDTO">
+        INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, IS_SERVED, IS_RESERVATION)
+        VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{isServed}, #{isReservation})
     </insert>
 </mapper>
