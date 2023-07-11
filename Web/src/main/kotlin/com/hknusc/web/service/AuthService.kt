@@ -1,11 +1,9 @@
 package com.hknusc.web.service
 
 import com.hknusc.web.dto.LoginDTO
-import com.hknusc.web.dto.RefreshTokenDTO
 import com.hknusc.web.dto.UserDTO
 import com.hknusc.web.exception.CustomException
 import com.hknusc.web.exception.ErrorCode
-import com.hknusc.web.jwt.JwtAuthInfo
 import com.hknusc.web.jwt.JwtTokenProvider
 import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.repository.UserRepository
@@ -35,12 +33,12 @@ class AuthService(
             throw CustomException(ErrorCode.LOGIN_FAIL)
         }
 
-        val httpHeaders: HttpHeaders = generateTokenHeader(user.id, user.email)
+        val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(user.id, user.email)
         return ResponseEntity(httpHeaders, HttpStatus.OK)
     }
 
     fun logout(bearerRefreshToken: String): ResponseEntity<Any> {
-        val refreshToken = tokenProvider.resolveToken(bearerRefreshToken);
+        val refreshToken = tokenProvider.resolveToken(bearerRefreshToken)
 
         tokenProvider.validateToken(refreshToken)
 
@@ -59,8 +57,8 @@ class AuthService(
 
     fun refresh(oldBearerAccessToken: String, oldBearerRefreshToken: String): ResponseEntity<Any> {
 
-        val oldAccessToken = tokenProvider.resolveToken(oldBearerAccessToken);
-        val oldRefreshToken = tokenProvider.resolveToken(oldBearerRefreshToken);
+        val oldAccessToken = tokenProvider.resolveToken(oldBearerAccessToken)
+        val oldRefreshToken = tokenProvider.resolveToken(oldBearerRefreshToken)
 
         //RefreshToken 검증.
         tokenProvider.validateToken(oldRefreshToken.toString())
@@ -82,24 +80,7 @@ class AuthService(
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
 
-        val httpHeaders: HttpHeaders = generateTokenHeader(userId, userEmail, userStoreId)
+        val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(userId, userEmail, userStoreId)
         return ResponseEntity(httpHeaders, HttpStatus.OK)
-    }
-
-    /*
-    RTR (Refresh Token Rotation) RefreshToken 사용될 때마다 재발급
-     */
-    fun generateTokenHeader(userId: Int, userEmail: String, userStoreId: Int = 0): HttpHeaders {
-        val jwtAuthInfo = JwtAuthInfo(userId, userEmail, userStoreId)
-        val accessToken = tokenProvider.generateAccessToken(jwtAuthInfo)
-        val refreshToken = tokenProvider.generateRefreshToken(jwtAuthInfo)
-
-        val refreshTokenDTO = RefreshTokenDTO(accountId = userId, refreshToken = refreshToken)
-        authRepository.saveRefreshToken(refreshTokenDTO)
-
-        val httpHeaders: HttpHeaders = HttpHeaders()
-        httpHeaders.add(JwtTokenProvider.Access_Key, "Bearer $accessToken")
-        httpHeaders.add(JwtTokenProvider.Refresh_Key, "Bearer $refreshToken")
-        return httpHeaders
     }
 }

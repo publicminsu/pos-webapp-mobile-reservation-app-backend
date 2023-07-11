@@ -1,7 +1,9 @@
 package com.hknusc.web.jwt
 
+import com.hknusc.web.dto.RefreshTokenDTO
 import com.hknusc.web.exception.CustomException
 import com.hknusc.web.exception.ErrorCode
+import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.service.UserDetailService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
@@ -11,6 +13,7 @@ import io.jsonwebtoken.security.Keys
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
@@ -20,7 +23,8 @@ import java.util.*
 @Component
 class JwtTokenProvider(
     @param:Value("\${jwt.secretKey}") private val secretKey: String,
-    private val userDetailService: UserDetailService
+    private val userDetailService: UserDetailService,
+    private val authRepository: AuthRepository
 ) : InitializingBean {
     val logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
     lateinit var key: Key
@@ -58,13 +62,13 @@ class JwtTokenProvider(
     }
 
     fun findClaimsByJWT(token: String?): Claims {
-        try {
-            return Jwts.parserBuilder()
+        return try {
+            Jwts.parserBuilder()
                 .setSigningKey(key).build()
                 .parseClaimsJws(token)
                 .body
         } catch (e: ExpiredJwtException) {
-            return e.claims
+            e.claims
         }
     }
 
@@ -79,6 +83,7 @@ class JwtTokenProvider(
     fun findUserEmailByClaims(claims: Claims): String {
         return claims["userEmail"].toString()
     }
+
     fun findUserStoreIdByClaims(claims: Claims): String {
         return claims["userStoreId"].toString()
     }
@@ -101,9 +106,26 @@ class JwtTokenProvider(
 
     fun resolveToken(bearerToken: String?): String? {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(7)
         }
-        return null;
+        return null
+    }
+
+    /*
+    RTR (Refresh Token Rotation) RefreshToken 사용될 때마다 재발급
+     */
+    fun generateTokenHeader(userId: Int, userEmail: String, userStoreId: Int = 0): HttpHeaders {
+        val jwtAuthInfo = JwtAuthInfo(userId, userEmail, userStoreId)
+        val accessToken = generateAccessToken(jwtAuthInfo)
+        val refreshToken = generateRefreshToken(jwtAuthInfo)
+
+        val refreshTokenDTO = RefreshTokenDTO(accountId = userId, refreshToken = refreshToken)
+        authRepository.saveRefreshToken(refreshTokenDTO)
+
+        val httpHeaders = HttpHeaders()
+        httpHeaders.add(Access_Key, "Bearer $accessToken")
+        httpHeaders.add(Refresh_Key, "Bearer $refreshToken")
+        return httpHeaders
     }
 
     companion object {

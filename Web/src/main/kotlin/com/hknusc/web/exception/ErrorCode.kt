@@ -7,6 +7,7 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "메뉴를 찾을 수 없습니다."),
+    STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "상점을 찾을 수 없습니다."),
 
     SIGNUP_FAIL(HttpStatus.UNAUTHORIZED, "회원가입에 실패했습니다."),
     LOGIN_FAIL(HttpStatus.UNAUTHORIZED, "로그인에 실패했습니다."),

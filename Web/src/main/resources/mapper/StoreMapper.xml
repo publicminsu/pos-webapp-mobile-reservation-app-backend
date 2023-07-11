@@ -12,9 +12,10 @@
         VALUES (#{accountId}, #{name}, #{address}, #{info}, #{phoneNumber},
                 #{canReservation}, #{isOpen}, #{operatingTime})
     </insert>
-    <update id="setOpen" parameterType="map">
+    <update id="setOpen" parameterType="com.hknusc.web.dto.StoreOpenDTO">
         UPDATE STORE
         SET IS_OPEN = ${isOpen}
         WHERE ID = #{id}
+          AND ACCOUNT_ID = #{userId}
     </update>
 </mapper>
