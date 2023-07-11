@@ -25,9 +25,9 @@ class AuthService(
 
     fun authorize(loginDTO: LoginDTO): ResponseEntity<Any> {
         lateinit var user: UserDTO
-        try{
-            user=userRepository.getUserByUserEmail(loginDTO.email)!!
-        }catch (e:Exception){
+        try {
+            user = userRepository.getUserByUserEmail(loginDTO.email)!!
+        } catch (e: Exception) {
             throw CustomException(ErrorCode.LOGIN_FAIL)
         }
 
@@ -69,6 +69,7 @@ class AuthService(
         val claims = tokenProvider.findClaimsByJWT(oldAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims).toInt()
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
 
         //가져온 정보를 토대로 DB에 저장된 RefreshToken 가져오기
         val savedRefreshToken = authRepository.getRefreshToken(userId).refreshToken.toString()
@@ -81,15 +82,15 @@ class AuthService(
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
 
-        val httpHeaders: HttpHeaders = generateTokenHeader(userId, userEmail)
+        val httpHeaders: HttpHeaders = generateTokenHeader(userId, userEmail, userStoreId)
         return ResponseEntity(httpHeaders, HttpStatus.OK)
     }
 
     /*
     RTR (Refresh Token Rotation) RefreshToken 사용될 때마다 재발급
      */
-    fun generateTokenHeader(userId: Int, userEmail: String): HttpHeaders {
-        val jwtAuthInfo = JwtAuthInfo(userId, userEmail)
+    fun generateTokenHeader(userId: Int, userEmail: String, userStoreId: Int = 0): HttpHeaders {
+        val jwtAuthInfo = JwtAuthInfo(userId, userEmail, userStoreId)
         val accessToken = tokenProvider.generateAccessToken(jwtAuthInfo)
         val refreshToken = tokenProvider.generateRefreshToken(jwtAuthInfo)
 

@@ -52,6 +52,7 @@ class JwtTokenProvider(
             .setExpiration(Date(now.time + accessTokenExpireTime))
             .claim("userId", jwtAuthInfo.id)
             .claim("userEmail", jwtAuthInfo.email)
+            .claim("userStoreId", jwtAuthInfo.storeId)
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
@@ -77,6 +78,9 @@ class JwtTokenProvider(
 
     fun findUserEmailByClaims(claims: Claims): String {
         return claims["userEmail"].toString()
+    }
+    fun findUserStoreIdByClaims(claims: Claims): String {
+        return claims["userStoreId"].toString()
     }
 
     fun validateToken(token: String?) {
