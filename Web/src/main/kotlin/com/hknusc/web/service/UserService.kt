@@ -19,7 +19,11 @@ class UserService(
     fun getUsers() = userRepository.getUsers()
     fun saveUser(userDTO: UserDTO) {
         userDTO.password = passwordEncoder.encode(userDTO.password)
-        userRepository.saveUser(userDTO)
+        try {
+            userRepository.saveUser(userDTO)
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.SIGNUP_FAIL)
+        }
     }
 
     fun getUser(id: Int): UserDTO {
@@ -34,11 +38,11 @@ class UserService(
     fun editUser(userDTO: UserDTO) = userRepository.editUser(userDTO)
     fun getDeletedUser() = userRepository.getDeletedUsers()
     fun deleteUser(bearerAccessToken: String) {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken);
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
 
         tokenProvider.validateToken(accessToken.toString())
 
-        val userId = tokenProvider.findUserIdByJWT(accessToken);
+        val userId = tokenProvider.findUserIdByJWT(accessToken)
 
         lateinit var user: UserDTO
         try {
