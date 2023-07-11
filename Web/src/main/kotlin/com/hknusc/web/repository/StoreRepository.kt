@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface StoreRepository {
-    fun getStores(): List<StoreDTO>
+    fun getStores(userId: Int): List<StoreDTO>
     fun saveStore(storeDTO: StoreDTO)
     fun setOpen(id: Int, isOpen: Boolean)
 }

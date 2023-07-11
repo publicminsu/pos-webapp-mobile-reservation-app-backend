@@ -1,18 +1,15 @@
 package com.hknusc.web.controller
 
 import com.hknusc.web.dto.StoreDTO
+import com.hknusc.web.jwt.JwtTokenProvider
 import com.hknusc.web.service.StoreService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("stores")
 class StoreController(private val storeService: StoreService) {
     @GetMapping
-    fun getStores() = storeService.getStores()
+    fun getStores(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = storeService.getStores(accessToken)
 
     @PostMapping
     fun saveStore(storeDTO: StoreDTO) = storeService.saveStore(storeDTO)
