@@ -26,5 +26,6 @@
         DELETE
         FROM MENU
         WHERE ID = #{menuId}
+          AND STORE_ID = #{storeId}
     </delete>
 </mapper>

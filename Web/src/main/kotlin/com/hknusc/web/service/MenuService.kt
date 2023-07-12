@@ -30,7 +30,7 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
 
         try {
-            return menuRepository.getMenu(userStoreId, menuId)!!
+            return menuRepository.getMenu(menuId, userStoreId)!!
         } catch (_: Exception) {
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
         }
@@ -38,5 +38,16 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
 
     fun saveMenu(menuDTO: MenuDTO) = menuRepository.saveMenu(menuDTO)
     fun editMenu(menuEditDTO: MenuEditDTO) = menuRepository.editMenu(menuEditDTO)
-    fun deleteMenu(menuId: Int) = menuRepository.deleteMenu(menuId)
+    fun deleteMenu(bearerAccessToken: String, menuId: Int) {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+
+        tokenProvider.validateToken(accessToken.toString())
+
+        val claims = tokenProvider.findClaimsByJWT(accessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
+
+        if (menuRepository.deleteMenu(menuId, userStoreId) == 0) {
+            throw CustomException(ErrorCode.MENU_NOT_FOUND)
+        }
+    }
 }

@@ -23,5 +23,8 @@ class MenuController(private val menuService: MenuService) {
     fun editMenu(menuEditDTO: MenuEditDTO) = menuService.editMenu(menuEditDTO)
 
     @DeleteMapping("{menuId}")
-    fun deleteMenu(@PathVariable("menuId") menuId: Int) = menuService.deleteMenu(menuId)
+    fun deleteMenu(
+        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @PathVariable("menuId") menuId: Int
+    ) = menuService.deleteMenu(accessToken, menuId)
 }
