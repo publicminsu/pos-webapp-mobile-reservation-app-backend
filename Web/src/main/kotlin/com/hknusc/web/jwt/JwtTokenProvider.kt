@@ -85,7 +85,10 @@ class JwtTokenProvider(
     }
 
     fun findUserStoreIdByClaims(claims: Claims): String {
-        return claims["userStoreId"].toString()
+        val storeId = claims["userStoreId"].toString()
+        if (storeId == "0")
+            throw CustomException(ErrorCode.STORE_NOT_OPEN)
+        return storeId
     }
 
     fun validateToken(token: String?) {
