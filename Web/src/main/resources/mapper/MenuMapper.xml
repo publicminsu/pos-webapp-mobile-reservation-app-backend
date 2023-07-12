@@ -4,11 +4,13 @@
     <select id="getMenus" resultType="com.hknusc.web.dto.MenuDTO">
         SELECT *
         FROM MENU
+        WHERE STORE_ID = #{storeId}
     </select>
     <select id="getMenu" parameterType="int" resultType="com.hknusc.web.dto.MenuDTO">
         SELECT *
         FROM MENU
         WHERE ID = #{menuId}
+          AND STORE_ID = #{storeId}
     </select>
     <insert id="saveMenu" parameterType="com.hknusc.web.dto.MenuDTO">
         INSERT INTO MENU(STORE_ID, PHOTO, NAME, PRICE, CATEGORY)

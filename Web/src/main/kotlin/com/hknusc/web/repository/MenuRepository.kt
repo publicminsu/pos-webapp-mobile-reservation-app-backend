@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface MenuRepository {
-    fun getMenus(): List<MenuDTO>
-    fun getMenu(menuId: Int): MenuDTO?
+    fun getMenus(storeId: Int): List<MenuDTO>
+    fun getMenu(storeId: Int, menuId: Int): MenuDTO?
     fun saveMenu(menuDTO: MenuDTO)
     fun editMenu(menuEditDTO: MenuEditDTO)
     fun deleteMenu(menuId: Int)

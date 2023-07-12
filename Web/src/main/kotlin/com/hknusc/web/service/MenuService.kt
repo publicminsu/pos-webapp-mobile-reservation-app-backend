@@ -4,15 +4,33 @@ import com.hknusc.web.dto.MenuDTO
 import com.hknusc.web.dto.MenuEditDTO
 import com.hknusc.web.exception.CustomException
 import com.hknusc.web.exception.ErrorCode
+import com.hknusc.web.jwt.JwtTokenProvider
 import com.hknusc.web.repository.MenuRepository
 import org.springframework.stereotype.Service
 
 @Service
-class MenuService(private val menuRepository: MenuRepository) {
-    fun getMenus() = menuRepository.getMenus()
-    fun getMenu(menuId: Int): MenuDTO {
+class MenuService(private val tokenProvider: JwtTokenProvider, private val menuRepository: MenuRepository) {
+    fun getMenus(bearerAccessToken: String): List<MenuDTO> {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+
+        tokenProvider.validateToken(accessToken.toString())
+
+        val claims = tokenProvider.findClaimsByJWT(accessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
+
+        return menuRepository.getMenus(userStoreId)
+    }
+
+    fun getMenu(bearerAccessToken: String, menuId: Int): MenuDTO {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+
+        tokenProvider.validateToken(accessToken.toString())
+
+        val claims = tokenProvider.findClaimsByJWT(accessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
+
         try {
-            return menuRepository.getMenu(menuId)!!
+            return menuRepository.getMenu(userStoreId, menuId)!!
         } catch (_: Exception) {
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
         }

@@ -2,6 +2,7 @@ package com.hknusc.web.controller
 
 import com.hknusc.web.dto.MenuDTO
 import com.hknusc.web.dto.MenuEditDTO
+import com.hknusc.web.jwt.JwtTokenProvider
 import com.hknusc.web.service.MenuService
 import org.springframework.web.bind.annotation.*
 
@@ -9,10 +10,11 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("menus")
 class MenuController(private val menuService: MenuService) {
     @GetMapping
-    fun getMenus() = menuService.getMenus()
+    fun getMenus(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = menuService.getMenus(accessToken)
 
     @GetMapping("{menuId}")
-    fun getMenu(@PathVariable("menuId") menuId: Int) = menuService.getMenu(menuId)
+    fun getMenu(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, @PathVariable("menuId") menuId: Int) =
+        menuService.getMenu(accessToken, menuId)
 
     @PostMapping
     fun saveMenu(menuDTO: MenuDTO) = menuService.saveMenu(menuDTO)
