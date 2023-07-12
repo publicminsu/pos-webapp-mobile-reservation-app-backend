@@ -2,6 +2,7 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.MenuDTO
 import com.hknusc.web.dto.MenuEditDTO
+import com.hknusc.web.dto.MenuSaveDTO
 import com.hknusc.web.exception.CustomException
 import com.hknusc.web.exception.ErrorCode
 import com.hknusc.web.jwt.JwtTokenProvider
@@ -32,7 +33,23 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
         }
     }
 
-    fun saveMenu(menuDTO: MenuDTO) = menuRepository.saveMenu(menuDTO)
+    fun saveMenu(bearerAccessToken: String, menuSaveDTO: MenuSaveDTO) {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+
+        val claims = tokenProvider.findClaimsByJWT(accessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
+
+        val menuDTO = MenuDTO(
+            storeId = userStoreId,
+            photo = menuSaveDTO.photo,
+            name = menuSaveDTO.name,
+            price = menuSaveDTO.price,
+            category = menuSaveDTO.category
+        )
+
+        menuRepository.saveMenu(menuDTO)
+    }
+
     fun editMenu(menuEditDTO: MenuEditDTO) = menuRepository.editMenu(menuEditDTO)
     fun deleteMenu(bearerAccessToken: String, menuId: Int) {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
