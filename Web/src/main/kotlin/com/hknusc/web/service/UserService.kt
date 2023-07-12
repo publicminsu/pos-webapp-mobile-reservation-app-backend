@@ -40,8 +40,6 @@ class UserService(
     fun deleteUser(bearerAccessToken: String) {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
 
-        tokenProvider.validateToken(accessToken.toString())
-
         val userId = tokenProvider.findUserIdByJWT(accessToken)
 
         lateinit var user: UserDTO

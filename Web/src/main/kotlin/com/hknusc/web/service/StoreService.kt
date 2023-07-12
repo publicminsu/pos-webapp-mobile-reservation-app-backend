@@ -17,8 +17,6 @@ class StoreService(
     fun getStores(bearerAccessToken: String): List<StoreDTO> {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
 
-        tokenProvider.validateToken(accessToken.toString())
-
         val userId = tokenProvider.findUserIdByJWT(accessToken)
 
         return storeRepository.getStores(userId)
@@ -27,8 +25,6 @@ class StoreService(
     fun saveStore(storeDTO: StoreDTO) = storeRepository.saveStore(storeDTO)
     fun setOpen(bearerAccessToken: String, storeOpenDTO: StoreOpenDTO): ResponseEntity<Any> {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-
-        tokenProvider.validateToken(accessToken.toString())
 
         val claims = tokenProvider.findClaimsByJWT(accessToken)
         val userId = tokenProvider.findUserIdByClaims(claims).toInt()

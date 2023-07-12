@@ -13,8 +13,6 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
     fun getMenus(bearerAccessToken: String): List<MenuDTO> {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
 
-        tokenProvider.validateToken(accessToken.toString())
-
         val claims = tokenProvider.findClaimsByJWT(accessToken)
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
 
@@ -23,8 +21,6 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
 
     fun getMenu(bearerAccessToken: String, menuId: Int): MenuDTO {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-
-        tokenProvider.validateToken(accessToken.toString())
 
         val claims = tokenProvider.findClaimsByJWT(accessToken)
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
@@ -40,8 +36,6 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
     fun editMenu(menuEditDTO: MenuEditDTO) = menuRepository.editMenu(menuEditDTO)
     fun deleteMenu(bearerAccessToken: String, menuId: Int) {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-
-        tokenProvider.validateToken(accessToken.toString())
 
         val claims = tokenProvider.findClaimsByJWT(accessToken)
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
