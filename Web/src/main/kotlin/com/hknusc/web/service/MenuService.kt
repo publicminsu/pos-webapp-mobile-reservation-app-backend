@@ -7,10 +7,15 @@ import com.hknusc.web.exception.CustomException
 import com.hknusc.web.exception.ErrorCode
 import com.hknusc.web.jwt.JwtTokenProvider
 import com.hknusc.web.repository.MenuRepository
+import com.hknusc.web.util.PhotoUtility
 import org.springframework.stereotype.Service
 
 @Service
-class MenuService(private val tokenProvider: JwtTokenProvider, private val menuRepository: MenuRepository) {
+class MenuService(
+    private val tokenProvider: JwtTokenProvider,
+    private val photoUtility: PhotoUtility,
+    private val menuRepository: MenuRepository
+) {
     fun getMenus(bearerAccessToken: String): List<MenuDTO> {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
 
@@ -39,7 +44,18 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
         val claims = tokenProvider.findClaimsByJWT(accessToken)
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
 
-        if (menuRepository.saveMenu(userStoreId, menuSaveDTO) == 0) {
+        val photo = menuSaveDTO.photo
+        val photoPath = photoUtility.saveImage(photo)
+
+        val menuDTO = MenuDTO(
+            storeId = userStoreId,
+            photo = photoPath,
+            name = menuSaveDTO.name,
+            price = menuSaveDTO.price,
+            category = menuSaveDTO.category
+        )
+
+        if (menuRepository.saveMenu(menuDTO) == 0) {
             throw CustomException(ErrorCode.MENU_NOT_SAVED)
         }
     }
@@ -65,4 +81,5 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
         }
     }
+
 }

@@ -12,9 +12,9 @@
         WHERE ID = #{menuId}
           AND STORE_ID = #{storeId}
     </select>
-    <insert id="saveMenu" parameterType="map">
+    <insert id="saveMenu" parameterType="com.hknusc.web.dto.MenuDTO">
         INSERT INTO MENU(STORE_ID, PHOTO, NAME, PRICE, CATEGORY)
-        VALUES (#{storeId}, #{menuSaveDTO.photo}, #{menuSaveDTO.name}, #{menuSaveDTO.price}, #{menuSaveDTO.category})
+        VALUES (#{storeId}, #{photo}, #{name}, #{price}, #{category})
     </insert>
     <update id="editMenu" parameterType="map">
         UPDATE MENU
