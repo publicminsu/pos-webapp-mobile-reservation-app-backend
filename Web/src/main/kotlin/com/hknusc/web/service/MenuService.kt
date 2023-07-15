@@ -39,18 +39,22 @@ class MenuService(private val tokenProvider: JwtTokenProvider, private val menuR
         val claims = tokenProvider.findClaimsByJWT(accessToken)
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
 
-        val menuDTO = MenuDTO(
-            storeId = userStoreId,
-            photo = menuSaveDTO.photo,
-            name = menuSaveDTO.name,
-            price = menuSaveDTO.price,
-            category = menuSaveDTO.category
-        )
-
-        menuRepository.saveMenu(menuDTO)
+        if (menuRepository.saveMenu(userStoreId, menuSaveDTO) == 0) {
+            throw CustomException(ErrorCode.MENU_NOT_SAVED)
+        }
     }
 
-    fun editMenu(menuEditDTO: MenuEditDTO) = menuRepository.editMenu(menuEditDTO)
+    fun editMenu(bearerAccessToken: String, menuEditDTO: MenuEditDTO) {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+
+        val claims = tokenProvider.findClaimsByJWT(accessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
+
+        if (menuRepository.editMenu(userStoreId, menuEditDTO) == 0) {
+            throw CustomException(ErrorCode.MENU_NOT_FOUND)
+        }
+    }
+
     fun deleteMenu(bearerAccessToken: String, menuId: Int) {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
 

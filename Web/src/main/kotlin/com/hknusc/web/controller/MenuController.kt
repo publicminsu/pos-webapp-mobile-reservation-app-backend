@@ -1,6 +1,5 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.MenuDTO
 import com.hknusc.web.dto.MenuEditDTO
 import com.hknusc.web.dto.MenuSaveDTO
 import com.hknusc.web.jwt.JwtTokenProvider
@@ -22,7 +21,8 @@ class MenuController(private val menuService: MenuService) {
         menuService.saveMenu(accessToken, menuSaveDTO)
 
     @PatchMapping
-    fun editMenu(menuEditDTO: MenuEditDTO) = menuService.editMenu(menuEditDTO)
+    fun editMenu(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, menuEditDTO: MenuEditDTO) =
+        menuService.editMenu(accessToken, menuEditDTO)
 
     @DeleteMapping("{menuId}")
     fun deleteMenu(

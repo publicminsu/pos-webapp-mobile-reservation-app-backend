@@ -12,15 +12,16 @@
         WHERE ID = #{menuId}
           AND STORE_ID = #{storeId}
     </select>
-    <insert id="saveMenu" parameterType="com.hknusc.web.dto.MenuDTO">
+    <insert id="saveMenu" parameterType="map">
         INSERT INTO MENU(STORE_ID, PHOTO, NAME, PRICE, CATEGORY)
-        VALUES (#{storeId}, #{photo}, #{name}, #{price}, #{category})
+        VALUES (#{storeId}, #{menuSaveDTO.photo}, #{menuSaveDTO.name}, #{menuSaveDTO.price}, #{menuSaveDTO.category})
     </insert>
-    <update id="editMenu" parameterType="com.hknusc.web.dto.MenuEditDTO">
+    <update id="editMenu" parameterType="map">
         UPDATE MENU
         SET (PHOTO, NAME, PRICE, CATEGORY)
-                = (#{photo}, #{name}, #{price}, #{category})
-        WHERE ID = #{id}
+                = (#{menuEditDTO.photo}, #{menuEditDTO.name}, #{menuEditDTO.price}, #{menuEditDTO.category})
+        WHERE ID = #{menuEditDTO.id}
+          AND STORE_ID = #{storeId}
     </update>
     <delete id="deleteMenu" parameterType="int">
         DELETE
