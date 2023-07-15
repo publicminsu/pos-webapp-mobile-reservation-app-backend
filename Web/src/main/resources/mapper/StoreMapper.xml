@@ -14,8 +14,8 @@
     </insert>
     <update id="setOpen" parameterType="com.hknusc.web.dto.StoreOpenDTO">
         UPDATE STORE
-        SET IS_OPEN = ${isOpen}
-        WHERE ID = #{id}
+        SET IS_OPEN = ${storeOpenDTO.isOpen}
+        WHERE ID = #{storeOpenDTO.id}
           AND ACCOUNT_ID = #{userId}
     </update>
 </mapper>

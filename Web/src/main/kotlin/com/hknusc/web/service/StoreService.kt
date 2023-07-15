@@ -30,9 +30,7 @@ class StoreService(
         val userId = tokenProvider.findUserIdByClaims(claims).toInt()
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
 
-        storeOpenDTO.userId = userId
-
-        if (storeRepository.setOpen(storeOpenDTO) == 0)
+        if (storeRepository.setOpen(userId, storeOpenDTO) == 0)
             throw CustomException(ErrorCode.STORE_NOT_FOUND)
 
         val responseEntity = ResponseEntity.ok()

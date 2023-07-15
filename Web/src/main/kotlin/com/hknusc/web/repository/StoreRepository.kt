@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper
 interface StoreRepository {
     fun getStores(userId: Int): List<StoreDTO>
     fun saveStore(storeDTO: StoreDTO)
-    fun setOpen(storeOpenDTO: StoreOpenDTO): Int
+    fun setOpen(userId: Int, storeOpenDTO: StoreOpenDTO): Int
 }
