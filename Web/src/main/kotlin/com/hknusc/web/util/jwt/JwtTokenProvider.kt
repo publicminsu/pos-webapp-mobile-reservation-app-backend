@@ -96,8 +96,9 @@ class JwtTokenProvider(
             throw CustomException(ErrorCode.EMPTY_TOKEN)
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
+        } catch (e: ExpiredJwtException) {
+            throw CustomException(ErrorCode.EXPIRED_TOKEN)
         } catch (e: Exception) {
-            print(e.message)
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
     }

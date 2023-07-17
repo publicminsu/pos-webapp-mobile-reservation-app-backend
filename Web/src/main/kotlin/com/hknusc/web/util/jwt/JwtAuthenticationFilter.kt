@@ -9,22 +9,24 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
+import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
+import kotlin.jvm.Throws
 
-class JwtAuthenticationFilter(val jwtTokenProvider: JwtTokenProvider) : GenericFilterBean() {
-    @Throws(IOException::class, ServletException::class)
-    override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
-        val httpRequest: HttpServletRequest = request as HttpServletRequest
-        val httpResponse: HttpServletResponse = response as HttpServletResponse
-
-        val bearerToken = httpRequest.getHeader(JwtTokenProvider.Access_Key)
+class JwtAuthenticationFilter(private val jwtTokenProvider: JwtTokenProvider) : OncePerRequestFilter() {
+    @Throws(ServletException::class,IOException::class)
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
+        val bearerToken = request.getHeader(JwtTokenProvider.Access_Key)
         val accessToken: String? = jwtTokenProvider.resolveToken(bearerToken)
-        try {
-            jwtTokenProvider.validateToken(accessToken)
-            val authentication: Authentication = jwtTokenProvider.getAuthentication(accessToken.toString())
-            SecurityContextHolder.getContext().authentication = authentication
-        } catch (_: Exception) {
-        }
-        chain.doFilter(httpRequest, httpResponse)
+
+        jwtTokenProvider.validateToken(accessToken)
+        val authentication: Authentication = jwtTokenProvider.getAuthentication(accessToken.toString())
+        SecurityContextHolder.getContext().authentication = authentication
+
+        filterChain.doFilter(request, response)
     }
 }

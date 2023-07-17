@@ -11,6 +11,6 @@ class JwtSecurityConfig(private val tokenProvider: JwtTokenProvider) :
         http.addFilterBefore(
             JwtAuthenticationFilter(tokenProvider),
             UsernamePasswordAuthenticationFilter::class.java
-        )
+        ).addFilterBefore(JWTExceptionHandler(), JwtAuthenticationFilter::class.java)
     }
 }
