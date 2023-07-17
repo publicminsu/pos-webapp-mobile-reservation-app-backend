@@ -46,7 +46,9 @@ class MenuService(
             category = menuSaveDTO.category
         )
 
-        if (menuRepository.saveMenu(menuDTO) == 0) {
+        try {
+            menuRepository.saveMenu(menuDTO)
+        } catch (e: Exception) {
             throw CustomException(ErrorCode.MENU_NOT_SAVED)
         }
     }
