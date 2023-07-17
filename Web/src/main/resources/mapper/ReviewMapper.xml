@@ -9,6 +9,6 @@
     <select id="getReview" parameterType="int" resultType="com.hknusc.web.dto.ReviewDTO">
         SELECT *
         FROM REVIEW
-        WHERE ID=#{reviewId}
+        WHERE ID = #{reviewId}
     </select>
 </mapper>

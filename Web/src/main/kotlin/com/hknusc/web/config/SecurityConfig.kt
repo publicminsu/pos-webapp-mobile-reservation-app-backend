@@ -6,7 +6,6 @@ import com.hknusc.web.jwt.JwtSecurityConfig
 import com.hknusc.web.jwt.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -19,11 +18,13 @@ import org.springframework.security.web.SecurityFilterChain
 class SecurityConfig(
     private val jwtTokenProvider: JwtTokenProvider,
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-    private val jwtAccessDeniedHandler: JwtAccessDeniedHandler){
+    private val jwtAccessDeniedHandler: JwtAccessDeniedHandler
+) {
     @Bean
-    fun passwordEncoder():PasswordEncoder=BCryptPasswordEncoder()
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
     @Bean
-    fun filterChain(http: HttpSecurity):SecurityFilterChain{
+    fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .httpBasic().disable()
             .csrf().disable()
@@ -34,7 +35,7 @@ class SecurityConfig(
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
             .authorizeHttpRequests()
-            .requestMatchers("/auth/**","/users/**","/reviews/**").permitAll()
+            .requestMatchers("/auth/**", "/users/**", "/reviews/**").permitAll()
             .anyRequest().authenticated().and()
 
             .apply(JwtSecurityConfig(jwtTokenProvider))

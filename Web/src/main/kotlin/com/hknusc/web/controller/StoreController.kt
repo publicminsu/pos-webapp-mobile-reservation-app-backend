@@ -15,7 +15,7 @@ class StoreController(private val storeService: StoreService) {
     @PostMapping
     fun saveStore(storeDTO: StoreDTO) = storeService.saveStore(storeDTO)
 
-    @PostMapping("open")//나누어야 하는가?
+    @PostMapping("open")
     fun setOpen(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, storeOpenDTO: StoreOpenDTO) =
         storeService.setOpen(accessToken, storeOpenDTO)
 }

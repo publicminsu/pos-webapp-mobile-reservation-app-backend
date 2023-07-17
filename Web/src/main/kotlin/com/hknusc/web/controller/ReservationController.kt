@@ -13,10 +13,12 @@ class ReservationController(private val reservationService: ReservationService) 
     fun getReservations() = reservationService.getReservations()
 
     @GetMapping("{reservationId}")
-    fun getReservation(@PathVariable("reservationId") reservationId: Int) = reservationService.getReservation(reservationId)
+    fun getReservation(@PathVariable("reservationId") reservationId: Int) =
+        reservationService.getReservation(reservationId)
 
     //예약 신청 (가게에서)
     @PostMapping
-    fun saveReservation(reservationApplyDTO: ReservationApplyDTO) = reservationService.saveReservation(reservationApplyDTO)
+    fun saveReservation(reservationApplyDTO: ReservationApplyDTO) =
+        reservationService.saveReservation(reservationApplyDTO)
     //예약 처리.
 }

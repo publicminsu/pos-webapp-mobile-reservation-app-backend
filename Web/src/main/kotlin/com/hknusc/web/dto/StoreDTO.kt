@@ -1,4 +1,5 @@
 package com.hknusc.web.dto
+
 data class StoreDTO(
     var id: Int = 0,
     var accountId: Int,

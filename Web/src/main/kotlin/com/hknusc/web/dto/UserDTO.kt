@@ -9,5 +9,4 @@ data class UserDTO(
     var wishList: String?,
     var couponList: String?,
     var paymentCard: String?,
-
 )

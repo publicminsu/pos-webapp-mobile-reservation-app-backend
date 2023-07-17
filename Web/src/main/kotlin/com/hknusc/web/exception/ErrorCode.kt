@@ -16,5 +16,5 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증입니다."),
     EMPTY_TOKEN(HttpStatus.UNAUTHORIZED, "인증되지 않았습니다."),
 
-    STORE_NOT_OPEN(HttpStatus.UNAUTHORIZED,"개점하지 않았습니다."),
+    STORE_NOT_OPEN(HttpStatus.UNAUTHORIZED, "개점하지 않았습니다."),
 }

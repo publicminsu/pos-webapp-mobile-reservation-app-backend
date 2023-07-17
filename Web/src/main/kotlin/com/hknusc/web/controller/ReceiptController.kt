@@ -6,5 +6,4 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("receipts")
-class ReceiptController(private val receiptService: ReceiptService) {
-}
+class ReceiptController(private val receiptService: ReceiptService)

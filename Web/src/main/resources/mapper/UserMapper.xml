@@ -17,7 +17,7 @@
     <select id="getUserByUserEmail" parameterType="string" resultType="com.hknusc.web.dto.UserDTO">
         SELECT *
         FROM ACCOUNT
-        WHERE EMAIL=#{email}
+        WHERE EMAIL = #{email}
     </select>
     <update id="editUser" parameterType="com.hknusc.web.dto.UserDTO">
         UPDATE ACCOUNT
@@ -36,6 +36,6 @@
     </select>
     <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.DeletedUserDTO">
         INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER, DELETE_TIME)
-        VALUES (#{email}, #{phoneNumber},#{deleteTime})
+        VALUES (#{email}, #{phoneNumber}, #{deleteTime})
     </insert>
 </mapper>
