@@ -19,8 +19,8 @@
     <update id="editMenu" parameterType="map">
         UPDATE MENU
         SET (PHOTO, NAME, PRICE, CATEGORY)
-                = (#{menuEditDTO.photo}, #{menuEditDTO.name}, #{menuEditDTO.price}, #{menuEditDTO.category})
-        WHERE ID = #{menuEditDTO.id}
+                = (#{photo}, #{name}, #{price}, #{category})
+        WHERE ID = #{id}
           AND STORE_ID = #{storeId}
     </update>
     <delete id="deleteMenu" parameterType="int">

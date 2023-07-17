@@ -66,7 +66,19 @@ class MenuService(
         val claims = tokenProvider.findClaimsByJWT(accessToken)
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
 
-        if (menuRepository.editMenu(userStoreId, menuEditDTO) == 0) {
+        val photo = menuEditDTO.photo
+        val photoPath = photoUtility.saveImage(photo)
+
+        val menuDTO = MenuDTO(
+            id = menuEditDTO.id,
+            storeId = userStoreId,
+            photo = photoPath,
+            name = menuEditDTO.name,
+            price = menuEditDTO.price,
+            category = menuEditDTO.category
+        )
+
+        if (menuRepository.editMenu(menuDTO) == 0) {
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
         }
     }

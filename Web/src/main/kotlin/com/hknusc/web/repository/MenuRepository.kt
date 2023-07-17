@@ -9,6 +9,6 @@ interface MenuRepository {
     fun getMenus(storeId: Int): List<MenuDTO>
     fun getMenu(menuId: Int, storeId: Int): MenuDTO?
     fun saveMenu(menuDTO: MenuDTO): Int
-    fun editMenu(storeId: Int, menuEditDTO: MenuEditDTO): Int
+    fun editMenu(menuDTO: MenuDTO): Int
     fun deleteMenu(menuId: Int, storeId: Int): Int
 }
