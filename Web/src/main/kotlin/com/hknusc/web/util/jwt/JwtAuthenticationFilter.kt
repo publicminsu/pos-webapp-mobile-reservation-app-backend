@@ -1,4 +1,4 @@
-package com.hknusc.web.jwt
+package com.hknusc.web.util.jwt
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException

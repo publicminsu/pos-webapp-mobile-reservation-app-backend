@@ -1,3 +1,3 @@
-package com.hknusc.web.exception
+package com.hknusc.web.util.exception
 
 class CustomException(val errorCode: ErrorCode) : RuntimeException()

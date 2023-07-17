@@ -1,4 +1,4 @@
-package com.hknusc.web.exception
+package com.hknusc.web.util.exception
 
 import com.hknusc.web.dto.ErrorResponseDTO
 import org.springframework.http.ResponseEntity

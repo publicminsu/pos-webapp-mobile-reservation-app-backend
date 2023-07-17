@@ -2,9 +2,9 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.StoreDTO
 import com.hknusc.web.dto.StoreOpenDTO
-import com.hknusc.web.exception.CustomException
-import com.hknusc.web.exception.ErrorCode
-import com.hknusc.web.jwt.JwtTokenProvider
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.repository.StoreRepository
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity

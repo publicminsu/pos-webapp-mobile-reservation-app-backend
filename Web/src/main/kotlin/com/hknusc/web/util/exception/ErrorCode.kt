@@ -1,4 +1,4 @@
-package com.hknusc.web.exception
+package com.hknusc.web.util.exception
 
 import org.springframework.http.HttpStatus
 

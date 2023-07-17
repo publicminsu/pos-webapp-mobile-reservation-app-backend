@@ -1,4 +1,4 @@
-package com.hknusc.web.jwt
+package com.hknusc.web.util.jwt
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

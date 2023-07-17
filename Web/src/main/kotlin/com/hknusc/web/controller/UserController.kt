@@ -1,7 +1,7 @@
 package com.hknusc.web.controller
 
 import com.hknusc.web.dto.UserDTO
-import com.hknusc.web.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.service.UserService
 import org.springframework.web.bind.annotation.*
 

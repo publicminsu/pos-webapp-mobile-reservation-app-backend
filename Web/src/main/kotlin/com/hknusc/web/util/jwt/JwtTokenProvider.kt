@@ -1,8 +1,8 @@
-package com.hknusc.web.jwt
+package com.hknusc.web.util.jwt
 
 import com.hknusc.web.dto.RefreshTokenDTO
-import com.hknusc.web.exception.CustomException
-import com.hknusc.web.exception.ErrorCode
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.service.UserDetailService
 import io.jsonwebtoken.Claims

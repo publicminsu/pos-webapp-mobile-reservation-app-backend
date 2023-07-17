@@ -1,9 +1,9 @@
 package com.hknusc.web.config
 
-import com.hknusc.web.jwt.JwtAccessDeniedHandler
-import com.hknusc.web.jwt.JwtAuthenticationEntryPoint
-import com.hknusc.web.jwt.JwtSecurityConfig
-import com.hknusc.web.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JwtAccessDeniedHandler
+import com.hknusc.web.util.jwt.JwtAuthenticationEntryPoint
+import com.hknusc.web.util.jwt.JwtSecurityConfig
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

@@ -2,9 +2,9 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.DeletedUserDTO
 import com.hknusc.web.dto.UserDTO
-import com.hknusc.web.exception.CustomException
-import com.hknusc.web.exception.ErrorCode
-import com.hknusc.web.jwt.JwtTokenProvider
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

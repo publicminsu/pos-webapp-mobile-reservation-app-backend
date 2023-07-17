@@ -2,7 +2,7 @@ package com.hknusc.web.controller
 
 import com.hknusc.web.dto.StoreDTO
 import com.hknusc.web.dto.StoreOpenDTO
-import com.hknusc.web.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.service.StoreService
 import org.springframework.web.bind.annotation.*
 

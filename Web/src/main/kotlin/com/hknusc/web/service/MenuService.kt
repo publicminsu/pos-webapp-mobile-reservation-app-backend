@@ -3,9 +3,9 @@ package com.hknusc.web.service
 import com.hknusc.web.dto.MenuDTO
 import com.hknusc.web.dto.MenuEditDTO
 import com.hknusc.web.dto.MenuSaveDTO
-import com.hknusc.web.exception.CustomException
-import com.hknusc.web.exception.ErrorCode
-import com.hknusc.web.jwt.JwtTokenProvider
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.repository.MenuRepository
 import com.hknusc.web.util.PhotoUtility
 import org.springframework.stereotype.Service

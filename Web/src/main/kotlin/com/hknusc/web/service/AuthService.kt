@@ -2,9 +2,9 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.LoginDTO
 import com.hknusc.web.dto.UserDTO
-import com.hknusc.web.exception.CustomException
-import com.hknusc.web.exception.ErrorCode
-import com.hknusc.web.jwt.JwtTokenProvider
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.repository.UserRepository
 import org.springframework.http.HttpHeaders

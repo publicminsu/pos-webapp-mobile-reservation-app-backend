@@ -1,4 +1,4 @@
-package com.hknusc.web.jwt
+package com.hknusc.web.util.jwt
 
 data class JwtAuthInfo(
     val id: Int,
