@@ -1,4 +1,4 @@
-package com.hknusc.web.dto
+package com.hknusc.web.dto.user
 
 data class UserDTO(
     var id: Int = 0,

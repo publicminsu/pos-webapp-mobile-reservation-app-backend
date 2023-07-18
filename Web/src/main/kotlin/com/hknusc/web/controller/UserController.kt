@@ -1,8 +1,9 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.UserDTO
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.dto.user.UserDTO
+import com.hknusc.web.dto.user.UserSaveDTO
 import com.hknusc.web.service.UserService
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -12,7 +13,7 @@ class UserController(private val userService: UserService) {
     fun getUsers() = userService.getUsers()
 
     @PostMapping
-    fun saveUser(userDTO: UserDTO) = userService.saveUser(userDTO)
+    fun saveUser(userSaveDTO: UserSaveDTO) = userService.saveUser(userSaveDTO)
 
     @GetMapping("{id}")
     fun getUser(@PathVariable("id") id: Int) = userService.getUser(id)

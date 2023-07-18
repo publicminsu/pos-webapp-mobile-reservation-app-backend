@@ -1,7 +1,8 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.DeletedUserDTO
-import com.hknusc.web.dto.UserDTO
+import com.hknusc.web.dto.user.DeletedUserDTO
+import com.hknusc.web.dto.user.UserDTO
+import com.hknusc.web.dto.user.UserSaveDTO
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
@@ -17,10 +18,10 @@ class UserService(
     private val userRepository: UserRepository,
 ) {
     fun getUsers() = userRepository.getUsers()
-    fun saveUser(userDTO: UserDTO) {
-        userDTO.password = passwordEncoder.encode(userDTO.password)
+    fun saveUser(userSaveDTO: UserSaveDTO) {
+        userSaveDTO.password = passwordEncoder.encode(userSaveDTO.password)
         try {
-            userRepository.saveUser(userDTO)
+            userRepository.saveUser(userSaveDTO)
         } catch (e: Exception) {
             throw CustomException(ErrorCode.SIGNUP_FAIL)
         }
