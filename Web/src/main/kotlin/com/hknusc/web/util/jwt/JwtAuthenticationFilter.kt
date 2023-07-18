@@ -14,18 +14,21 @@ import java.io.IOException
 import kotlin.jvm.Throws
 
 class JwtAuthenticationFilter(private val jwtTokenProvider: JwtTokenProvider) : OncePerRequestFilter() {
-    @Throws(ServletException::class,IOException::class)
+    @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
         val bearerToken = request.getHeader(JwtTokenProvider.Access_Key)
-        val accessToken: String? = jwtTokenProvider.resolveToken(bearerToken)
 
-        jwtTokenProvider.validateToken(accessToken)
-        val authentication: Authentication = jwtTokenProvider.getAuthentication(accessToken.toString())
-        SecurityContextHolder.getContext().authentication = authentication
+        if (bearerToken != null) {
+            val accessToken: String? = jwtTokenProvider.resolveToken(bearerToken)
+
+            jwtTokenProvider.validateToken(accessToken)
+            val authentication: Authentication = jwtTokenProvider.getAuthentication(accessToken.toString())
+            SecurityContextHolder.getContext().authentication = authentication
+        }
 
         filterChain.doFilter(request, response)
     }

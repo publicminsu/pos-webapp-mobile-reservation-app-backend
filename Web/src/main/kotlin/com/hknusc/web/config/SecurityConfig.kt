@@ -27,16 +27,20 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .httpBasic().disable()
+            .cors().disable()
             .csrf().disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .accessDeniedHandler(jwtAccessDeniedHandler).and()
-
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
             .authorizeHttpRequests()
             .requestMatchers("/auth/**", "/users/**", "/reviews/**").permitAll()
             .anyRequest().authenticated().and()
+
+            .exceptionHandling()
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+
+            .accessDeniedHandler(jwtAccessDeniedHandler).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+
+            .formLogin().disable()
 
             .apply(JwtSecurityConfig(jwtTokenProvider))
         return http.build()
