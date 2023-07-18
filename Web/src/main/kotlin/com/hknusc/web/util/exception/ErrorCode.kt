@@ -8,6 +8,8 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
     NOT_PHOTO_REQUEST(HttpStatus.BAD_REQUEST, "이미지 형식이 아닙니다."),
     BAD_TOKEN(HttpStatus.BAD_REQUEST, "잘못된 인증입니다."),
 
+    USER_EDIT_FAIL(HttpStatus.BAD_REQUEST,"회원 정보 수정이 안 됐습니다."),
+
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "메뉴를 찾을 수 없습니다."),
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "상점을 찾을 수 없습니다."),

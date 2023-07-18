@@ -19,10 +19,10 @@
         FROM ACCOUNT
         WHERE EMAIL = #{email}
     </select>
-    <update id="editUser" parameterType="com.hknusc.web.dto.user.UserDTO">
+    <update id="editUser" parameterType="com.hknusc.web.dto.user.UserDBEditDTO">
         UPDATE ACCOUNT
-        SET (EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-                = (#{email}, #{password}, #{nickname}, #{phoneNumber}, #{wishList}, #{couponList}, #{paymentCard})
+        SET (NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
+                = (#{nickname}, #{phoneNumber}, #{wishList}, #{couponList}, #{paymentCard})
         WHERE ID = #{id}
     </update>
     <delete id="deleteUser" parameterType="int">

@@ -1,12 +1,10 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.user.DeletedUserDTO
-import com.hknusc.web.dto.user.UserDTO
-import com.hknusc.web.dto.user.UserSaveDTO
+import com.hknusc.web.dto.user.*
+import com.hknusc.web.repository.UserRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
-import com.hknusc.web.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
@@ -27,21 +25,38 @@ class UserService(
         }
     }
 
-    fun getUser(id: Int): UserDTO {
+    fun getUser(bearerAccessToken: String): UserDTO {
+        val userId = getUserId(bearerAccessToken)
+
         try {
-            return userRepository.getUser(id)!!
+            return userRepository.getUser(userId)!!
         } catch (e: Exception) {
             throw CustomException(ErrorCode.USER_NOT_FOUND)
         }
     }
 
     fun getUserByUserEmail(email: String) = userRepository.getUserByUserEmail(email)
-    fun editUser(userDTO: UserDTO) = userRepository.editUser(userDTO)
+    fun editUser(bearerAccessToken: String, userEditDTO: UserEditDTO) {
+        val userId = getUserId(bearerAccessToken)
+
+        val userDBEditDTO = UserDBEditDTO(
+            userId,
+            userEditDTO.nickname,
+            userEditDTO.phoneNumber,
+            userEditDTO.wishList,
+            userEditDTO.couponList,
+            userEditDTO.paymentCard
+        )
+        try {
+            userRepository.editUser(userDBEditDTO)
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.USER_EDIT_FAIL)
+        }
+    }
+
     fun getDeletedUser() = userRepository.getDeletedUsers()
     fun deleteUser(bearerAccessToken: String) {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-
-        val userId = tokenProvider.findUserIdByJWT(accessToken)
+        val userId = getUserId(bearerAccessToken)
 
         lateinit var user: UserDTO
         try {
@@ -55,5 +70,10 @@ class UserService(
         val deletedUser = DeletedUserDTO(email = user.email, phoneNumber = user.phoneNumber, deleteTime = curTime)
         userRepository.saveDeletedUser(deletedUser)
         userRepository.deleteUser(userId)
+    }
+
+    private fun getUserId(bearerAccessToken: String): Int {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+        return tokenProvider.findUserIdByJWT(accessToken)
     }
 }
