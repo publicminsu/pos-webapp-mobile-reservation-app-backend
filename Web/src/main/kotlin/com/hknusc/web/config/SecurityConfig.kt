@@ -1,5 +1,6 @@
 package com.hknusc.web.config
 
+import com.hknusc.web.util.exception.ErrorUtility
 import com.hknusc.web.util.jwt.JwtAccessDeniedHandler
 import com.hknusc.web.util.jwt.JwtAuthenticationEntryPoint
 import com.hknusc.web.util.jwt.JwtSecurityConfig
@@ -19,6 +20,7 @@ class SecurityConfig(
     private val jwtTokenProvider: JwtTokenProvider,
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
     private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
+    private val errorUtility: ErrorUtility
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -42,7 +44,7 @@ class SecurityConfig(
 
             .formLogin().disable()
 
-            .apply(JwtSecurityConfig(jwtTokenProvider))
+            .apply(JwtSecurityConfig(jwtTokenProvider, errorUtility))
         return http.build()
     }
 }

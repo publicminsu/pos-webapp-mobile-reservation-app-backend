@@ -22,5 +22,7 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
 
     STORE_NOT_OPEN(HttpStatus.UNAUTHORIZED, "개점하지 않았습니다."),
 
+    FORBIDDEN_TOKEN(HttpStatus.FORBIDDEN,"권한이 없습니다."),
+
     FILE_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "파일의 크기가 너무 큽니다.")
 }
