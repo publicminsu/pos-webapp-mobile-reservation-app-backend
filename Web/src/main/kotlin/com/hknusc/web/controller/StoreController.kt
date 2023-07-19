@@ -1,9 +1,9 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.StoreDTO
-import com.hknusc.web.dto.StoreOpenDTO
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.dto.store.StoreOpenDTO
+import com.hknusc.web.dto.store.StoreSaveDTO
 import com.hknusc.web.service.StoreService
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -15,7 +15,8 @@ class StoreController(private val storeService: StoreService) {
 
     //가게 저장하기
     @PostMapping
-    fun saveStore(storeDTO: StoreDTO) = storeService.saveStore(storeDTO)
+    fun saveStore(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, storeSaveDTO: StoreSaveDTO) =
+        storeService.saveStore(accessToken, storeSaveDTO)
 
     //가게 개점
     @PostMapping("open")
