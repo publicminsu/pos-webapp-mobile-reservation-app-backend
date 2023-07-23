@@ -1,8 +1,8 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.MenuDTO
-import com.hknusc.web.dto.MenuEditDTO
-import com.hknusc.web.dto.MenuSaveDTO
+import com.hknusc.web.dto.menu.MenuDTO
+import com.hknusc.web.dto.menu.MenuEditDTO
+import com.hknusc.web.dto.menu.MenuSaveDTO
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider

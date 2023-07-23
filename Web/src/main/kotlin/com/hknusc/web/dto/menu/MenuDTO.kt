@@ -1,4 +1,4 @@
-package com.hknusc.web.dto
+package com.hknusc.web.dto.menu
 
 data class MenuDTO(
     var id: Int = 0,

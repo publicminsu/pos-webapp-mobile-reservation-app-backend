@@ -1,7 +1,7 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.MenuEditDTO
-import com.hknusc.web.dto.MenuSaveDTO
+import com.hknusc.web.dto.menu.MenuEditDTO
+import com.hknusc.web.dto.menu.MenuSaveDTO
 import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.service.MenuService
 import org.springframework.web.bind.annotation.*

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("check")
 class CheckController(private val userService: UserService) {
+    //이메일 중복 확인
     @PostMapping("email")
     fun checkEmail(email: String) = userService.checkEmail(email)
 
