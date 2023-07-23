@@ -11,13 +11,18 @@ import java.sql.Timestamp
 
 @Service
 class UserService(
-    private val tokenProvider: JwtTokenProvider,
-    private val passwordEncoder: PasswordEncoder,
-    private val userRepository: UserRepository,
+        private val tokenProvider: JwtTokenProvider,
+        private val passwordEncoder: PasswordEncoder,
+        private val userRepository: UserRepository,
 ) {
     fun getUsers() = userRepository.getUsers()
+
     fun saveUser(userSaveDTO: UserSaveDTO) {
+        checkDuplicate(userSaveDTO.email, userSaveDTO.nickname, userSaveDTO.phoneNumber,
+                "", "", "")
+
         userSaveDTO.password = passwordEncoder.encode(userSaveDTO.password)
+
         try {
             userRepository.saveUser(userSaveDTO)
         } catch (e: Exception) {
@@ -35,18 +40,27 @@ class UserService(
         }
     }
 
-    fun getUserByUserEmail(email: String) = userRepository.getUserByUserEmail(email)
     fun editUser(bearerAccessToken: String, userEditDTO: UserEditDTO) {
         val userId = getUserId(bearerAccessToken)
 
+        val oldUser = userRepository.getUser(userId)!!
+
+        val userEmail = userEditDTO.email
+        val userNickname = userEditDTO.nickname
+        val userPhoneNumber = userEditDTO.phoneNumber
+
+        checkDuplicate(userEmail, userNickname, userPhoneNumber, oldUser.email, oldUser.nickname, oldUser.phoneNumber)
+
         val userDBEditDTO = UserDBEditDTO(
-            userId,
-            userEditDTO.nickname,
-            userEditDTO.phoneNumber,
-            userEditDTO.wishList,
-            userEditDTO.couponList,
-            userEditDTO.paymentCard
+                userId,
+                userEmail,
+                userNickname,
+                userPhoneNumber,
+                userEditDTO.wishList,
+                userEditDTO.couponList,
+                userEditDTO.paymentCard
         )
+
         try {
             userRepository.editUser(userDBEditDTO)
         } catch (e: Exception) {
@@ -72,8 +86,25 @@ class UserService(
         userRepository.deleteUser(userId)
     }
 
+    fun checkEmail(email: String): Boolean = userRepository.checkEmail(email) == 0
+
+    fun checkNickname(nickname: String): Boolean = userRepository.checkNickname(nickname) == 0
+
+    fun checkPhoneNumber(phoneNumber: String): Boolean = userRepository.checkPhoneNumber(phoneNumber) == 0
+
     private fun getUserId(bearerAccessToken: String): Int {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
         return tokenProvider.findUserIdByJWT(accessToken)
+    }
+
+    private fun checkDuplicate(email: String, nickname: String, phoneNumber: String,
+                               oldEmail: String, oldNickname: String, oldPhoneNumber: String) {
+        if ((oldEmail != email) && (userRepository.checkEmail(email) != 0)) {
+            throw CustomException(ErrorCode.EMAIL_DUPLICATE)
+        } else if ((oldNickname != nickname) && (userRepository.checkNickname(nickname) != 0)) {
+            throw CustomException(ErrorCode.NICKNAME_DUPLICATE)
+        } else if ((oldPhoneNumber != phoneNumber) && (userRepository.checkPhoneNumber(phoneNumber) != 0)) {
+            throw CustomException(ErrorCode.PHONE_NUMBER_DUPLICATE)
+        }
     }
 }

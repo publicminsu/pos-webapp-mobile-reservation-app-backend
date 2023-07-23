@@ -16,4 +16,7 @@ interface UserRepository {
     fun deleteUser(id: Int)
     fun getDeletedUsers(): List<DeletedUserDTO>
     fun saveDeletedUser(deletedUserDTO: DeletedUserDTO)
+    fun checkEmail(email: String): Int
+    fun checkNickname(nickname: String): Int
+    fun checkPhoneNumber(phoneNumber: String): Int
 }

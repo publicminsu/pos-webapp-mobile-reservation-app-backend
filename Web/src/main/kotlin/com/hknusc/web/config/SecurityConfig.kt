@@ -17,10 +17,10 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtTokenProvider: JwtTokenProvider,
-    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-    private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
-    private val errorUtility: ErrorUtility
+        private val jwtTokenProvider: JwtTokenProvider,
+        private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
+        private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
+        private val errorUtility: ErrorUtility
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -28,23 +28,23 @@ class SecurityConfig(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .httpBasic().disable()
-            .cors().disable()
-            .csrf().disable()
+                .httpBasic().disable()
+                .cors().disable()
+                .csrf().disable()
 
-            .authorizeHttpRequests()
-            .requestMatchers("/auth/**", "/users/**", "/reviews/**").permitAll()
-            .anyRequest().authenticated().and()
+                .authorizeHttpRequests()
+                .requestMatchers("/auth/**", "/users/**", "/reviews/**", "/check/**").permitAll()
+                .anyRequest().authenticated().and()
 
-            .exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
 
-            .accessDeniedHandler(jwtAccessDeniedHandler).and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .accessDeniedHandler(jwtAccessDeniedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
-            .formLogin().disable()
+                .formLogin().disable()
 
-            .apply(JwtSecurityConfig(jwtTokenProvider, errorUtility))
+                .apply(JwtSecurityConfig(jwtTokenProvider, errorUtility))
         return http.build()
     }
 }

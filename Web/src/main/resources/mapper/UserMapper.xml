@@ -21,8 +21,8 @@
     </select>
     <update id="editUser" parameterType="com.hknusc.web.dto.user.UserDBEditDTO">
         UPDATE ACCOUNT
-        SET (NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-                = (#{nickname}, #{phoneNumber}, #{wishList}, #{couponList}, #{paymentCard})
+        SET (EMAIL, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
+                = (#{email}, #{nickname}, #{phoneNumber}, #{wishList}, #{couponList}, #{paymentCard})
         WHERE ID = #{id}
     </update>
     <delete id="deleteUser" parameterType="int">
@@ -38,4 +38,19 @@
         INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER, DELETE_TIME)
         VALUES (#{email}, #{phoneNumber}, #{deleteTime})
     </insert>
+    <select id="checkEmail" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM ACCOUNT
+        WHERE EMAIL = #{email}
+    </select>
+    <select id="checkNickname" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM ACCOUNT
+        WHERE NICKNAME = #{nickname}
+    </select>
+    <select id="checkPhoneNumber" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM ACCOUNT
+        WHERE PHONE_NUMBER = #{phoneNumber}
+    </select>
 </mapper>
