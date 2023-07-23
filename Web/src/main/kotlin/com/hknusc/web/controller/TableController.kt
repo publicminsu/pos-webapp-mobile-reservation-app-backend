@@ -1,7 +1,9 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.TableDTO
+import com.hknusc.web.dto.table.TableDTO
+import com.hknusc.web.dto.table.TableSaveDTO
 import com.hknusc.web.service.TableService
+import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -16,7 +18,8 @@ class TableController(private val tableService: TableService) {
 
     //토큰으로 자격 확인
     @PostMapping
-    fun saveTable(tableDTO: TableDTO) = tableService.saveTable(tableDTO)
+    fun saveTable(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, tableSaveDTO: TableSaveDTO) =
+        tableService.saveTable(accessToken, tableSaveDTO)
 
     //토큰으로 자격 확인
     @PatchMapping("{tableId}")

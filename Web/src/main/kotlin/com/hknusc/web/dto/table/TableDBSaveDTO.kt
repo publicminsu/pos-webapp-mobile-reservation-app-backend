@@ -1,7 +1,6 @@
-package com.hknusc.web.dto
+package com.hknusc.web.dto.table
 
-data class TableDTO(
-    var id: Int = 0,
+data class TableDBSaveDTO(
     var storeId: Int,
     var name: String?,
     var coordX: String,
