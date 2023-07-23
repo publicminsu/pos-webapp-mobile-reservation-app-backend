@@ -1,6 +1,6 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.OrderDTO
+import com.hknusc.web.dto.order.OrderDTO
 import com.hknusc.web.repository.OrderRepository
 import org.springframework.stereotype.Service
 

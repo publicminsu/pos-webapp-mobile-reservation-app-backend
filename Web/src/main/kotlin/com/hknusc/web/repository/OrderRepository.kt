@@ -1,6 +1,6 @@
 package com.hknusc.web.repository
 
-import com.hknusc.web.dto.OrderDTO
+import com.hknusc.web.dto.order.OrderDTO
 import org.apache.ibatis.annotations.Mapper
 
 @Mapper

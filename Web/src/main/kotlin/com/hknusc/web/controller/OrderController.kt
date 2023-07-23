@@ -1,6 +1,6 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.OrderDTO
+import com.hknusc.web.dto.order.OrderDTO
 import com.hknusc.web.service.OrderService
 import org.springframework.web.bind.annotation.*
 
