@@ -12,11 +12,11 @@
         WHERE ID = #{tableId}
           AND STORE_ID = #{storeId}
     </select>
-    <insert id="saveTable" parameterType="com.hknusc.web.dto.table.TableDTO">
+    <insert id="saveTable" parameterType="com.hknusc.web.dto.table.TableDBSaveDTO">
         INSERT INTO TABLE_ITEM(STORE_ID, NAME, COORD_X, COORD_Y, WIDTH, HEIGHT, PRIVATE_KEY)
         VALUES (#{storeId}, #{name}, #{coordX}, #{coordY}, #{width}, #{height}, #{privateKey})
     </insert>
-    <update id="editTable" parameterType="com.hknusc.web.dto.table.TableDTO">
+    <update id="editTable" parameterType="com.hknusc.web.dto.table.TableEditDTO">
         UPDATE TABLE_ITEM
         SET (NAME, COORD_X, COORD_Y, WIDTH, HEIGHT)
                 = (#{name}, #{coordX}, #{coordY}, #{width}, #{height})
