@@ -10,11 +10,11 @@
         FROM ORDER_ITEM
         WHERE ID = #{orderId}
     </select>
-    <insert id="saveOrder" parameterType="com.hknusc.web.dto.order.OrderDTO">
+    <insert id="saveOrder" parameterType="com.hknusc.web.dto.order.OrderDBSaveDTO">
         INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, IS_SERVED,
-                               IS_RESERVATION)
+                               IS_RESERVATION, RESERVATION_DENY_DETAIL)
         VALUES (#{accountId}, #{storeId}, #{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{isServed},
-                #{isReservation})
+                #{isReservation}, #{reservationDenyDetail})
     </insert>
     <update id="editOrder" parameterType="com.hknusc.web.dto.order.OrderDTO">
         UPDATE ORDER_ITEM
