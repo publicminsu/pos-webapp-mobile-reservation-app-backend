@@ -4,11 +4,13 @@
     <select id="getTables" resultType="com.hknusc.web.dto.table.TableDTO">
         SELECT *
         FROM TABLE_ITEM
+        WHERE STORE_ID = #{storeId}
     </select>
     <select id="getTable" parameterType="int" resultType="com.hknusc.web.dto.table.TableDTO">
         SELECT *
         FROM TABLE_ITEM
         WHERE ID = #{tableId}
+          AND STORE_ID = #{storeId}
     </select>
     <insert id="saveTable" parameterType="com.hknusc.web.dto.table.TableDTO">
         INSERT INTO TABLE_ITEM(STORE_ID, NAME, COORD_X, COORD_Y, WIDTH, HEIGHT, PRIVATE_KEY)

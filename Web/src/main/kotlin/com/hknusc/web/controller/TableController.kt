@@ -11,22 +11,29 @@ import org.springframework.web.bind.annotation.*
 class TableController(private val tableService: TableService) {
     //테이블 결제는 어떻게?
     @GetMapping
-    fun getTables() = tableService.getTables()
+    fun getTables(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = tableService.getTables(accessToken)
 
     @GetMapping("{tableId}")
-    fun getTable(@PathVariable("tableId") tableId: Int) = tableService.getTable(tableId)
+    fun getTable(
+        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @PathVariable("tableId") tableId: Int
+    ) = tableService.getTable(accessToken, tableId)
 
-    //토큰으로 자격 확인
+    //테이블 생성
     @PostMapping
     fun saveTable(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, tableSaveDTO: TableSaveDTO) =
         tableService.saveTable(accessToken, tableSaveDTO)
 
-    //토큰으로 자격 확인
     @PatchMapping("{tableId}")
-    fun editTable(@PathVariable("tableId") tableDTO: TableDTO) = tableService.editTable(tableDTO)
+    fun editTable(
+        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @PathVariable("tableId") tableDTO: TableDTO
+    ) = tableService.editTable(accessToken, tableDTO)
 
-    //토큰으로 자격 확인
     //테이블은 예약이 사라질 때까지 지워지지 않는다.
     @DeleteMapping("{tableId}")
-    fun deleteTable(@PathVariable("tableId") tableId: Int) = tableService.deleteTable(tableId)
+    fun deleteTable(
+        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @PathVariable("tableId") tableId: Int
+    ) = tableService.deleteTable(accessToken, tableId)
 }
