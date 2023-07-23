@@ -9,6 +9,6 @@ interface TableRepository {
     fun getTables(storeId: Int): List<TableDTO>
     fun getTable(tableId: Int, storeId: Int): TableDTO?
     fun saveTable(tableDBSaveDTO: TableDBSaveDTO)
-    fun editTable(tableDTO: TableDTO)
-    fun deleteTable(tableId: Int)
+    fun editTable(tableDTO: TableDTO): Int
+    fun deleteTable(tableId: Int, storeId: Int): Int
 }

@@ -58,10 +58,19 @@ class TableService(private val tokenProvider: JwtTokenProvider, private val tabl
             tableEditDTO.privateKey
         )
 
-        tableRepository.editTable(tableDTO)
+        if (tableRepository.editTable(tableDTO) == 0) {
+            throw CustomException(ErrorCode.TABLE_NOT_FOUND)
+        }
     }
 
-    fun deleteTable(bearerAccessToken: String, tableId: Int) = tableRepository.deleteTable(tableId)
+    fun deleteTable(bearerAccessToken: String, tableId: Int) {
+        val userStoreId = getUserStoreId(bearerAccessToken)
+
+        if (tableRepository.deleteTable(tableId, userStoreId) == 0) {
+            throw CustomException(ErrorCode.TABLE_NOT_FOUND)
+        }
+    }
+
     private fun getUserStoreId(bearerAccessToken: String): Int {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
 
