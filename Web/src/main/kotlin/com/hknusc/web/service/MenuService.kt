@@ -17,13 +17,13 @@ class MenuService(
     private val menuRepository: MenuRepository
 ) {
     fun getMenus(bearerAccessToken: String): List<MenuDTO> {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         return menuRepository.getMenus(userStoreId)
     }
 
     fun getMenu(bearerAccessToken: String, menuId: Int): MenuDTO {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         try {
             return menuRepository.getMenu(menuId, userStoreId)!!
@@ -33,7 +33,7 @@ class MenuService(
     }
 
     fun saveMenu(bearerAccessToken: String, menuSaveDTO: MenuSaveDTO) {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val photo = menuSaveDTO.photo
         val photoPath = photoUtility.saveImage(photo)
@@ -54,7 +54,7 @@ class MenuService(
     }
 
     fun editMenu(bearerAccessToken: String, menuEditDTO: MenuEditDTO) {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val photo = menuEditDTO.photo
         val photoPath = photoUtility.saveImage(photo)
@@ -74,17 +74,10 @@ class MenuService(
     }
 
     fun deleteMenu(bearerAccessToken: String, menuId: Int) {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         if (menuRepository.deleteMenu(menuId, userStoreId) == 0) {
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
         }
-    }
-
-    private fun getUserStoreId(bearerAccessToken: String): Int {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-
-        val claims = tokenProvider.findClaimsByJWT(accessToken)
-        return tokenProvider.findUserStoreIdByClaims(claims).toInt()
     }
 }

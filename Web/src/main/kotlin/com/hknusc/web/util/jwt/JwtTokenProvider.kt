@@ -132,6 +132,12 @@ class JwtTokenProvider(
         return httpHeaders
     }
 
+    fun getUserStoreIdByBearerAccessToken(bearerAccessToken: String): Int {
+        val accessToken = resolveToken(bearerAccessToken)
+        val claims = findClaimsByJWT(accessToken)
+        return findUserStoreIdByClaims(claims).toInt()
+    }
+
     companion object {
         const val Access_Key = "access_token"
         const val Refresh_Key = "refresh_token"

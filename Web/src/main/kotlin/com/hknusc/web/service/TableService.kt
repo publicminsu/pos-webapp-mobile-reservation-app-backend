@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service
 @Service
 class TableService(private val tokenProvider: JwtTokenProvider, private val tableRepository: TableRepository) {
     fun getTables(bearerAccessToken: String): List<TableDTO> {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         return tableRepository.getTables(userStoreId)
     }
 
     fun getTable(bearerAccessToken: String, tableId: Int): TableDTO {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         try {
             return tableRepository.getTable(tableId, userStoreId)!!
@@ -29,7 +29,7 @@ class TableService(private val tokenProvider: JwtTokenProvider, private val tabl
     }
 
     fun saveTable(bearerAccessToken: String, tableSaveDTO: TableSaveDTO) {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val tableDBSaveDTO = TableDBSaveDTO(
             userStoreId,
@@ -45,7 +45,7 @@ class TableService(private val tokenProvider: JwtTokenProvider, private val tabl
     }
 
     fun editTable(bearerAccessToken: String, tableEditDTO: TableEditDTO) {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val tableDTO = TableDTO(
             tableEditDTO.id,
@@ -64,17 +64,10 @@ class TableService(private val tokenProvider: JwtTokenProvider, private val tabl
     }
 
     fun deleteTable(bearerAccessToken: String, tableId: Int) {
-        val userStoreId = getUserStoreId(bearerAccessToken)
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         if (tableRepository.deleteTable(tableId, userStoreId) == 0) {
             throw CustomException(ErrorCode.TABLE_NOT_FOUND)
         }
-    }
-
-    private fun getUserStoreId(bearerAccessToken: String): Int {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-
-        val claims = tokenProvider.findClaimsByJWT(accessToken)
-        return tokenProvider.findUserStoreIdByClaims(claims).toInt()
     }
 }
