@@ -2,6 +2,7 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.table.TableDBSaveDTO
 import com.hknusc.web.dto.table.TableDTO
+import com.hknusc.web.dto.table.TableEditDTO
 import com.hknusc.web.dto.table.TableSaveDTO
 import com.hknusc.web.repository.TableRepository
 import com.hknusc.web.util.exception.CustomException
@@ -43,7 +44,23 @@ class TableService(private val tokenProvider: JwtTokenProvider, private val tabl
         tableRepository.saveTable(tableDBSaveDTO)
     }
 
-    fun editTable(bearerAccessToken: String, tableDTO: TableDTO) = tableRepository.editTable(tableDTO)
+    fun editTable(bearerAccessToken: String, tableEditDTO: TableEditDTO) {
+        val userStoreId = getUserStoreId(bearerAccessToken)
+
+        val tableDTO = TableDTO(
+            tableEditDTO.id,
+            userStoreId,
+            tableEditDTO.name,
+            tableEditDTO.coordX,
+            tableEditDTO.coordY,
+            tableEditDTO.width,
+            tableEditDTO.height,
+            tableEditDTO.privateKey
+        )
+
+        tableRepository.editTable(tableDTO)
+    }
+
     fun deleteTable(bearerAccessToken: String, tableId: Int) = tableRepository.deleteTable(tableId)
     private fun getUserStoreId(bearerAccessToken: String): Int {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)

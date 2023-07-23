@@ -1,8 +1,7 @@
 package com.hknusc.web.dto.table
 
-data class TableDTO(
+data class TableEditDTO(
     var id: Int,
-    var storeId: Int,
     var name: String?,
     var coordX: String,
     var coordY: String,

@@ -19,8 +19,9 @@
     <update id="editTable" parameterType="com.hknusc.web.dto.table.TableDTO">
         UPDATE TABLE_ITEM
         SET (NAME, COORD_X, COORD_Y, WIDTH, HEIGHT)
-                = (#{storeId}, #{name}, #{coordX}, #{coordY}, #{width}, #{height})
+                = (#{name}, #{coordX}, #{coordY}, #{width}, #{height})
         WHERE ID = #{id}
+          AND STORE_ID = #{storeId}
     </update>
     <delete id="deleteTable" parameterType="int">
         DELETE
