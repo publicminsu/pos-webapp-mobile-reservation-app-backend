@@ -1,8 +1,8 @@
-package com.hknusc.web.dto
+package com.hknusc.web.dto.reservation
 
 import java.sql.Timestamp
 
-data class ReservationApplyDTO(
+data class ReservationSaveDTO(
     var id: Int = 0,
     var accountId: Int,
     var storeId: Int,

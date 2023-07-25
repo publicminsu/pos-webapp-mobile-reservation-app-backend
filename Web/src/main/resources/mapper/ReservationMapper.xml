@@ -10,7 +10,7 @@
         FROM ORDER_ITEM
         WHERE ID = #{reservationId}
     </select>
-    <insert id="saveReservation" parameterType="com.hknusc.web.dto.ReservationApplyDTO">
+    <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationSaveDTO">
         INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, IS_SERVED, IS_RESERVATION)
         VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{isServed}, #{isReservation})
     </insert>

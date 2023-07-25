@@ -1,6 +1,6 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.ReservationApplyDTO
+import com.hknusc.web.dto.reservation.ReservationSaveDTO
 import com.hknusc.web.service.ReservationService
 import org.springframework.web.bind.annotation.*
 
@@ -18,7 +18,7 @@ class ReservationController(private val reservationService: ReservationService) 
 
     //예약 신청 (가게에서)
     @PostMapping
-    fun saveReservation(reservationApplyDTO: ReservationApplyDTO) =
-        reservationService.saveReservation(reservationApplyDTO)
+    fun saveReservation(reservationSaveDTO: ReservationSaveDTO) =
+        reservationService.saveReservation(reservationSaveDTO)
     //예약 처리.
 }
