@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hknusc.web.repository.ReservationRepository">
-    <select id="getReservations" resultType="com.hknusc.web.dto.order.OrderDTO">
+    <select id="getReservations" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
+        WHERE RESERVATION_TIME IS NOT NULL
+          AND STORE_ID = #{storeId}
     </select>
     <select id="getReservation" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
-        WHERE ID = #{reservationId}
+        WHERE RESERVATION_TIME IS NOT NULL
+          AND ID = #{reservationId}
+          AND STORE_ID = #{storeId}
     </select>
-    <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationSaveDTO">
+    <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBSaveDTO">
         INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, IS_SERVED, IS_RESERVATION)
         VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{isServed}, #{isReservation})
     </insert>
