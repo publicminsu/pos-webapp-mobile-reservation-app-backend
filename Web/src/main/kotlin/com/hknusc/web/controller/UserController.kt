@@ -24,7 +24,8 @@ class UserController(private val userService: UserService) {
     //회원 수정
     //이메일, 비밀번호는 쉽게 변경할 수 없어야 한다고 생각된다. 전화번호도 마찬가지이다. 중복된 번호가 입력되면 안된다. 하지만 전화번호는 허용해두었다.
     @PatchMapping
-    fun editUser(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, userEditDTO: UserEditDTO) = userService.editUser(accessToken, userEditDTO)
+    fun editUser(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, userEditDTO: UserEditDTO) =
+        userService.editUser(accessToken, userEditDTO)
 
     //삭제된 회원 가져오기
     @GetMapping("deletedUser") // 테스트용
@@ -32,17 +33,6 @@ class UserController(private val userService: UserService) {
 
     //회원 삭제
     @DeleteMapping//삭제 과정은 더 생각해봐야 할 요소, ex. 비밀번호 확인
-    fun deleteUser(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = userService.deleteUser(accessToken)
-
-    //이메일 중복 확인
-    @PostMapping("check/email")
-    fun checkEmail(email: String) = userService.checkEmail(email)
-
-    //닉네임 중복 확인
-    @PostMapping("check/nickname")
-    fun checkNickname(nickname: String) = userService.checkNickname(nickname)
-
-    //전화번호 중복 확인
-    @PostMapping("check/phone-number")
-    fun checkPhoneNumber(phoneNumber: String) = userService.checkPhoneNumber(phoneNumber)
+    fun deleteUser(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) =
+        userService.deleteUser(accessToken)
 }

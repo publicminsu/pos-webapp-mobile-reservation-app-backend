@@ -38,19 +38,4 @@
         INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER, DELETE_TIME)
         VALUES (#{email}, #{phoneNumber}, #{deleteTime})
     </insert>
-    <select id="checkEmail" parameterType="string" resultType="int">
-        SELECT COUNT(*)
-        FROM ACCOUNT
-        WHERE EMAIL = #{email}
-    </select>
-    <select id="checkNickname" parameterType="string" resultType="int">
-        SELECT COUNT(*)
-        FROM ACCOUNT
-        WHERE NICKNAME = #{nickname}
-    </select>
-    <select id="checkPhoneNumber" parameterType="string" resultType="int">
-        SELECT COUNT(*)
-        FROM ACCOUNT
-        WHERE PHONE_NUMBER = #{phoneNumber}
-    </select>
 </mapper>

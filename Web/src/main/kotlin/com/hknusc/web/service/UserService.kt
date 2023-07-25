@@ -1,6 +1,7 @@
 package com.hknusc.web.service
 
 import com.hknusc.web.dto.user.*
+import com.hknusc.web.repository.CheckRepository
 import com.hknusc.web.repository.UserRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
@@ -11,15 +12,18 @@ import java.sql.Timestamp
 
 @Service
 class UserService(
-        private val tokenProvider: JwtTokenProvider,
-        private val passwordEncoder: PasswordEncoder,
-        private val userRepository: UserRepository,
+    private val tokenProvider: JwtTokenProvider,
+    private val passwordEncoder: PasswordEncoder,
+    private val userRepository: UserRepository,
+    private val checkRepository: CheckRepository
 ) {
     fun getUsers() = userRepository.getUsers()
 
     fun saveUser(userSaveDTO: UserSaveDTO) {
-        checkDuplicate(userSaveDTO.email, userSaveDTO.nickname, userSaveDTO.phoneNumber,
-                "", "", "")
+        checkDuplicate(
+            userSaveDTO.email, userSaveDTO.nickname, userSaveDTO.phoneNumber,
+            "", "", ""
+        )
 
         userSaveDTO.password = passwordEncoder.encode(userSaveDTO.password)
 
@@ -52,13 +56,13 @@ class UserService(
         checkDuplicate(userEmail, userNickname, userPhoneNumber, oldUser.email, oldUser.nickname, oldUser.phoneNumber)
 
         val userDBEditDTO = UserDBEditDTO(
-                userId,
-                userEmail,
-                userNickname,
-                userPhoneNumber,
-                userEditDTO.wishList,
-                userEditDTO.couponList,
-                userEditDTO.paymentCard
+            userId,
+            userEmail,
+            userNickname,
+            userPhoneNumber,
+            userEditDTO.wishList,
+            userEditDTO.couponList,
+            userEditDTO.paymentCard
         )
 
         try {
@@ -86,24 +90,20 @@ class UserService(
         userRepository.deleteUser(userId)
     }
 
-    fun checkEmail(email: String): Boolean = userRepository.checkEmail(email) == 0
-
-    fun checkNickname(nickname: String): Boolean = userRepository.checkNickname(nickname) == 0
-
-    fun checkPhoneNumber(phoneNumber: String): Boolean = userRepository.checkPhoneNumber(phoneNumber) == 0
-
     private fun getUserId(bearerAccessToken: String): Int {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
         return tokenProvider.findUserIdByJWT(accessToken)
     }
 
-    private fun checkDuplicate(email: String, nickname: String, phoneNumber: String,
-                               oldEmail: String, oldNickname: String, oldPhoneNumber: String) {
-        if ((oldEmail != email) && (userRepository.checkEmail(email) != 0)) {
+    private fun checkDuplicate(
+        email: String, nickname: String, phoneNumber: String,
+        oldEmail: String, oldNickname: String, oldPhoneNumber: String
+    ) {
+        if ((oldEmail != email) && (checkRepository.checkEmail(email) != 0)) {
             throw CustomException(ErrorCode.EMAIL_DUPLICATE)
-        } else if ((oldNickname != nickname) && (userRepository.checkNickname(nickname) != 0)) {
+        } else if ((oldNickname != nickname) && (checkRepository.checkNickname(nickname) != 0)) {
             throw CustomException(ErrorCode.NICKNAME_DUPLICATE)
-        } else if ((oldPhoneNumber != phoneNumber) && (userRepository.checkPhoneNumber(phoneNumber) != 0)) {
+        } else if ((oldPhoneNumber != phoneNumber) && (checkRepository.checkPhoneNumber(phoneNumber) != 0)) {
             throw CustomException(ErrorCode.PHONE_NUMBER_DUPLICATE)
         }
     }
