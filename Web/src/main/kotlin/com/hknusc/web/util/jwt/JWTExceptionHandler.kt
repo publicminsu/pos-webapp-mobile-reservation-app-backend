@@ -6,6 +6,7 @@ import com.hknusc.web.util.exception.ErrorUtility
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpStatus
 import org.springframework.web.filter.OncePerRequestFilter
 
 class JWTExceptionHandler(private val errorUtility: ErrorUtility) : OncePerRequestFilter() {
@@ -17,9 +18,9 @@ class JWTExceptionHandler(private val errorUtility: ErrorUtility) : OncePerReque
         try {
             filterChain.doFilter(request, response)
         } catch (e: CustomException) {
-            errorUtility.errorCodeToErrorResponse(e.errorCode, response)
+            errorUtility.generateErrorResponse(e.errorCode, response)
         } catch (e: Exception) {
-            errorUtility.errorCodeToErrorResponse(ErrorCode.BAD_TOKEN, response)
+            errorUtility.generateErrorResponse(HttpStatus.BAD_REQUEST, e.message, response)
         }
     }
 }

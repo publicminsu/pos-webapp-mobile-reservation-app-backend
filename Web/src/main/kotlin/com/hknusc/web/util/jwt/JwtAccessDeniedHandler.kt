@@ -17,6 +17,6 @@ class JwtAccessDeniedHandler(private val errorUtility: ErrorUtility) : AccessDen
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException
     ) {
-        errorUtility.errorCodeToErrorResponse(ErrorCode.FORBIDDEN_TOKEN, response)
+        errorUtility.generateErrorResponse(ErrorCode.FORBIDDEN_TOKEN, response)
     }
 }

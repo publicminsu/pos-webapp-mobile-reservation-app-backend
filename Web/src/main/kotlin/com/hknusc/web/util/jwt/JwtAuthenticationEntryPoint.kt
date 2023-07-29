@@ -18,6 +18,6 @@ class JwtAuthenticationEntryPoint(private val errorUtility: ErrorUtility) : Auth
         response: HttpServletResponse,
         authException: AuthenticationException
     ) {
-        errorUtility.errorCodeToErrorResponse(ErrorCode.INVALID_TOKEN, response)
+        errorUtility.generateErrorResponse(ErrorCode.INVALID_TOKEN, response)
     }
 }
