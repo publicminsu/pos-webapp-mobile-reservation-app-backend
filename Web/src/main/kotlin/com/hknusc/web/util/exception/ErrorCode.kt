@@ -3,7 +3,6 @@ package com.hknusc.web.util.exception
 import org.springframework.http.HttpStatus
 
 enum class ErrorCode(val status: HttpStatus, val message: String) {
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     MENU_NOT_SAVED(HttpStatus.BAD_REQUEST, "메뉴가 저장되지 못했습니다."),
     NOT_PHOTO_REQUEST(HttpStatus.BAD_REQUEST, "이미지 형식이 아닙니다."),
     BAD_TOKEN(HttpStatus.BAD_REQUEST, "잘못된 인증입니다."),

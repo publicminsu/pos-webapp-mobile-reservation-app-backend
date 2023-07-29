@@ -11,15 +11,15 @@
         WHERE ID = #{orderId}
     </select>
     <insert id="saveOrder" parameterType="com.hknusc.web.dto.order.OrderDBSaveDTO">
-        INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, IS_SERVED,
-                               IS_RESERVATION, RESERVATION_DENY_DETAIL)
-        VALUES (#{accountId}, #{storeId}, #{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{isServed},
-                #{isReservation}, #{reservationDenyDetail})
+        INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, ORDER_CODE,
+                               RESERVATION_DENY_DETAIL)
+        VALUES (#{accountId}, #{storeId}, #{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{orderCode},
+                #{reservationDenyDetail})
     </insert>
     <update id="editOrder" parameterType="com.hknusc.web.dto.order.OrderDTO">
         UPDATE ORDER_ITEM
-        SET (TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, IS_SERVED)
-                = (#{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{isServed})
+        SET (TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, ORDER_CODE)
+                = (#{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{orderCode})
         WHERE ID = #{id}
     </update>
     <delete id="deleteOrder" parameterType="int">

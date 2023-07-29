@@ -10,12 +10,12 @@
     <select id="getReservation" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
-        WHERE RESERVATION_TIME IS NOT NULL
-          AND ID = #{reservationId}
+        WHERE ID = #{reservationId}
+          AND RESERVATION_TIME IS NOT NULL
           AND STORE_ID = #{storeId}
     </select>
     <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBSaveDTO">
-        INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, IS_SERVED, IS_RESERVATION)
-        VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{isServed}, #{isReservation})
+        INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, ORDER_CODE)
+        VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{orderCode})
     </insert>
 </mapper>

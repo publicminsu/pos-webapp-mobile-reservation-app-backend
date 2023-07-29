@@ -13,7 +13,7 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
     fun getOrder(orderId: Int) = orderRepository.getOrder(orderId)
     fun saveOrder(bearerAccessToken: String, orderSaveDTO: OrderSaveDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
-        
+
         val orderDBSaveDTO = OrderDBSaveDTO(
             orderSaveDTO.accountId,
             userStoreId,
@@ -21,8 +21,7 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
             orderSaveDTO.orderTime,
             orderSaveDTO.paymentTime,
             orderSaveDTO.reservationTime,
-            orderSaveDTO.isServed,
-            orderSaveDTO.isReservation,
+            orderSaveDTO.orderCode,
             orderSaveDTO.reservationDenyDetail
         )
         orderRepository.saveOrder(orderDBSaveDTO)

@@ -33,25 +33,25 @@ class ReservationService(
             userStoreId,
             reservationSaveDTO.tableId,
             reservationSaveDTO.reservationTime,
-            reservationSaveDTO.isServed,
-            reservationSaveDTO.isReservation
+            reservationSaveDTO.orderCode
         )
         reservationRepository.saveReservation(reservationDBSaveDTO)
     }
 
     fun approveReservation(bearerAccessToken: String, reservationApproveDTO: ReservationApproveDTO) {
+//        if (reservationApproveDTO.isReservation) {
+//
+//        }
 
-
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
-//사유 적힌지 확인
-        
-        val reservationDBApproveDTO = ReservationDBApproveDTO(
-            reservationApproveDTO.id,
-            userStoreId,
-            reservationApproveDTO.isReservation,
-            reservationApproveDTO.reservationDenyDetail
-        )
-        if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
-        }
+//        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+//
+//        val reservationDBApproveDTO = ReservationDBApproveDTO(
+//            reservationApproveDTO.id,
+//            userStoreId,
+//            reservationApproveDTO.isReservation,
+//            reservationApproveDTO.reservationDenyDetail
+//        )
+//        if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
+//        }
     }
 }

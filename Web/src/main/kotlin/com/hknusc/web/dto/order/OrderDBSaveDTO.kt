@@ -1,5 +1,6 @@
 package com.hknusc.web.dto.order
 
+import com.hknusc.web.util.OrderCode
 import java.sql.Timestamp
 
 data class OrderDBSaveDTO(
@@ -9,7 +10,6 @@ data class OrderDBSaveDTO(
     var orderTime: Timestamp?,
     var paymentTime: Timestamp?,
     var reservationTime: Timestamp?,
-    var isServed: Boolean,
-    var isReservation: Boolean,
+    var orderCode: OrderCode,
     var reservationDenyDetail: String?
 )

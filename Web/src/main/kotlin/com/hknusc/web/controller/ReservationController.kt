@@ -29,7 +29,7 @@ class ReservationController(private val reservationService: ReservationService) 
     ) = reservationService.saveReservation(accessToken, reservationSaveDTO)
 
     //예약 처리.
-    @PostMapping
+    @PostMapping("approve")
     fun approveReservation(
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         reservationApproveDTO: ReservationApproveDTO
