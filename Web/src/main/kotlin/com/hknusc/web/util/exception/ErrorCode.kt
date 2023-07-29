@@ -6,8 +6,10 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
     MENU_NOT_SAVED(HttpStatus.BAD_REQUEST, "메뉴가 저장되지 못했습니다."),
     NOT_PHOTO_REQUEST(HttpStatus.BAD_REQUEST, "이미지 형식이 아닙니다."),
     BAD_TOKEN(HttpStatus.BAD_REQUEST, "잘못된 인증입니다."),
+    RESERVATION_WRONG_CODE(HttpStatus.BAD_REQUEST, "잘못된 예약 상태입니다."),
 
-    USER_EDIT_FAIL(HttpStatus.BAD_REQUEST, "회원 정보 수정이 안 됐습니다."),
+    USER_EDIT_FAIL(HttpStatus.BAD_REQUEST, "회원 정보 수정에 실패했습니다."),
+    RESERVATION_APPROVE_FAIL(HttpStatus.BAD_REQUEST, "예약 처리에 실패했습니다."),
 
     SIGNUP_FAIL(HttpStatus.UNAUTHORIZED, "회원가입에 실패했습니다."),
     LOGIN_FAIL(HttpStatus.UNAUTHORIZED, "로그인에 실패했습니다."),

@@ -1,4 +1,4 @@
-package com.hknusc.web.util
+package com.hknusc.web.util.type
 
 enum class OrderCode(val label: String) {
     RESERVATION("예약"),

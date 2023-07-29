@@ -1,17 +1,10 @@
 package com.hknusc.web.dto.order
 
-import com.hknusc.web.util.OrderCode
+import com.hknusc.web.util.type.OrderCode
 import java.sql.Timestamp
 
-/*
-reservationTime 있다면 예약 신청
-isReservation True 예약 신청 완료
-isReservation False 예약 대기
-reservationDenyDetail 예약 거부
-orderTime 있다면 주문
- */
 data class OrderDTO(
-    var id: Int = 0,
+    var id: Int,
     var accountId: Int,
     var storeId: Int,
     var tableId: Int,

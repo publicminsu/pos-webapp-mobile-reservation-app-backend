@@ -5,6 +5,9 @@ import com.hknusc.web.dto.reservation.ReservationDBApproveDTO
 import com.hknusc.web.dto.reservation.ReservationDBSaveDTO
 import com.hknusc.web.dto.reservation.ReservationSaveDTO
 import com.hknusc.web.repository.ReservationRepository
+import com.hknusc.web.util.type.OrderCode
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.stereotype.Service
 
@@ -33,25 +36,29 @@ class ReservationService(
             userStoreId,
             reservationSaveDTO.tableId,
             reservationSaveDTO.reservationTime,
-            reservationSaveDTO.orderCode
+            reservationSaveDTO.orderCode.ordinal
         )
         reservationRepository.saveReservation(reservationDBSaveDTO)
     }
 
     fun approveReservation(bearerAccessToken: String, reservationApproveDTO: ReservationApproveDTO) {
-//        if (reservationApproveDTO.isReservation) {
-//
-//        }
+        val orderCode: OrderCode = reservationApproveDTO.orderCode
+        val reservationDenyDetail: String? = reservationApproveDTO.reservationDenyDetail
 
-//        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
-//
-//        val reservationDBApproveDTO = ReservationDBApproveDTO(
-//            reservationApproveDTO.id,
-//            userStoreId,
-//            reservationApproveDTO.isReservation,
-//            reservationApproveDTO.reservationDenyDetail
-//        )
-//        if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
-//        }
+        if (orderCode != OrderCode.RESERVATION && orderCode != OrderCode.RESERVATION_DENY) {
+            throw CustomException(ErrorCode.RESERVATION_WRONG_CODE)
+        }
+
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+
+        val reservationDBApproveDTO = ReservationDBApproveDTO(
+            reservationApproveDTO.id,
+            userStoreId,
+            orderCode.ordinal,
+            reservationDenyDetail
+        )
+        if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
+            throw CustomException(ErrorCode.RESERVATION_APPROVE_FAIL)
+        }
     }
 }
