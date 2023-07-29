@@ -7,6 +7,6 @@ data class ReservationDBSaveDTO(
     var storeId: Int,
     var tableId: Int,
     var reservationTime: Timestamp,
-    var isServed: Boolean = false,
-    var isReservation: Boolean = true,
+    var isServed: Boolean,
+    var isReservation: Boolean,
 )

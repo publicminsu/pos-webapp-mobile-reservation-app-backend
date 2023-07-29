@@ -9,7 +9,7 @@ data class OrderDBSaveDTO(
     var orderTime: Timestamp?,
     var paymentTime: Timestamp?,
     var reservationTime: Timestamp?,
-    var isServed: Boolean = false,
-    var isReservation: Boolean = false,
+    var isServed: Boolean,
+    var isReservation: Boolean,
     var reservationDenyDetail: String?
 )

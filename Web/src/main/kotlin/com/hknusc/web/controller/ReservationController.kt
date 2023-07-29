@@ -1,5 +1,6 @@
 package com.hknusc.web.controller
 
+import com.hknusc.web.dto.reservation.ReservationApproveDTO
 import com.hknusc.web.dto.reservation.ReservationSaveDTO
 import com.hknusc.web.service.ReservationService
 import com.hknusc.web.util.jwt.JwtTokenProvider
@@ -26,5 +27,11 @@ class ReservationController(private val reservationService: ReservationService) 
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         reservationSaveDTO: ReservationSaveDTO
     ) = reservationService.saveReservation(accessToken, reservationSaveDTO)
+
     //예약 처리.
+    @PostMapping
+    fun approveReservation(
+        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        reservationApproveDTO: ReservationApproveDTO
+    ) = reservationService.approveReservation(accessToken, reservationApproveDTO)
 }

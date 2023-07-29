@@ -1,5 +1,7 @@
 package com.hknusc.web.service
 
+import com.hknusc.web.dto.reservation.ReservationApproveDTO
+import com.hknusc.web.dto.reservation.ReservationDBApproveDTO
 import com.hknusc.web.dto.reservation.ReservationDBSaveDTO
 import com.hknusc.web.dto.reservation.ReservationSaveDTO
 import com.hknusc.web.repository.ReservationRepository
@@ -35,5 +37,21 @@ class ReservationService(
             reservationSaveDTO.isReservation
         )
         reservationRepository.saveReservation(reservationDBSaveDTO)
+    }
+
+    fun approveReservation(bearerAccessToken: String, reservationApproveDTO: ReservationApproveDTO) {
+
+
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+//사유 적힌지 확인
+        
+        val reservationDBApproveDTO = ReservationDBApproveDTO(
+            reservationApproveDTO.id,
+            userStoreId,
+            reservationApproveDTO.isReservation,
+            reservationApproveDTO.reservationDenyDetail
+        )
+        if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
+        }
     }
 }
