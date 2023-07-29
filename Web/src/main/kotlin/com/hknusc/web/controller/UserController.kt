@@ -1,6 +1,7 @@
 package com.hknusc.web.controller
 
 import com.hknusc.web.dto.user.UserEditDTO
+import com.hknusc.web.dto.user.UserGetByIdListDTO
 import com.hknusc.web.dto.user.UserSaveDTO
 import com.hknusc.web.service.UserService
 import com.hknusc.web.util.jwt.JwtTokenProvider
@@ -16,6 +17,16 @@ class UserController(private val userService: UserService) {
     //현재 사용자를 가져온다.
     @GetMapping
     fun getUser(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = userService.getUser(accessToken)
+
+    //특정 사용자를 가져온다.
+    @GetMapping("{userId}")
+    fun getUserById(
+        @PathVariable("userId") userId: Int
+    ) = userService.getUserById(userId)
+
+    //특정 사용자들을 가져온다.
+    @PostMapping("all")
+    fun getUserByIdList(userGetByIdListDTO: UserGetByIdListDTO) = userService.getUserByIdList(userGetByIdListDTO)
 
     //회원 가입
     @PostMapping

@@ -44,6 +44,16 @@ class UserService(
         }
     }
 
+    fun getUserById(userId: Int): UserDTO {
+        try {
+            return userRepository.getUser(userId)!!
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.USER_NOT_FOUND)
+        }
+    }
+
+    fun getUserByIdList(userGetByIdListDTO: UserGetByIdListDTO) = userRepository.getUserByIdList(userGetByIdListDTO)
+
     fun editUser(bearerAccessToken: String, userEditDTO: UserEditDTO) {
         val userId = getUserId(bearerAccessToken)
 

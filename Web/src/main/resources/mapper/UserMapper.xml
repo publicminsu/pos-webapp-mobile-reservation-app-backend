@@ -14,6 +14,15 @@
         FROM ACCOUNT
         WHERE ID = #{id}
     </select>
+    <select id="getUserByIdList" parameterType="com.hknusc.web.dto.user.UserGetByIdListDTO"
+            resultType="com.hknusc.web.dto.user.UserDTO">
+        SELECT *
+        FROM ACCOUNT
+        WHERE ID IN
+        <foreach collection="userIdList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
     <select id="getUserByUserEmail" parameterType="string" resultType="com.hknusc.web.dto.user.UserDTO">
         SELECT *
         FROM ACCOUNT
