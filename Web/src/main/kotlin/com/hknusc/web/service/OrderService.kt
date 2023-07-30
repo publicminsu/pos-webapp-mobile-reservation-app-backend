@@ -21,7 +21,7 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
             orderSaveDTO.orderTime,
             orderSaveDTO.paymentTime,
             orderSaveDTO.reservationTime,
-            orderSaveDTO.orderCode.ordinal,
+            orderSaveDTO.orderCode,
             orderSaveDTO.reservationDenyDetail
         )
         orderRepository.saveOrder(orderDBSaveDTO)

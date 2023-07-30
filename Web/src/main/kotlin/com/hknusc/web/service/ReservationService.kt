@@ -1,5 +1,6 @@
 package com.hknusc.web.service
 
+import com.hknusc.web.dto.order.OrderDTO
 import com.hknusc.web.dto.reservation.ReservationApproveDTO
 import com.hknusc.web.dto.reservation.ReservationDBApproveDTO
 import com.hknusc.web.dto.reservation.ReservationDBSaveDTO
@@ -16,16 +17,16 @@ class ReservationService(
     private val tokenProvider: JwtTokenProvider,
     private val reservationRepository: ReservationRepository
 ) {
-    fun getReservations(bearerAccessToken: String) {
+    fun getReservations(bearerAccessToken: String): List<OrderDTO> {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        reservationRepository.getReservations(userStoreId)
+        return reservationRepository.getReservations(userStoreId)
     }
 
-    fun getReservation(bearerAccessToken: String, reservationId: Int) {
+    fun getReservation(bearerAccessToken: String, reservationId: Int): OrderDTO {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        reservationRepository.getReservation(reservationId, userStoreId)
+        return reservationRepository.getReservation(reservationId, userStoreId)
     }
 
     fun saveReservation(bearerAccessToken: String, reservationSaveDTO: ReservationSaveDTO) {
@@ -36,7 +37,7 @@ class ReservationService(
             userStoreId,
             reservationSaveDTO.tableId,
             reservationSaveDTO.reservationTime,
-            reservationSaveDTO.orderCode.ordinal
+            reservationSaveDTO.orderCode
         )
         reservationRepository.saveReservation(reservationDBSaveDTO)
     }
@@ -54,7 +55,7 @@ class ReservationService(
         val reservationDBApproveDTO = ReservationDBApproveDTO(
             reservationApproveDTO.id,
             userStoreId,
-            orderCode.ordinal,
+            orderCode,
             reservationDenyDetail
         )
         if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {

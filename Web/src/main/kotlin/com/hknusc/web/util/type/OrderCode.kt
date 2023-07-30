@@ -6,5 +6,5 @@ enum class OrderCode(val label: String) {
     RESERVATION_WAIT("예약 승인 대기"),
     ORDER("주문"),
     SERVED("서빙 완료"),
-    PAYMENT("결제")
+    PAYMENT("결제");
 }

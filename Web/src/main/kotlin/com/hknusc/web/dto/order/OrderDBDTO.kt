@@ -3,7 +3,8 @@ package com.hknusc.web.dto.order
 import com.hknusc.web.util.type.OrderCode
 import java.sql.Timestamp
 
-data class OrderDBSaveDTO(
+data class OrderDBDTO(
+    var id: Int,
     var accountId: Int,
     var storeId: Int,
     var tableId: Int,
