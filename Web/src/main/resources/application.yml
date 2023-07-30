@@ -19,6 +19,7 @@ spring:
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.hknusc.web.domain
+  type-handlers-package: com.hknusc.web.util.typeHandler
   configuration:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
