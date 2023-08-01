@@ -1,6 +1,5 @@
 HELP.md
 .gradle
-build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -36,7 +35,6 @@ out/
 .vscode/
 ### Gradle template
 .gradle
-**/build/
 !src/**/build/
 
 # Ignore Gradle GUI config
@@ -75,7 +73,10 @@ hs_err_pid*
 
 # Build
 MANIFEST.MF
-!**/build/libs/**
+build/**
+!build/libs
+!build/libs/*.jar
+
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
