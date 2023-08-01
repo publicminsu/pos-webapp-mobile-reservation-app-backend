@@ -1,6 +1,8 @@
 name: Deploy to cloudtype
 on:
   push:
+    paths:
+      - "Web/build/libs/*"
     branches:
       - main
 jobs:
