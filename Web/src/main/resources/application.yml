@@ -5,8 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://svc.sel4.cloudtype.app:30556/postgres
-    username: root
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
     driver-class-name: org.postgresql.Driver
     ## MaxUploadSizeExceededException
   servlet:
@@ -18,7 +19,12 @@ spring:
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.hknusc.web.domain
-  type-handlers-package: com.hknusc.web.util.typeHandler
   configuration:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
+
+jwt:
+  secretKey: hknusecretkeyhknusecretkeyhknusecretkeyhknusecretkeyhknusecretkey
+
+photo:
+  uploadPath: C:\\workspace\\publicminsu\\Image\\
