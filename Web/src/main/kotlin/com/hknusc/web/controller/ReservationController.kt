@@ -36,7 +36,7 @@ class ReservationController(private val reservationService: ReservationService) 
     ) = reservationService.editReservation(accessToken, reservationEditDTO)
 
     //예약 처리.
-    @PostMapping("approve")
+    @PatchMapping("approve")
     fun approveReservation(
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         reservationApproveDTO: ReservationApproveDTO

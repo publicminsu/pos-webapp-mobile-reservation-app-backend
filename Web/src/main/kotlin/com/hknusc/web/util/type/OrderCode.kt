@@ -1,7 +1,7 @@
 package com.hknusc.web.util.type
 
 enum class OrderCode(val label: String, val code: Short) {
-    RESERVATION("예약", 101),
+    RESERVATION("예약 확정", 101),
     RESERVATION_DENY("예약 거부", 102),
     RESERVATION_WAIT("예약 승인 대기", 103),
     ORDER("주문", 201),

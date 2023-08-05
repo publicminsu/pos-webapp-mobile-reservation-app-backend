@@ -25,4 +25,12 @@
         WHERE ID = #{id}
           AND STORE_ID = #{storeId}
     </update>
+    <update id="approveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBApproveDTO">
+        UPDATE ORDER_ITEM
+        SET (ORDER_CODE, RESERVATION_DENY_DETAIL)
+                = (#{orderCode}, #{reservationDenyDetail})
+        WHERE ID = #{id}
+          AND ORDER_CODE = 103
+          AND STORE_ID = #{storeId}
+    </update>
 </mapper>
