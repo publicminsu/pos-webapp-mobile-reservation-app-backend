@@ -1,10 +1,7 @@
 package com.hknusc.web.service
 
 import com.hknusc.web.dto.order.OrderDTO
-import com.hknusc.web.dto.reservation.ReservationApproveDTO
-import com.hknusc.web.dto.reservation.ReservationDBApproveDTO
-import com.hknusc.web.dto.reservation.ReservationDBSaveDTO
-import com.hknusc.web.dto.reservation.ReservationSaveDTO
+import com.hknusc.web.dto.reservation.*
 import com.hknusc.web.repository.ReservationRepository
 import com.hknusc.web.util.type.OrderCode
 import com.hknusc.web.util.exception.CustomException
@@ -39,7 +36,24 @@ class ReservationService(
             reservationSaveDTO.reservationTime,
             reservationSaveDTO.orderCode
         )
+
         reservationRepository.saveReservation(reservationDBSaveDTO)
+    }
+
+    fun editReservation(bearerAccessToken: String, reservationEditDTO: ReservationEditDTO) {
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+
+        val reservationDBEditDTO = ReservationDBEditDTO(
+            reservationEditDTO.id,
+            userStoreId,
+            reservationEditDTO.tableId,
+            reservationEditDTO.reservationTime,
+            reservationEditDTO.orderCode
+        )
+
+        if (reservationRepository.editReservation(reservationDBEditDTO) == 0) {
+            throw CustomException(ErrorCode.RESERVATION_NOT_FOUND)
+        }
     }
 
     fun approveReservation(bearerAccessToken: String, reservationApproveDTO: ReservationApproveDTO) {
@@ -58,6 +72,7 @@ class ReservationService(
             orderCode,
             reservationDenyDetail
         )
+
         if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
             throw CustomException(ErrorCode.RESERVATION_APPROVE_FAIL)
         }

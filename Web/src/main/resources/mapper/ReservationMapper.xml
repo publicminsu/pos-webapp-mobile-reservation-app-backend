@@ -18,4 +18,11 @@
         INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, ORDER_CODE)
         VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{orderCode})
     </insert>
+    <update id="editReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBEditDTO">
+        UPDATE ORDER_ITEM
+        SET (TABLE_ID, RESERVATION_TIME, ORDER_CODE)
+                = (#{tableId}, #{reservationTime}, #{orderCode})
+        WHERE ID = #{id}
+          AND STORE_ID = #{storeId}
+    </update>
 </mapper>
