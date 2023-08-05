@@ -4,14 +4,14 @@
     <select id="getReservations" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
-        WHERE ORDER_CODE LIKE 'RESERVATION%'
+        WHERE ORDER_CODE BETWEEN 100 AND 109
           AND STORE_ID = #{storeId}
     </select>
     <select id="getReservation" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
         WHERE ID = #{reservationId}
-          AND ORDER_CODE LIKE 'RESERVATION%'
+          AND ORDER_CODE BETWEEN 100 AND 109
           AND STORE_ID = #{storeId}
     </select>
     <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBSaveDTO">
