@@ -22,6 +22,7 @@ mybatis:
   configuration:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
+  type-handlers-package: com.hknusc.web.util.typeHandler
 
 jwt:
   secretKey: hknusecretkeyhknusecretkeyhknusecretkeyhknusecretkeyhknusecretkey
