@@ -5,4 +5,5 @@ import org.springframework.stereotype.Service
 
 @Service
 class OrderDetailService(private val orderDetailRepository: OrderDetailRepository) {
+    fun getOrderDetails(orderId: Int) = orderDetailRepository.getOrderDetails(orderId)
 }
