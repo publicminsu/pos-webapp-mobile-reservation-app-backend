@@ -1,4 +1,4 @@
-package com.hknusc.web.dto.order
+package com.hknusc.web.dto.orderDetail
 
 data class OrderDetailSaveDTO(
     var orderId: Int,
