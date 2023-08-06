@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("orders/details")
 class OrderDetailController(private val orderDetailService: OrderDetailService) {
+    //주문 내역 ID 기준으로 상세 주문 내역 가져오기
     @GetMapping("{orderId}")
     fun getOrderDetails(@PathVariable("orderId") orderId: Int) = orderDetailService.getOrderDetails(orderId)
 
+    //상세 주문 내역 저장하기
     @PostMapping
     fun saveOrderDetail(orderDetailSaveDTO: OrderDetailSaveDTO) = orderDetailService.saveOrderDetail(orderDetailSaveDTO)
 
+    //상세 주문 내역 수정하기
     @PatchMapping
     fun editOrderDetail(orderDetailEditDTO: OrderDetailEditDTO) = orderDetailService.editOrderDetail(orderDetailEditDTO)
 
+    //상세 주문 내역 삭제하기
     @DeleteMapping("{orderDetailId}")
     fun deleteOrderDetail(@PathVariable("orderDetailId") orderDetailId: Int) =
         orderDetailService.deleteOrderDetail(orderDetailId)

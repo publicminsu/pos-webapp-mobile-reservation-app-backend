@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("reservations")
 class ReservationController(private val reservationService: ReservationService) {
-    // 영업자 기준이기에 가게 기준으로 해야한다. 무엇으로 값을 받을까
-    // DB 값을 찾을 때 예약인 것만 가져온다.
+    //예약 가져오기
     @GetMapping
     fun getReservations(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) =
         reservationService.getReservations(accessToken)
 
+    //특정 예약 가져오기
     @GetMapping("{reservationId}")
     fun getReservation(
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
@@ -29,6 +29,7 @@ class ReservationController(private val reservationService: ReservationService) 
         reservationSaveDTO: ReservationSaveDTO
     ) = reservationService.saveReservation(accessToken, reservationSaveDTO)
 
+    //예약 수정
     @PatchMapping
     fun editReservation(
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
