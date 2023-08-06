@@ -1,6 +1,6 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.ReviewDTO
+import com.hknusc.web.dto.review.ReviewDTO
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.repository.ReviewRepository

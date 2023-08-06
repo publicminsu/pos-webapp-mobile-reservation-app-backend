@@ -1,6 +1,6 @@
 package com.hknusc.web.repository
 
-import com.hknusc.web.dto.ReviewDTO
+import com.hknusc.web.dto.review.ReviewDTO
 import org.apache.ibatis.annotations.Mapper
 
 @Mapper
