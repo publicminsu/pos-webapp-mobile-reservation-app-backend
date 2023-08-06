@@ -1,8 +1,6 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.order.OrderDBSaveDTO
-import com.hknusc.web.dto.order.OrderDTO
-import com.hknusc.web.dto.order.OrderSaveDTO
+import com.hknusc.web.dto.order.*
 import com.hknusc.web.repository.OrderRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
@@ -43,10 +41,20 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
         orderRepository.saveOrder(orderDBSaveDTO)
     }
 
-    fun editOrder(bearerAccessToken: String, orderDTO: OrderDTO) {
+    fun editOrder(bearerAccessToken: String, orderEditDTO: OrderEditDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        if (orderRepository.editOrder(orderDTO) == 0)
+        val orderDBEditDTO = OrderDBEditDTO(
+            orderEditDTO.id,
+            userStoreId,
+            orderEditDTO.tableId,
+            orderEditDTO.orderTime,
+            orderEditDTO.paymentTime,
+            orderEditDTO.reservationTime,
+            orderEditDTO.orderCode
+        )
+
+        if (orderRepository.editOrder(orderDBEditDTO) == 0)
             throw CustomException(ErrorCode.ORDER_NOT_FOUND)
     }
 

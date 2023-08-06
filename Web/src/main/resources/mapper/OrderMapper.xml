@@ -23,6 +23,7 @@
         SET (TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, ORDER_CODE)
                 = (#{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{orderCode})
         WHERE ID = #{id}
+          AND STORE_ID = #{storeId}
     </update>
     <delete id="deleteOrder" parameterType="int">
         DELETE

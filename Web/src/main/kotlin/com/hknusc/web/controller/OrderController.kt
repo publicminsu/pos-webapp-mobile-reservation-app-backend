@@ -1,6 +1,7 @@
 package com.hknusc.web.controller
 
 import com.hknusc.web.dto.order.OrderDTO
+import com.hknusc.web.dto.order.OrderEditDTO
 import com.hknusc.web.dto.order.OrderSaveDTO
 import com.hknusc.web.service.OrderService
 import com.hknusc.web.util.jwt.JwtTokenProvider
@@ -23,8 +24,8 @@ class OrderController(private val orderService: OrderService) {
         orderService.saveOrder(accessToken, orderSaveDTO)
 
     @PatchMapping
-    fun editOrder(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, orderDTO: OrderDTO) =
-        orderService.editOrder(accessToken, orderDTO)
+    fun editOrder(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, orderEditDTO: OrderEditDTO) =
+        orderService.editOrder(accessToken, orderEditDTO)
 
     @DeleteMapping("{orderId}")
     fun deleteOrder(
