@@ -43,6 +43,17 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
         orderRepository.saveOrder(orderDBSaveDTO)
     }
 
-    fun editOrder(orderDTO: OrderDTO) = orderRepository.editOrder(orderDTO)
-    fun deleteOrder(orderId: Int) = orderRepository.deleteOrder(orderId)
+    fun editOrder(bearerAccessToken: String, orderDTO: OrderDTO) {
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+
+        if (orderRepository.editOrder(orderDTO) == 0)
+            throw CustomException(ErrorCode.ORDER_NOT_FOUND)
+    }
+
+    fun deleteOrder(bearerAccessToken: String, orderId: Int) {
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+
+        if (orderRepository.deleteOrder(orderId, userStoreId) == 0)
+            throw CustomException(ErrorCode.ORDER_NOT_FOUND)
+    }
 }

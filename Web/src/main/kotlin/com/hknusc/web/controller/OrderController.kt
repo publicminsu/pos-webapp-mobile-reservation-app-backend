@@ -23,8 +23,12 @@ class OrderController(private val orderService: OrderService) {
         orderService.saveOrder(accessToken, orderSaveDTO)
 
     @PatchMapping
-    fun editOrder(orderDTO: OrderDTO) = orderService.editOrder(orderDTO)
+    fun editOrder(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, orderDTO: OrderDTO) =
+        orderService.editOrder(accessToken, orderDTO)
 
     @DeleteMapping("{orderId}")
-    fun deleteOrder(@PathVariable("orderId") orderId: Int) = orderService.deleteOrder(orderId)
+    fun deleteOrder(
+        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @PathVariable("orderId") orderId: Int
+    ) = orderService.deleteOrder(accessToken, orderId)
 }

@@ -28,5 +28,6 @@
         DELETE
         FROM ORDER_ITEM
         WHERE ID = #{orderId}
+          AND STORE_ID = #{storeId}
     </delete>
 </mapper>

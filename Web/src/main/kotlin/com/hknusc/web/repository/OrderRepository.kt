@@ -9,6 +9,6 @@ interface OrderRepository {
     fun getOrders(storeId: Int): List<OrderDTO>
     fun getOrder(orderId: Int, storeId: Int): OrderDTO?
     fun saveOrder(orderDBSaveDTO: OrderDBSaveDTO)
-    fun editOrder(orderDTO: OrderDTO)
-    fun deleteOrder(orderId: Int)
+    fun editOrder(orderDTO: OrderDTO): Int
+    fun deleteOrder(orderId: Int, storeId: Int): Int
 }
