@@ -23,7 +23,11 @@ class ReservationService(
     fun getReservation(bearerAccessToken: String, reservationId: Int): OrderDTO {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        return reservationRepository.getReservation(reservationId, userStoreId)
+        try {
+            return reservationRepository.getReservation(reservationId, userStoreId)!!
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.RESERVATION_NOT_FOUND)
+        }
     }
 
     fun saveReservation(bearerAccessToken: String, reservationSaveDTO: ReservationSaveDTO) {
