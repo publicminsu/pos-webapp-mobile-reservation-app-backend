@@ -10,4 +10,9 @@
         INSERT INTO ORDER_DETAIL(ORDER_ID, MENU_ID, AMOUNT)
         VALUES (#{orderId}, #{menuId}, #{amount})
     </insert>
+    <delete id="deleteOrderDetail" parameterType="int">
+        DELETE
+        FROM ORDER_DETAIL
+        WHERE ID = #{orderDetailId}
+    </delete>
 </mapper>

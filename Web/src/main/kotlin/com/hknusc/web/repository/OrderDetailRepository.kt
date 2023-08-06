@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Mapper
 interface OrderDetailRepository {
     fun getOrderDetails(orderId: Int): List<OrderDetailDTO>
     fun saveOrderDetail(orderDetailSaveDTO: OrderDetailSaveDTO)
+    fun deleteOrderDetail(orderDetailId: Int): Int
 }
