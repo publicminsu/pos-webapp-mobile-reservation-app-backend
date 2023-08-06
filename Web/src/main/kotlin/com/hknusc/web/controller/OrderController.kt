@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("orders")
 class OrderController(private val orderService: OrderService) {
     @GetMapping
-    fun getOrders() = orderService.getOrders()
+    fun getOrders(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = orderService.getOrders(accessToken)
 
     @GetMapping("{orderId}")
-    fun getOrder(@PathVariable("orderId") orderId: Int) = orderService.getOrder(orderId)
+    fun getOrder(
+        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @PathVariable("orderId") orderId: Int
+    ) = orderService.getOrder(accessToken, orderId)
 
     @PostMapping
     fun saveOrder(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, orderSaveDTO: OrderSaveDTO) =

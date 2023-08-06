@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface OrderRepository {
-    fun getOrders(): List<OrderDTO>
-    fun getOrder(orderId: Int): OrderDTO?
+    fun getOrders(storeId: Int): List<OrderDTO>
+    fun getOrder(orderId: Int, storeId: Int): OrderDTO?
     fun saveOrder(orderDBSaveDTO: OrderDBSaveDTO)
     fun editOrder(orderDTO: OrderDTO)
     fun deleteOrder(orderId: Int)

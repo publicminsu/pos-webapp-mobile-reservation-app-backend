@@ -4,13 +4,29 @@ import com.hknusc.web.dto.order.OrderDBSaveDTO
 import com.hknusc.web.dto.order.OrderDTO
 import com.hknusc.web.dto.order.OrderSaveDTO
 import com.hknusc.web.repository.OrderRepository
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
 class OrderService(private val tokenProvider: JwtTokenProvider, private val orderRepository: OrderRepository) {
-    fun getOrders() = orderRepository.getOrders()
-    fun getOrder(orderId: Int) = orderRepository.getOrder(orderId)
+    fun getOrders(bearerAccessToken: String): List<OrderDTO> {
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+
+        return orderRepository.getOrders(userStoreId)
+    }
+
+    fun getOrder(bearerAccessToken: String, orderId: Int): OrderDTO {
+        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+
+        try {
+            return orderRepository.getOrder(orderId, userStoreId)!!
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.ORDER_NOT_FOUND)
+        }
+    }
+
     fun saveOrder(bearerAccessToken: String, orderSaveDTO: OrderSaveDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 

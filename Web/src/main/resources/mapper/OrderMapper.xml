@@ -4,11 +4,13 @@
     <select id="getOrders" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
+        WHERE STORE_ID = #{storeId}
     </select>
     <select id="getOrder" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
         WHERE ID = #{orderId}
+          AND STORE_ID = #{storeId}
     </select>
     <insert id="saveOrder" parameterType="com.hknusc.web.dto.order.OrderDBSaveDTO">
         INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, ORDER_CODE,
