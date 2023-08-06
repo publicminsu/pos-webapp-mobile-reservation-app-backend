@@ -1,9 +1,11 @@
 package com.hknusc.web.controller
 
+import com.hknusc.web.dto.orderDetail.OrderDetailEditDTO
 import com.hknusc.web.dto.orderDetail.OrderDetailSaveDTO
 import com.hknusc.web.service.OrderDetailService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,6 +19,9 @@ class OrderDetailController(private val orderDetailService: OrderDetailService) 
 
     @PostMapping
     fun saveOrderDetail(orderDetailSaveDTO: OrderDetailSaveDTO) = orderDetailService.saveOrderDetail(orderDetailSaveDTO)
+
+    @PatchMapping
+    fun editOrderDetail(orderDetailEditDTO: OrderDetailEditDTO) = orderDetailService.editOrderDetail(orderDetailEditDTO)
 
     @DeleteMapping("{orderDetailId}")
     fun deleteOrderDetail(@PathVariable("orderDetailId") orderDetailId: Int) =

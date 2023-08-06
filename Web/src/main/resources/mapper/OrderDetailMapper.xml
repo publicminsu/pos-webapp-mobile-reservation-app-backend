@@ -10,6 +10,11 @@
         INSERT INTO ORDER_DETAIL(ORDER_ID, MENU_ID, AMOUNT)
         VALUES (#{orderId}, #{menuId}, #{amount})
     </insert>
+    <update id="editOrderDetail" parameterType="com.hknusc.web.dto.orderDetail.OrderDetailEditDTO">
+        UPDATE ORDER_DETAIL
+        SET (MENU_ID, AMOUNT) = (#{menuId}, #{amount})
+        WHERE ID = #{id}
+    </update>
     <delete id="deleteOrderDetail" parameterType="int">
         DELETE
         FROM ORDER_DETAIL
