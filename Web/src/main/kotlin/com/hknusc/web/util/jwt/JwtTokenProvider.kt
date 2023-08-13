@@ -1,6 +1,6 @@
 package com.hknusc.web.util.jwt
 
-import com.hknusc.web.dto.RefreshTokenDTO
+import com.hknusc.web.dto.auth.RefreshTokenDTO
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.repository.AuthRepository

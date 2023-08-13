@@ -1,5 +1,6 @@
 package com.hknusc.web.repository
 
+import com.hknusc.web.dto.auth.PasswordDBEditDTO
 import com.hknusc.web.dto.user.*
 import org.apache.ibatis.annotations.Mapper
 
@@ -14,4 +15,5 @@ interface UserRepository {
     fun deleteUser(id: Int)
     fun getDeletedUsers(): List<DeletedUserDTO>
     fun saveDeletedUser(deletedUserDTO: DeletedUserDTO)
+    fun editPassword(passwordDBEditDTO: PasswordDBEditDTO)
 }

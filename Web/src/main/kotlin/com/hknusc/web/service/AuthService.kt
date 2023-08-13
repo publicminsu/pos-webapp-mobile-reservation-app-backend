@@ -1,12 +1,18 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.LoginDTO
+import com.hknusc.web.dto.auth.ConfirmResetPasswordDTO
+import com.hknusc.web.dto.auth.LoginDTO
+import com.hknusc.web.dto.auth.PasswordDBEditDTO
+import com.hknusc.web.dto.auth.ResetPasswordDTO
 import com.hknusc.web.dto.user.UserDTO
 import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.repository.UserRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
+import com.hknusc.web.util.jwt.JwtAuthInfo
 import com.hknusc.web.util.jwt.JwtTokenProvider
+import io.jsonwebtoken.Claims
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,15 +23,17 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
+    @param:Value("\${frontEnd.urlPath}") private val frontEndUrl: String,
     private val tokenProvider: JwtTokenProvider,
     private val mailSender: JavaMailSender,
-    private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val userRepository: UserRepository,
     private val authRepository: AuthRepository
 ) {
 
     fun authorize(loginDTO: LoginDTO): ResponseEntity<Any> {
         lateinit var user: UserDTO
+
         try {
             user = userRepository.getUserByUserEmail(loginDTO.email)!!
         } catch (e: Exception) {
@@ -87,12 +95,40 @@ class AuthService(
         return ResponseEntity(httpHeaders, HttpStatus.OK)
     }
 
-    fun sendResetPasswordEmail() {
+    fun sendResetPasswordEmail(resetPasswordDTO: ResetPasswordDTO) {
+        lateinit var user: UserDTO
+        val email: String = resetPasswordDTO.email
+
+        try {
+            user = userRepository.getUserByUserEmail(email)!!
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.USER_NOT_FOUND)
+        }
+
+        val jwtAuthInfo = JwtAuthInfo(user.id, user.email, 0)
+        val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
+
         val mailMessage = SimpleMailMessage()
         mailMessage.subject = "비밀번호 재설정"
-        mailMessage.text = "링크: "
-        mailMessage.setTo("")//이메일 주소
+        mailMessage.text = "링크: $frontEndUrl/$token"
+        mailMessage.setTo(email)
 
         mailSender.send(mailMessage)
+    }
+
+    fun confirmResetPasswordEmail(confirmResetPasswordDTO: ConfirmResetPasswordDTO) {
+        val token: String = confirmResetPasswordDTO.token
+
+        tokenProvider.validateToken(token)
+
+        if (confirmResetPasswordDTO.password != confirmResetPasswordDTO.confirmPassword) {
+            throw CustomException(ErrorCode.PASSWORD_NOT_SAME)
+        }
+
+        val userId: Int = tokenProvider.findUserIdByJWT(token)
+        val encodedPassword = passwordEncoder.encode(confirmResetPasswordDTO.password)
+
+        val passwordDBEditDTO = PasswordDBEditDTO(userId, encodedPassword)
+        userRepository.editPassword(passwordDBEditDTO)
     }
 }

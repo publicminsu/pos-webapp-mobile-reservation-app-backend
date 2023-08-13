@@ -1,6 +1,8 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.LoginDTO
+import com.hknusc.web.dto.auth.ConfirmResetPasswordDTO
+import com.hknusc.web.dto.auth.LoginDTO
+import com.hknusc.web.dto.auth.ResetPasswordDTO
 import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.service.AuthService
 import org.springframework.web.bind.annotation.*
@@ -22,7 +24,12 @@ class AuthController(private val authService: AuthService) {
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         @RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String
     ) = authService.refresh(accessToken, refreshToken)
-    
+
     @PostMapping("reset")
-    fun sendResetPasswordEmail() = authService.sendResetPasswordEmail()
+    fun sendResetPasswordEmail(resetPasswordDTO: ResetPasswordDTO) =
+        authService.sendResetPasswordEmail(resetPasswordDTO)
+
+    @PostMapping("reset/confirm")
+    fun confirmResetPasswordEmail(confirmResetPasswordDTO: ConfirmResetPasswordDTO) =
+        authService.confirmResetPasswordEmail(confirmResetPasswordDTO)
 }

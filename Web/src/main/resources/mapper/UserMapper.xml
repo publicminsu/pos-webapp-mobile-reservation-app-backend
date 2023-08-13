@@ -47,4 +47,9 @@
         INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER, DELETE_TIME)
         VALUES (#{email}, #{phoneNumber}, #{deleteTime})
     </insert>
+    <update id="editPassword" parameterType="com.hknusc.web.dto.auth.PasswordDBEditDTO">
+        UPDATE ACCOUNT
+        SET PASSWORD= #{password}
+        WHERE ID = #{userId}
+    </update>
 </mapper>

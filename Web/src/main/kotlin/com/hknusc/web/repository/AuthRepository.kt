@@ -1,6 +1,6 @@
 package com.hknusc.web.repository
 
-import com.hknusc.web.dto.RefreshTokenDTO
+import com.hknusc.web.dto.auth.RefreshTokenDTO
 import org.apache.ibatis.annotations.Mapper
 
 @Mapper
