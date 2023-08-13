@@ -7,6 +7,7 @@ import com.hknusc.web.dto.auth.ResetPasswordDTO
 import com.hknusc.web.dto.user.UserDTO
 import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.repository.UserRepository
+import com.hknusc.web.util.MailUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtAuthInfo
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Service
 class AuthService(
     @param:Value("\${frontEnd.urlPath}") private val frontEndUrl: String,
     private val tokenProvider: JwtTokenProvider,
-    private val mailSender: JavaMailSender,
+    private val mailUtility: MailUtility,
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository
@@ -109,13 +110,8 @@ class AuthService(
 
         val jwtAuthInfo = JwtAuthInfo(user.id, user.email, 0)
         val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
-
-        val mailMessage = SimpleMailMessage()
-        mailMessage.subject = "비밀번호 재설정"
-        mailMessage.text = "링크: $frontEndUrl/$token"
-        mailMessage.setTo(email)
-
-        mailSender.send(mailMessage)
+        
+        mailUtility.send("비밀번호 재설정", "링크: $frontEndUrl/$token", email)
     }
 
     fun confirmResetPasswordEmail(confirmResetPasswordDTO: ConfirmResetPasswordDTO) {
