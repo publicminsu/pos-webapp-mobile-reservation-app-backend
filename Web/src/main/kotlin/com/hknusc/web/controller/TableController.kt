@@ -39,4 +39,8 @@ class TableController(private val tableService: TableService) {
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         @PathVariable("tableId") tableId: Int
     ) = tableService.deleteTable(accessToken, tableId)
+
+    @GetMapping("orders")
+    fun getTablesOrdersDetails(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) =
+        tableService.getTablesOrdersDetails(accessToken)
 }
