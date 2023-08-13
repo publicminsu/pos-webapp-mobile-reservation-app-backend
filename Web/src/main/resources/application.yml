@@ -4,10 +4,14 @@ server:
     max-swallow-size: -1
 
 spring:
+  profiles:
+    ##application-secret에 들어간 요소
+    #jwt.secretKey
+    ##spring.datasource.password
+    include: secret
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: 1234
     driver-class-name: org.postgresql.Driver
     ## MaxUploadSizeExceededException
   servlet:
@@ -23,9 +27,6 @@ mybatis:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
   type-handlers-package: com.hknusc.web.util.typeHandler
-
-jwt:
-  secretKey: hknusecretkeyhknusecretkeyhknusecretkeyhknusecretkeyhknusecretkey
 
 photo:
   uploadPath: C:\\workspace\\publicminsu\\Image\\
