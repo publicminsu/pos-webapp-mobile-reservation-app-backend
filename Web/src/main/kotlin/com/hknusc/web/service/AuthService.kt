@@ -11,7 +11,6 @@ import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtAuthInfo
 import com.hknusc.web.util.jwt.JwtTokenProvider
-import io.jsonwebtoken.Claims
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -61,8 +60,7 @@ class AuthService(
         if (refreshToken != savedRefreshToken) {
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
-        savedRefreshTokenDTO.refreshToken = null
-        authRepository.removeRefreshToken(savedRefreshTokenDTO)
+        authRepository.removeRefreshToken(savedRefreshTokenDTO.id)
         return ResponseEntity(HttpStatus.OK)
     }
 
@@ -78,10 +76,14 @@ class AuthService(
         val claims = tokenProvider.findClaimsByJWT(oldAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims).toInt()
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
-        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
+        val userStoreId: Int = try {
+            tokenProvider.findUserStoreIdByClaims(claims).toInt()
+        } catch (e: Exception) {
+            0
+        }
 
         //가져온 정보를 토대로 DB에 저장된 RefreshToken 가져오기
-        val savedRefreshToken = authRepository.getRefreshToken(userId).refreshToken.toString()
+        val savedRefreshToken = authRepository.getRefreshToken(userId).refreshToken
 
         //저장된 RefreshToken 올바른지 확인
         tokenProvider.validateToken(savedRefreshToken)

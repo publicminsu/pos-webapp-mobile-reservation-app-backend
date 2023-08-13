@@ -6,7 +6,7 @@
         FROM AUTH
         WHERE ACCOUNT_ID = #{accountId}
     </select>
-    <insert id="saveRefreshToken" parameterType="com.hknusc.web.dto.auth.RefreshTokenDTO">
+    <insert id="saveRefreshToken" parameterType="com.hknusc.web.dto.auth.RefreshTokenSaveDTO">
         INSERT INTO AUTH (ACCOUNT_ID, REFRESH_TOKEN)
         VALUES (#{accountId}, #{refreshToken}) ON CONFLICT (ACCOUNT_ID)
         DO
@@ -15,7 +15,7 @@
     </insert>
     <update id="removeRefreshToken" parameterType="com.hknusc.web.dto.auth.RefreshTokenDTO">
         UPDATE AUTH
-        SET REFRESH_TOKEN = #{refreshToken}
-        WHERE ID = #{id}
+        SET REFRESH_TOKEN = NULL
+        WHERE ID = #{refreshTokenId}
     </update>
 </mapper>

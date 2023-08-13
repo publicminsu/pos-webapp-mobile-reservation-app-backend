@@ -1,6 +1,7 @@
 package com.hknusc.web.util.jwt
 
 import com.hknusc.web.dto.auth.RefreshTokenDTO
+import com.hknusc.web.dto.auth.RefreshTokenSaveDTO
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.repository.AuthRepository
@@ -123,8 +124,8 @@ class JwtTokenProvider(
         val accessToken = generateAccessToken(jwtAuthInfo)
         val refreshToken = generateRefreshToken(jwtAuthInfo)
 
-        val refreshTokenDTO = RefreshTokenDTO(accountId = userId, refreshToken = refreshToken)
-        authRepository.saveRefreshToken(refreshTokenDTO)
+        val refreshTokenSaveDTO = RefreshTokenSaveDTO(userId, refreshToken)
+        authRepository.saveRefreshToken(refreshTokenSaveDTO)
 
         val httpHeaders = HttpHeaders()
         httpHeaders.add(Access_Key, "Bearer $accessToken")
