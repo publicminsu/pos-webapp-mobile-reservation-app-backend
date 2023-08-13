@@ -109,11 +109,11 @@ class UserService(
         email: String, nickname: String, phoneNumber: String,
         oldEmail: String, oldNickname: String, oldPhoneNumber: String
     ) {
-        if ((oldEmail != email) && (checkRepository.checkEmail(email) != 0)) {
+        if ((oldEmail != email) && checkRepository.checkEmail(email)) {
             throw CustomException(ErrorCode.EMAIL_DUPLICATE)
-        } else if ((oldNickname != nickname) && (checkRepository.checkNickname(nickname) != 0)) {
+        } else if ((oldNickname != nickname) && checkRepository.checkNickname(nickname)) {
             throw CustomException(ErrorCode.NICKNAME_DUPLICATE)
-        } else if ((oldPhoneNumber != phoneNumber) && (checkRepository.checkPhoneNumber(phoneNumber) != 0)) {
+        } else if ((oldPhoneNumber != phoneNumber) && checkRepository.checkPhoneNumber(phoneNumber)) {
             throw CustomException(ErrorCode.PHONE_NUMBER_DUPLICATE)
         }
     }

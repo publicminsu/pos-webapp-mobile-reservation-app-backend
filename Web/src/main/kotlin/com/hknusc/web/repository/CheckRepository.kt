@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface CheckRepository {
-    fun checkEmail(email: String): Int
-    fun checkNickname(nickname: String): Int
-    fun checkPhoneNumber(phoneNumber: String): Int
+    fun checkEmail(email: String): Boolean
+    fun checkNickname(nickname: String): Boolean
+    fun checkPhoneNumber(phoneNumber: String): Boolean
 }

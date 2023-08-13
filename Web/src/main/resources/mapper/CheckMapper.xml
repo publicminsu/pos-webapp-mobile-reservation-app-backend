@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hknusc.web.repository.CheckRepository">
-    <select id="checkEmail" parameterType="string" resultType="int">
-        SELECT COUNT(*)
-        FROM ACCOUNT
-        WHERE EMAIL = #{email}
+    <select id="checkEmail" parameterType="string" resultType="boolean">
+        SELECT EXISTS(SELECT 1
+                      FROM ACCOUNT
+                      WHERE EMAIL = #{email})
     </select>
-    <select id="checkNickname" parameterType="string" resultType="int">
-        SELECT COUNT(*)
-        FROM ACCOUNT
-        WHERE NICKNAME = #{nickname}
+    <select id="checkNickname" parameterType="string" resultType="boolean">
+        SELECT EXISTS(SELECT 1
+                      FROM ACCOUNT
+                      WHERE NICKNAME = #{nickname})
     </select>
-    <select id="checkPhoneNumber" parameterType="string" resultType="int">
-        SELECT COUNT(*)
-        FROM ACCOUNT
-        WHERE PHONE_NUMBER = #{phoneNumber}
+    <select id="checkPhoneNumber" parameterType="string" resultType="boolean">
+        SELECT EXISTS(SELECT 1
+                      FROM ACCOUNT
+                      WHERE PHONE_NUMBER = #{phoneNumber})
     </select>
 </mapper>
