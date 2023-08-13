@@ -28,6 +28,9 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
     fun saveOrder(bearerAccessToken: String, orderSaveDTO: OrderSaveDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
+        if (orderRepository.isNotEmptyTable(orderSaveDTO.tableId))
+            throw CustomException(ErrorCode.TABLE_NOT_EMPTY)
+
         val orderDBSaveDTO = OrderDBSaveDTO(
             orderSaveDTO.accountId,
             userStoreId,

@@ -31,6 +31,12 @@
         WHERE ID = #{orderId}
           AND STORE_ID = #{storeId}
     </delete>
+    <select id="isNotEmptyTable" parameterType="int" resultType="boolean">
+        SELECT EXISTS(SELECT 1
+                      FROM ORDER_ITEM
+                      WHERE TABLE_ID = #{tableId}
+                        AND ORDER_CODE BETWEEN 200 AND 399)
+    </select>
     <select id="getOrderByTableId" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM

@@ -13,4 +13,5 @@ interface OrderRepository {
     fun editOrder(orderDBEditDTO: OrderDBEditDTO): Int
     fun deleteOrder(orderId: Int, storeId: Int): Int
     fun getOrderByTableId(tableId: Int): OrderDTO?
+    fun isNotEmptyTable(tableId: Int): Boolean
 }

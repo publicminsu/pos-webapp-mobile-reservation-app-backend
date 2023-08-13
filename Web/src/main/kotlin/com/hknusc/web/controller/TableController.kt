@@ -40,6 +40,7 @@ class TableController(private val tableService: TableService) {
         @PathVariable("tableId") tableId: Int
     ) = tableService.deleteTable(accessToken, tableId)
 
+    //테이블에 존재하는 주문 가져오기
     @GetMapping("orders")
     fun getTablesOrdersDetails(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) =
         tableService.getTablesOrdersDetails(accessToken)
