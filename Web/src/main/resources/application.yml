@@ -7,26 +7,41 @@ spring:
   profiles:
     ##application-secret에 들어간 요소
     #jwt.secretKey
-    ##spring.datasource.password
+    #spring.mail.(username, password)
+    #spring.datasource.password
     include: secret
-  datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    driver-class-name: org.postgresql.Driver
-    ## MaxUploadSizeExceededException
+
+  ## MaxUploadSizeExceededException
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
       resolve-lazily: true
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+
 mybatis:
   mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.hknusc.web.domain
+  type-handlers-package: com.hknusc.web.util.typeHandler
+
   configuration:
     jdbc-type-for-null: null
     map-underscore-to-camel-case: true
-  type-handlers-package: com.hknusc.web.util.typeHandler
 
 photo:
   uploadPath: C:\\workspace\\publicminsu\\Image\\

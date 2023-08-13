@@ -10,12 +10,15 @@ import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.mail.SimpleMailMessage
+import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
     private val tokenProvider: JwtTokenProvider,
+    private val mailSender: JavaMailSender,
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val authRepository: AuthRepository
@@ -82,5 +85,14 @@ class AuthService(
 
         val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(userId, userEmail, userStoreId)
         return ResponseEntity(httpHeaders, HttpStatus.OK)
+    }
+
+    fun sendResetPasswordEmail() {
+        val mailMessage = SimpleMailMessage()
+        mailMessage.subject = "비밀번호 재설정"
+        mailMessage.text = "링크: "
+        mailMessage.setTo("")//이메일 주소
+
+        mailSender.send(mailMessage)
     }
 }

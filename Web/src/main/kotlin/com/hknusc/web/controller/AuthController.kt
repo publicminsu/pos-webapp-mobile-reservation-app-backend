@@ -22,4 +22,7 @@ class AuthController(private val authService: AuthService) {
         @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
         @RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String
     ) = authService.refresh(accessToken, refreshToken)
+    
+    @PostMapping("reset")
+    fun sendResetPasswordEmail() = authService.sendResetPasswordEmail()
 }

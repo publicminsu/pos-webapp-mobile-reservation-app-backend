@@ -17,13 +17,15 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.20-RC")
 
-    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1")
-    implementation("org.postgresql:postgresql")
+    implementation("org.springframework.boot:spring-boot-starter-mail:3.0.4")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
+    implementation("org.postgresql:postgresql:42.5.4")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.0")
 
     implementation("org.springframework.boot:spring-boot-starter-security:3.0.4")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
