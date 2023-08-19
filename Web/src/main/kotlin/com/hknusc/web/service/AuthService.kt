@@ -66,7 +66,6 @@ class AuthService(
     }
 
     fun refresh(oldBearerAccessToken: String, oldBearerRefreshToken: String): ResponseEntity<Any> {
-
         val oldAccessToken = tokenProvider.resolveToken(oldBearerAccessToken)
         val oldRefreshToken = tokenProvider.resolveToken(oldBearerRefreshToken)
 
@@ -88,7 +87,7 @@ class AuthService(
 
         //저장된 RefreshToken 올바른지 확인
         tokenProvider.validateToken(savedRefreshToken)
-
+        
         //동일하지 않은 토큰인지 확인
         if (oldRefreshToken != savedRefreshToken) {
             throw CustomException(ErrorCode.INVALID_TOKEN)
@@ -110,7 +109,7 @@ class AuthService(
 
         val jwtAuthInfo = JwtAuthInfo(user.id, user.email, 0)
         val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
-        
+
         mailUtility.send("비밀번호 재설정", "링크: $frontEndUrl/$token", email)
     }
 
