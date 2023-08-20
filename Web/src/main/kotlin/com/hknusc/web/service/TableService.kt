@@ -2,7 +2,10 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.order.OrderDTO
 import com.hknusc.web.dto.orderDetail.OrderDetailDTO
-import com.hknusc.web.dto.table.*
+import com.hknusc.web.dto.table.TableDTO
+import com.hknusc.web.dto.table.TableListDBSaveDTO
+import com.hknusc.web.dto.table.TableListSaveDTO
+import com.hknusc.web.dto.table.TableOrderDetailDTO
 import com.hknusc.web.repository.OrderDetailRepository
 import com.hknusc.web.repository.OrderRepository
 import com.hknusc.web.repository.TableRepository
@@ -10,7 +13,6 @@ import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestHeader
 
 @Service
 class TableService(
@@ -35,47 +37,20 @@ class TableService(
         }
     }
 
-    fun saveTable(bearerAccessToken: String, tableSaveDTO: TableSaveDTO) {
+    fun saveTable(bearerAccessToken: String, tableListSaveDTO: TableListSaveDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        val tableDBSaveDTO = TableDBSaveDTO(
+        tableRepository.deleteTable(userStoreId)
+
+        if (tableListSaveDTO.tableList == null)
+            return
+
+        val tableListDBSaveDTO = TableListDBSaveDTO(
             userStoreId,
-            tableSaveDTO.name,
-            tableSaveDTO.coordX,
-            tableSaveDTO.coordY,
-            tableSaveDTO.width,
-            tableSaveDTO.height,
-            tableSaveDTO.privateKey
+            tableListSaveDTO.tableList!!
         )
 
-        tableRepository.saveTable(tableDBSaveDTO)
-    }
-
-    fun editTable(bearerAccessToken: String, tableEditDTO: TableEditDTO) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        val tableDTO = TableDTO(
-            tableEditDTO.id,
-            userStoreId,
-            tableEditDTO.name,
-            tableEditDTO.coordX,
-            tableEditDTO.coordY,
-            tableEditDTO.width,
-            tableEditDTO.height,
-            tableEditDTO.privateKey
-        )
-
-        if (tableRepository.editTable(tableDTO) == 0) {
-            throw CustomException(ErrorCode.TABLE_NOT_FOUND)
-        }
-    }
-
-    fun deleteTable(bearerAccessToken: String, tableId: Int) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        if (tableRepository.deleteTable(tableId, userStoreId) == 0) {
-            throw CustomException(ErrorCode.TABLE_NOT_FOUND)
-        }
+        tableRepository.saveTable(tableListDBSaveDTO)
     }
 
     fun getTablesOrdersDetails(bearerAccessToken: String): List<TableOrderDetailDTO> {
