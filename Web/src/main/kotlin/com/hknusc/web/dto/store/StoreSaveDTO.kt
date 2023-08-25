@@ -1,10 +1,13 @@
 package com.hknusc.web.dto.store
 
+import java.awt.Point
+
 data class StoreSaveDTO(
-    var name: String,
-    var address: String?,
-    var info: String?,
-    var phoneNumber: String?,
-    var canReservation: Boolean?,
-    var operatingTime: String?,
+    val name: String,
+    val coordinate: Point,
+    val address: String?,
+    val info: String?,
+    val phoneNumber: String?,
+    val canReservation: Boolean?,
+    val operatingTime: String?,
 )

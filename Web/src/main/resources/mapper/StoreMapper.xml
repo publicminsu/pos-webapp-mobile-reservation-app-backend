@@ -7,9 +7,9 @@
         WHERE ACCOUNT_ID = #{userId}
     </select>
     <insert id="saveStore" parameterType="com.hknusc.web.dto.store.StoreDBSaveDTO">
-        INSERT INTO STORE(ACCOUNT_ID, NAME, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
+        INSERT INTO STORE(ACCOUNT_ID, NAME, COORDINATE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
                           OPERATING_TIME, IS_OPEN)
-        VALUES (#{accountId}, #{name}, #{address}, #{info}, #{phoneNumber},
+        VALUES (#{accountId}, #{name}, #{coordinate}, #{address}, #{info}, #{phoneNumber},
                 #{canReservation}, #{operatingTime}, #{isOpen})
     </insert>
     <update id="setOpen" parameterType="com.hknusc.web.dto.store.StoreOpenDTO">
