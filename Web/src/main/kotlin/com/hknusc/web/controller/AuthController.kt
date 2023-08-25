@@ -1,5 +1,6 @@
 package com.hknusc.web.controller
 
+import com.hknusc.web.dto.auth.ConfirmEmailDTO
 import com.hknusc.web.dto.auth.ConfirmResetPasswordDTO
 import com.hknusc.web.dto.auth.LoginDTO
 import com.hknusc.web.dto.auth.ResetPasswordDTO
@@ -25,10 +26,16 @@ class AuthController(private val authService: AuthService) {
         @RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String
     ) = authService.refresh(accessToken, refreshToken)
 
+    //이메일 인증 확인
+    @PostMapping("email")
+    fun confirmEmail(confirmEmailDTO: ConfirmEmailDTO) = authService.confirmEmail(confirmEmailDTO)
+
+    //비밀번호 재설정 이메일 보내기
     @PostMapping("reset")
     fun sendResetPasswordEmail(resetPasswordDTO: ResetPasswordDTO) =
         authService.sendResetPasswordEmail(resetPasswordDTO)
 
+    //비밀번호 재설정 이메일 확인
     @PostMapping("reset/confirm")
     fun confirmResetPasswordEmail(confirmResetPasswordDTO: ConfirmResetPasswordDTO) =
         authService.confirmResetPasswordEmail(confirmResetPasswordDTO)

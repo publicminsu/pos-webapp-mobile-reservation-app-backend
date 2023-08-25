@@ -1,6 +1,7 @@
 package com.hknusc.web.service
 
 import com.hknusc.web.repository.UserRepository
+import com.hknusc.web.util.type.Role
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -12,10 +13,13 @@ class UserDetailService(
 ) : UserDetailsService {
     override fun loadUserByUsername(id: String): UserDetails {
         val user = userRepository.getUser(id.toInt())!!
-        return User.builder()
-            .username(user.email)
-            .password(user.password)
-            .roles("USER")
-            .build()
+
+        val role: String = if (user.isVerified) {
+            Role.USER.toString()
+        } else {
+            Role.UNAUTHENTICATED.toString()
+        }
+
+        return User.builder().username(user.email).password(user.password).roles(role).build()
     }
 }

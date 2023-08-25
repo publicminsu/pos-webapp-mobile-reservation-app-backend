@@ -9,6 +9,7 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
     RESERVATION_WRONG_CODE(HttpStatus.BAD_REQUEST, "잘못된 예약 상태입니다."),
     TABLE_NOT_EMPTY(HttpStatus.BAD_REQUEST, "이미 사용 중인 테이블입니다."),
     PASSWORD_NOT_SAME(HttpStatus.BAD_REQUEST, "입력하신 비밀번호가 동일하지 않습니다."),
+    EMAIL_ALREADY_VERIFIED(HttpStatus.BAD_REQUEST, "이미 인증된 이메일입니다."),
 
     USER_EDIT_FAIL(HttpStatus.BAD_REQUEST, "회원 정보 수정에 실패했습니다."),
     RESERVATION_APPROVE_FAIL(HttpStatus.BAD_REQUEST, "예약 처리에 실패했습니다."),

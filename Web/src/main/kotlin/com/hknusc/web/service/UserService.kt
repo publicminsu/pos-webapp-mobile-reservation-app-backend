@@ -3,16 +3,21 @@ package com.hknusc.web.service
 import com.hknusc.web.dto.user.*
 import com.hknusc.web.repository.CheckRepository
 import com.hknusc.web.repository.UserRepository
+import com.hknusc.web.util.MailUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
+import com.hknusc.web.util.jwt.JwtAuthInfo
 import com.hknusc.web.util.jwt.JwtTokenProvider
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 
 @Service
 class UserService(
+    @param:Value("\${frontEnd.emailURL}") private val emailURL: String,
     private val tokenProvider: JwtTokenProvider,
+    private val mailUtility: MailUtility,
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository,
     private val checkRepository: CheckRepository
@@ -20,15 +25,30 @@ class UserService(
     fun getUsers() = userRepository.getUsers()
 
     fun saveUser(userSaveDTO: UserSaveDTO) {
+        val email: String = userSaveDTO.email
+        val nickname: String = userSaveDTO.nickname
+        val phoneNumber: String = userSaveDTO.phoneNumber
+
         checkDuplicate(
-            userSaveDTO.email, userSaveDTO.nickname, userSaveDTO.phoneNumber,
+            email, nickname, phoneNumber,
             "", "", ""
         )
 
-        userSaveDTO.password = passwordEncoder.encode(userSaveDTO.password)
+        val userDBSaveDTO =
+            UserDBSaveDTO(
+                email,
+                passwordEncoder.encode(userSaveDTO.password),
+                nickname,
+                phoneNumber
+            )
 
         try {
-            userRepository.saveUser(userSaveDTO)
+            userRepository.saveUser(userDBSaveDTO)
+
+            val jwtAuthInfo = JwtAuthInfo(userDBSaveDTO.id, email, 0)
+            val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
+
+            mailUtility.send("이메일 인증", "링크: $emailURL$token", email)
         } catch (e: Exception) {
             throw CustomException(ErrorCode.SIGNUP_FAIL)
         }
@@ -70,8 +90,6 @@ class UserService(
             userEmail,
             userNickname,
             userPhoneNumber,
-            userEditDTO.wishList,
-            userEditDTO.couponList,
             userEditDTO.paymentCard
         )
 

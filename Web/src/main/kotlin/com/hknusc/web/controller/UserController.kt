@@ -28,7 +28,7 @@ class UserController(private val userService: UserService) {
     @PostMapping("all")
     fun getUserByIdList(userGetByIdListDTO: UserGetByIdListDTO) = userService.getUserByIdList(userGetByIdListDTO)
 
-    //회원 가입
+    //회원 가입 (이메일로 인증)
     @PostMapping
     fun saveUser(userSaveDTO: UserSaveDTO) = userService.saveUser(userSaveDTO)
 

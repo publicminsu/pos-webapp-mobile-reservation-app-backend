@@ -5,9 +5,10 @@
         SELECT *
         FROM ACCOUNT
     </select>
-    <insert id="saveUser" parameterType="com.hknusc.web.dto.user.UserSaveDTO">
-        INSERT INTO ACCOUNT(EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER)
-        VALUES (#{email}, #{password}, #{nickname}, #{phoneNumber})
+    <insert id="saveUser" parameterType="com.hknusc.web.dto.user.UserDBSaveDTO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO ACCOUNT(EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, IS_VERIFIED)
+        VALUES (#{email}, #{password}, #{nickname}, #{phoneNumber}, #{isVerified})
     </insert>
     <select id="getUser" parameterType="int" resultType="com.hknusc.web.dto.user.UserDTO">
         SELECT *
@@ -30,8 +31,8 @@
     </select>
     <update id="editUser" parameterType="com.hknusc.web.dto.user.UserDBEditDTO">
         UPDATE ACCOUNT
-        SET (EMAIL, NICKNAME, PHONE_NUMBER, WISH_LIST, COUPON_LIST, PAYMENT_CARD)
-                = (#{email}, #{nickname}, #{phoneNumber}, #{wishList}, #{couponList}, #{paymentCard})
+        SET (EMAIL, NICKNAME, PHONE_NUMBER, PAYMENT_CARD)
+                = (#{email}, #{nickname}, #{phoneNumber}, #{paymentCard})
         WHERE ID = #{id}
     </update>
     <delete id="deleteUser" parameterType="int">
@@ -51,5 +52,11 @@
         UPDATE ACCOUNT
         SET PASSWORD= #{password}
         WHERE ID = #{userId}
+    </update>
+    <update id="confirmEmail" parameterType="int">
+        UPDATE ACCOUNT
+        SET IS_VERIFIED= TRUE
+        WHERE ID = #{id}
+          AND IS_VERIFIED = FALSE
     </update>
 </mapper>

@@ -1,9 +1,6 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.auth.ConfirmResetPasswordDTO
-import com.hknusc.web.dto.auth.LoginDTO
-import com.hknusc.web.dto.auth.PasswordDBEditDTO
-import com.hknusc.web.dto.auth.ResetPasswordDTO
+import com.hknusc.web.dto.auth.*
 import com.hknusc.web.dto.user.UserDTO
 import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.repository.UserRepository
@@ -16,14 +13,12 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.mail.SimpleMailMessage
-import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
-    @param:Value("\${frontEnd.urlPath}") private val frontEndUrl: String,
+    @param:Value("\${frontEnd.passwordURL}") private val passwordURL: String,
     private val tokenProvider: JwtTokenProvider,
     private val mailUtility: MailUtility,
     private val passwordEncoder: PasswordEncoder,
@@ -87,13 +82,30 @@ class AuthService(
 
         //저장된 RefreshToken 올바른지 확인
         tokenProvider.validateToken(savedRefreshToken)
-        
+
         //동일하지 않은 토큰인지 확인
         if (oldRefreshToken != savedRefreshToken) {
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
 
         val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(userId, userEmail, userStoreId)
+        return ResponseEntity(httpHeaders, HttpStatus.OK)
+    }
+
+    fun confirmEmail(confirmEmailDTO: ConfirmEmailDTO): ResponseEntity<Any> {
+        val token: String = confirmEmailDTO.token
+
+        tokenProvider.validateToken(token)
+
+        val claims = tokenProvider.findClaimsByJWT(token)
+        val userId = tokenProvider.findUserIdByClaims(claims).toInt()
+        val userEmail = tokenProvider.findUserEmailByClaims(claims)
+
+        if (userRepository.confirmEmail(userId) == 0) {
+            throw CustomException(ErrorCode.EMAIL_ALREADY_VERIFIED)
+        }
+
+        val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(userId, userEmail)
         return ResponseEntity(httpHeaders, HttpStatus.OK)
     }
 
@@ -107,10 +119,10 @@ class AuthService(
             throw CustomException(ErrorCode.USER_NOT_FOUND)
         }
 
-        val jwtAuthInfo = JwtAuthInfo(user.id, user.email, 0)
+        val jwtAuthInfo = JwtAuthInfo(user.id, email, 0)
         val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
 
-        mailUtility.send("비밀번호 재설정", "링크: $frontEndUrl/$token", email)
+        mailUtility.send("비밀번호 재설정", "링크: $passwordURL$token", email)
     }
 
     fun confirmResetPasswordEmail(confirmResetPasswordDTO: ConfirmResetPasswordDTO) {

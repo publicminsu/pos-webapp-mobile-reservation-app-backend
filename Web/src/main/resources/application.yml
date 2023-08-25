@@ -46,6 +46,7 @@ mybatis:
 photo:
   uploadPath: C:\\workspace\\publicminsu\\Image\\
 
-## 주소 입력 맨 뒤의 /은 제거
+## 주소 입력 맨 뒤의 /까지 추가
 frontEnd:
-  urlPath: 
+  emailURL:
+  passwordURL:
