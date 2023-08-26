@@ -1,8 +1,7 @@
 package com.hknusc.web.dto.store
 
-data class StoreDTO(
+data class StoreDBEditDTO(
     val id: Int,
-    val accountId: Int,
     val name: String,
     val latitude: Double,
     val longitude: Double,

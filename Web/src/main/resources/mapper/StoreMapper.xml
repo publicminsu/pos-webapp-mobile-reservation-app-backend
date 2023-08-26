@@ -21,6 +21,13 @@
         VALUES (#{accountId}, #{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
                 #{canReservation}, #{operatingTime}, #{isOpen})
     </insert>
+    <update id="editStore" parameterType="com.hknusc.web.dto.store.StoreDBEditDTO">
+        UPDATE STORE
+        SET (NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
+             OPERATING_TIME)= (#{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
+                               #{canReservation}, #{operatingTime})
+        WHERE ID = #{id}
+    </update>
     <update id="setOpen" parameterType="com.hknusc.web.dto.store.StoreOpenDTO">
         UPDATE STORE
         SET IS_OPEN = ${storeOpenDTO.isOpen}

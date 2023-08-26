@@ -1,8 +1,6 @@
 package com.hknusc.web.dto.store
 
-data class StoreDTO(
-    val id: Int,
-    val accountId: Int,
+data class StoreEditDTO(
     val name: String,
     val latitude: Double,
     val longitude: Double,
@@ -11,4 +9,5 @@ data class StoreDTO(
     val phoneNumber: String?,
     val canReservation: Boolean?,
     val operatingTime: String?,
+    val isOpen: Boolean = false,
 )

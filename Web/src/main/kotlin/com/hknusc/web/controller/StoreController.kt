@@ -1,5 +1,6 @@
 package com.hknusc.web.controller
 
+import com.hknusc.web.dto.store.StoreEditDTO
 import com.hknusc.web.dto.store.StoreOpenDTO
 import com.hknusc.web.dto.store.StoreSaveDTO
 import com.hknusc.web.service.StoreService
@@ -13,6 +14,7 @@ class StoreController(private val storeService: StoreService) {
     @GetMapping
     fun getStores(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = storeService.getStores(accessToken)
 
+    //좌표 기준으로 가게 찾기
     @GetMapping("coordinate")
     fun getStoresByCoordinate(
         @RequestParam latitude: Double,
@@ -25,6 +27,11 @@ class StoreController(private val storeService: StoreService) {
     @PostMapping
     fun saveStore(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, storeSaveDTO: StoreSaveDTO) =
         storeService.saveStore(accessToken, storeSaveDTO)
+
+    //가게 수정하기
+    @PatchMapping
+    fun editStore(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, storeEditDTO: StoreEditDTO) =
+        storeService.editStore(accessToken, storeEditDTO)
 
     //가게 개점
     @PostMapping("open")

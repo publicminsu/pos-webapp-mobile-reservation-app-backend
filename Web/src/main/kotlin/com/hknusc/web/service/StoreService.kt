@@ -1,13 +1,11 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.store.StoreDBSaveDTO
-import com.hknusc.web.dto.store.StoreDTO
-import com.hknusc.web.dto.store.StoreOpenDTO
-import com.hknusc.web.dto.store.StoreSaveDTO
+import com.hknusc.web.dto.store.*
 import com.hknusc.web.repository.StoreRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
+import io.jsonwebtoken.Claims
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -43,10 +41,27 @@ class StoreService(
         storeRepository.saveStore(storeDBSaveDTO)
     }
 
-    fun setOpen(bearerAccessToken: String, storeOpenDTO: StoreOpenDTO): ResponseEntity<Any> {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+    fun editStore(bearerAccessToken: String, storeEditDTO: StoreEditDTO) {
+        val claims = getClaims(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
 
-        val claims = tokenProvider.findClaimsByJWT(accessToken)
+        val storeDBEditDTO = StoreDBEditDTO(
+            userStoreId,
+            storeEditDTO.name,
+            storeEditDTO.latitude,
+            storeEditDTO.longitude,
+            storeEditDTO.address,
+            storeEditDTO.info,
+            storeEditDTO.phoneNumber,
+            storeEditDTO.canReservation,
+            storeEditDTO.operatingTime
+        )
+
+        storeRepository.editStore(storeDBEditDTO)
+    }
+
+    fun setOpen(bearerAccessToken: String, storeOpenDTO: StoreOpenDTO): ResponseEntity<Any> {
+        val claims = getClaims(bearerAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims).toInt()
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
 
@@ -59,6 +74,11 @@ class StoreService(
             responseEntity.headers(httpHeaders)
         }
         return responseEntity.build()
+    }
+
+    private fun getClaims(bearerAccessToken: String): Claims {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+        return tokenProvider.findClaimsByJWT(accessToken)
     }
 
     private fun getUserId(bearerAccessToken: String): Int {
