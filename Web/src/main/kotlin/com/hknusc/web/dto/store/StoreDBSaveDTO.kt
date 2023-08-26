@@ -3,8 +3,8 @@ package com.hknusc.web.dto.store
 data class StoreDBSaveDTO(
     val accountId: Int,
     val name: String,
-    var latitude: Double,
-    var longitude: Double,
+    val latitude: Double,
+    val longitude: Double,
     val address: String?,
     val info: String?,
     val phoneNumber: String?,

@@ -1,6 +1,8 @@
 package com.hknusc.web.dto.store
 
-data class StoreSaveDTO(
+data class DistanceStoreDTO(
+    val id: Int,
+    val accountId: Int,
     val name: String,
     val latitude: Double,
     val longitude: Double,
@@ -9,4 +11,6 @@ data class StoreSaveDTO(
     val phoneNumber: String?,
     val canReservation: Boolean?,
     val operatingTime: String?,
+    val isOpen: Boolean = false,
+    val distance: Double,
 )

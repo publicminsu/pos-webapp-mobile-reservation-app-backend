@@ -22,6 +22,9 @@ class StoreService(
         return storeRepository.getStores(userId)
     }
 
+    fun getStoresByCoordinate(latitude: Double, longitude: Double) =
+        storeRepository.getStoresByCoordinate(latitude, longitude)
+
     fun saveStore(bearerAccessToken: String, storeSaveDTO: StoreSaveDTO) {
         val userId = getUserId(bearerAccessToken)
 

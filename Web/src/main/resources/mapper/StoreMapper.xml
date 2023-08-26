@@ -2,26 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hknusc.web.repository.StoreRepository">
     <select id="getStores" parameterType="int" resultType="com.hknusc.web.dto.store.StoreDTO">
-        SELECT ID,
-               ACCOUNT_ID,
-               NAME,
-               COORDINATE[0] LATITUDE,
-               COORDINATE[1] LONGITUDE,
-               ADDRESS,
-               INFO,
-               PHONE_NUMBER,
-               CAN_RESERVATION,
-               OPERATING_TIME,
-               IS_OPEN
+        SELECT *
         FROM STORE
         WHERE ACCOUNT_ID = #{userId}
     </select>
+    <select id="getStoresByCoordinate" parameterType="double" resultType="com.hknusc.web.dto.store.DistanceStoreDTO">
+        SELECT *,
+               EARTH_DISTANCE(LL_TO_EARTH(LATITUDE, LONGITUDE),
+                              LL_TO_EARTH(#{latitude}, #{longitude})) DISTANCE
+        FROM STORE
+    </select>
     <insert id="saveStore" parameterType="com.hknusc.web.dto.store.StoreDBSaveDTO">
-        INSERT INTO STORE(ACCOUNT_ID, NAME, COORDINATE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
+        INSERT INTO STORE(ACCOUNT_ID, NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
                           OPERATING_TIME, IS_OPEN)
-        VALUES (#{accountId}, #{name},
-                POINT(#{latitude}, #{longitude})
-                   , #{address}, #{info}, #{phoneNumber},
+        VALUES (#{accountId}, #{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
                 #{canReservation}, #{operatingTime}, #{isOpen})
     </insert>
     <update id="setOpen" parameterType="com.hknusc.web.dto.store.StoreOpenDTO">
