@@ -1,11 +1,10 @@
 package com.hknusc.web.dto.store
 
-import java.awt.Point
-
 data class StoreDBSaveDTO(
     val accountId: Int,
     val name: String,
-    val coordinate: Point,
+    var latitude: Double,
+    var longitude: Double,
     val address: String?,
     val info: String?,
     val phoneNumber: String?,

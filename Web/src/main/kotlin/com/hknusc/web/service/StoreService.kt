@@ -28,7 +28,8 @@ class StoreService(
         val storeDBSaveDTO = StoreDBSaveDTO(
             userId,
             storeSaveDTO.name,
-            storeSaveDTO.coordinate,
+            storeSaveDTO.latitude,
+            storeSaveDTO.longitude,
             storeSaveDTO.address,
             storeSaveDTO.info,
             storeSaveDTO.phoneNumber,
