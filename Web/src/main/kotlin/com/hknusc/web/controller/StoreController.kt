@@ -14,8 +14,12 @@ class StoreController(private val storeService: StoreService) {
     fun getStores(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = storeService.getStores(accessToken)
 
     @GetMapping("coordinate")
-    fun getStoresByCoordinate(@RequestParam latitude: Double, @RequestParam longitude: Double) =
-        storeService.getStoresByCoordinate(latitude, longitude)
+    fun getStoresByCoordinate(
+        @RequestParam latitude: Double,
+        @RequestParam longitude: Double,
+        @RequestParam distance: Double
+    ) =
+        storeService.getStoresByCoordinate(latitude, longitude, distance)
 
     //가게 저장하기
     @PostMapping
