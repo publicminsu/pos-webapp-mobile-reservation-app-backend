@@ -27,12 +27,14 @@ class AuthService(
 ) {
 
     fun authorize(loginDTO: LoginDTO): ResponseEntity<Any> {
-        lateinit var user: UserDTO
-
-        try {
-            user = userRepository.getUserByUserEmail(loginDTO.email)!!
+        val user: UserDTO = try {
+            userRepository.getUserByUserEmail(loginDTO.email)!!
         } catch (e: Exception) {
             throw CustomException(ErrorCode.LOGIN_FAIL)
+        }
+
+        if (!user.isVerified) {
+            throw CustomException(ErrorCode.EMAIL_NOT_VERIFIED)
         }
 
         if (!passwordEncoder.matches(loginDTO.password, user.password)) {

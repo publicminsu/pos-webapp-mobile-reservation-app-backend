@@ -15,12 +15,11 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
     RESERVATION_APPROVE_FAIL(HttpStatus.BAD_REQUEST, "예약 처리에 실패했습니다."),
 
     SIGNUP_FAIL(HttpStatus.UNAUTHORIZED, "회원가입에 실패했습니다."),
+    EMAIL_NOT_VERIFIED(HttpStatus.UNAUTHORIZED, "이메일 인증을 해주세요."),
     LOGIN_FAIL(HttpStatus.UNAUTHORIZED, "로그인에 실패했습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증입니다."),
     EMPTY_TOKEN(HttpStatus.UNAUTHORIZED, "인증되지 않았습니다."),
-
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 인증입니다."),
-
     STORE_NOT_OPEN(HttpStatus.UNAUTHORIZED, "개점하지 않았습니다."),
 
     FORBIDDEN_TOKEN(HttpStatus.FORBIDDEN, "권한이 없습니다."),
