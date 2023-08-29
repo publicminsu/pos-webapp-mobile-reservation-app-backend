@@ -1,13 +1,14 @@
 package com.hknusc.web.service
 
+import com.hknusc.web.dto.menu.MenuDBSaveDTO
 import com.hknusc.web.dto.menu.MenuDTO
 import com.hknusc.web.dto.menu.MenuEditDTO
 import com.hknusc.web.dto.menu.MenuSaveDTO
+import com.hknusc.web.repository.MenuRepository
+import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
-import com.hknusc.web.repository.MenuRepository
-import com.hknusc.web.util.PhotoUtility
 import org.springframework.stereotype.Service
 
 @Service
@@ -38,16 +39,16 @@ class MenuService(
         val photo = menuSaveDTO.photo
         val photoPath = photoUtility.saveImage(photo)
 
-        val menuDTO = MenuDTO(
+        val menuDBSaveDTO = MenuDBSaveDTO(
             storeId = userStoreId,
-            photo = photoPath,
             name = menuSaveDTO.name,
             price = menuSaveDTO.price,
+            photo = photoPath,
             category = menuSaveDTO.category
         )
 
         try {
-            menuRepository.saveMenu(menuDTO)
+            menuRepository.saveMenu(menuDBSaveDTO)
         } catch (_: Exception) {
             throw CustomException(ErrorCode.MENU_NOT_SAVED)
         }
@@ -56,14 +57,14 @@ class MenuService(
     fun editMenu(bearerAccessToken: String, menuEditDTO: MenuEditDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        val oldMenu = try {
+        val oldMenu: MenuDTO = try {
             menuRepository.getMenu(menuEditDTO.id, userStoreId)!!
         } catch (_: Exception) {
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
         }
 
         if (oldMenu.photo != null) {
-            photoUtility.deleteImage(oldMenu.photo!!)
+            photoUtility.deleteImage(oldMenu.photo)
         }
 
         val photo = menuEditDTO.photo
@@ -72,9 +73,9 @@ class MenuService(
         val menuDTO = MenuDTO(
             id = menuEditDTO.id,
             storeId = userStoreId,
-            photo = photoPath,
             name = menuEditDTO.name,
             price = menuEditDTO.price,
+            photo = photoPath,
             category = menuEditDTO.category
         )
 

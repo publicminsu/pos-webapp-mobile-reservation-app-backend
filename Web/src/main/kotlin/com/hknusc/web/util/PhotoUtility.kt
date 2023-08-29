@@ -28,7 +28,7 @@ class PhotoUtility(@param:Value("\${photo.uploadPath}") private val uploadPath: 
     }
 
     private fun isImage(photo: MultipartFile?, originalFilename: String?): Boolean {
-        if (photo == null || originalFilename == null) {
+        if (photo == null || photo.isEmpty || originalFilename == null) {
             return false
         }
 

@@ -1,7 +1,6 @@
 package com.hknusc.web.dto.menu
 
-data class MenuDTO(
-    val id: Int,
+data class MenuDBSaveDTO(
     val storeId: Int,
     val name: String,
     val price: Int,
