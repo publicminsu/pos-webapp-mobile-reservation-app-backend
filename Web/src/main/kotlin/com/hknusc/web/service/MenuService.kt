@@ -48,13 +48,23 @@ class MenuService(
 
         try {
             menuRepository.saveMenu(menuDTO)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             throw CustomException(ErrorCode.MENU_NOT_SAVED)
         }
     }
 
     fun editMenu(bearerAccessToken: String, menuEditDTO: MenuEditDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+
+        val oldMenu = try {
+            menuRepository.getMenu(menuEditDTO.id, userStoreId)!!
+        } catch (_: Exception) {
+            throw CustomException(ErrorCode.MENU_NOT_FOUND)
+        }
+
+        if (oldMenu.photo != null) {
+            photoUtility.deleteImage(oldMenu.photo!!)
+        }
 
         val photo = menuEditDTO.photo
         val photoPath = photoUtility.saveImage(photo)

@@ -22,6 +22,11 @@ class PhotoUtility(@param:Value("\${photo.uploadPath}") private val uploadPath: 
         return saveFileName
     }
 
+    fun deleteImage(path: String) {
+        val file = File(uploadPath + path)
+        file.delete()
+    }
+
     private fun isImage(photo: MultipartFile?, originalFilename: String?): Boolean {
         if (photo == null || originalFilename == null) {
             return false
