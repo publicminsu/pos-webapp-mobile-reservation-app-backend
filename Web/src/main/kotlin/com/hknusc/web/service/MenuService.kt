@@ -57,15 +57,7 @@ class MenuService(
     fun editMenu(bearerAccessToken: String, menuEditDTO: MenuEditDTO) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        val oldMenu: MenuDTO = try {
-            menuRepository.getMenu(menuEditDTO.id, userStoreId)!!
-        } catch (_: Exception) {
-            throw CustomException(ErrorCode.MENU_NOT_FOUND)
-        }
-
-        if (oldMenu.photo != null) {
-            photoUtility.deleteImage(oldMenu.photo)
-        }
+        deleteOldMenuPhoto(menuEditDTO.id, userStoreId)
 
         val photo = menuEditDTO.photo
         val photoPath = photoUtility.saveImage(photo)
@@ -87,8 +79,22 @@ class MenuService(
     fun deleteMenu(bearerAccessToken: String, menuId: Int) {
         val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
 
+        deleteOldMenuPhoto(menuId, userStoreId)
+
         if (menuRepository.deleteMenu(menuId, userStoreId) == 0) {
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
+        }
+    }
+
+    private fun deleteOldMenuPhoto(menuId: Int, storeId: Int) {
+        val oldMenu: MenuDTO = try {
+            menuRepository.getMenu(menuId, storeId)!!
+        } catch (_: Exception) {
+            throw CustomException(ErrorCode.MENU_NOT_FOUND)
+        }
+
+        if (oldMenu.photo != null) {
+            photoUtility.deleteImage(oldMenu.photo)
         }
     }
 }
