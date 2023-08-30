@@ -16,7 +16,7 @@ class JwtAuthenticationFilter(private val jwtTokenProvider: JwtTokenProvider) : 
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val bearerToken = request.getHeader(JwtTokenProvider.Access_Key)
+        val bearerToken = request.getHeader(JwtTokenProvider.ACCESS_KEY)
 
         if (bearerToken != null) {
             val accessToken: String? = jwtTokenProvider.resolveToken(bearerToken)
@@ -32,7 +32,7 @@ class JwtAuthenticationFilter(private val jwtTokenProvider: JwtTokenProvider) : 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
         val method = request.method
-        
+
         return if (path.startsWith("/auth")) {
             true
         } else if (path.equals("/users") && method == "POST") {

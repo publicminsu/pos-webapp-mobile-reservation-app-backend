@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 class ReceiptController(private val receiptService: ReceiptService) {
     @GetMapping("{orderId}")
     fun getReceipt(
-        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         @PathVariable("orderId") orderId: Int
     ) = receiptService.getReceipt(accessToken, orderId)
 }

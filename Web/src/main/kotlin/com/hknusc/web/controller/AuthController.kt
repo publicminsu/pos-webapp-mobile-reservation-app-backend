@@ -17,13 +17,13 @@ class AuthController(private val authService: AuthService) {
 
     //인증 삭제
     @DeleteMapping
-    fun logout(@RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String) = authService.logout(refreshToken)
+    fun logout(@RequestHeader(JwtTokenProvider.REFRESH_KEY) refreshToken: String) = authService.logout(refreshToken)
 
     //인증 재발급 (만료된 인증을 새로운 인증으로 교체)
     @GetMapping("refresh")
     fun refresh(
-        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
-        @RequestHeader(JwtTokenProvider.Refresh_Key) refreshToken: String
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestHeader(JwtTokenProvider.REFRESH_KEY) refreshToken: String
     ) = authService.refresh(accessToken, refreshToken)
 
     //이메일 인증 확인

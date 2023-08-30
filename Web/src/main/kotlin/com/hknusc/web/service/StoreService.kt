@@ -61,7 +61,7 @@ class StoreService(
 
     fun setOpen(bearerAccessToken: String, storeOpenDTO: StoreOpenDTO): ResponseEntity<Any> {
         val claims = getClaims(bearerAccessToken)
-        val userId = tokenProvider.findUserIdByClaims(claims).toInt()
+        val userId = tokenProvider.findUserIdByClaims(claims)
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
 
         if (storeRepository.setOpen(userId, storeOpenDTO) == 0)

@@ -71,10 +71,10 @@ class AuthService(
 
         //AccessToken 정보 가져오기
         val claims = tokenProvider.findClaimsByJWT(oldAccessToken)
-        val userId = tokenProvider.findUserIdByClaims(claims).toInt()
+        val userId = tokenProvider.findUserIdByClaims(claims)
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
         val userStoreId: Int = try {
-            tokenProvider.findUserStoreIdByClaims(claims).toInt()
+            tokenProvider.findUserStoreIdByClaims(claims)
         } catch (e: Exception) {
             0
         }
@@ -100,7 +100,7 @@ class AuthService(
         tokenProvider.validateToken(token)
 
         val claims = tokenProvider.findClaimsByJWT(token)
-        val userId = tokenProvider.findUserIdByClaims(claims).toInt()
+        val userId = tokenProvider.findUserIdByClaims(claims)
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
 
         if (userRepository.confirmEmail(userId) == 0) {

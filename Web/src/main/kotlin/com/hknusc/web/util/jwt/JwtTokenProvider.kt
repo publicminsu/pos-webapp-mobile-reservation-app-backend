@@ -76,25 +76,25 @@ class JwtTokenProvider(
         return findClaimsByJWT(token).subject.toInt()
     }
 
-    fun findUserIdByClaims(claims: Claims): String {
-        return claims["userId"].toString()
+    fun findUserIdByClaims(claims: Claims): Int {
+        return claims["userId"].toString().toInt()
     }
 
     fun findUserEmailByClaims(claims: Claims): String {
         return claims["userEmail"].toString()
     }
 
-    fun findUserStoreIdByClaims(claims: Claims): String {
+    fun findUserStoreIdByClaims(claims: Claims): Int {
         val storeId = claims["userStoreId"].toString()
         if (storeId == "0")
             throw CustomException(ErrorCode.STORE_NOT_OPEN)
-        return storeId
+        return storeId.toInt()
     }
 
     fun findUserStoreIdByBearerAccessToken(bearerAccessToken: String): Int {
         val accessToken = resolveToken(bearerAccessToken)
         val claims = findClaimsByJWT(accessToken)
-        return findUserStoreIdByClaims(claims).toInt()
+        return findUserStoreIdByClaims(claims)
     }
 
     fun validateToken(token: String?) {
@@ -133,13 +133,13 @@ class JwtTokenProvider(
         authRepository.saveRefreshToken(refreshTokenSaveDTO)
 
         val httpHeaders = HttpHeaders()
-        httpHeaders.add(Access_Key, "Bearer $accessToken")
-        httpHeaders.add(Refresh_Key, "Bearer $refreshToken")
+        httpHeaders.add(ACCESS_KEY, "Bearer $accessToken")
+        httpHeaders.add(REFRESH_KEY, "Bearer $refreshToken")
         return httpHeaders
     }
 
     companion object {
-        const val Access_Key = "access_token"
-        const val Refresh_Key = "refresh_token"
+        const val ACCESS_KEY = "access_token"
+        const val REFRESH_KEY = "refresh_token"
     }
 }

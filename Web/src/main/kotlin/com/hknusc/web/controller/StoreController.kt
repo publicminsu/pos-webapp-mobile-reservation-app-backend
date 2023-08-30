@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 class StoreController(private val storeService: StoreService) {
     //현재 인증된 사용자의 가게 가져오기
     @GetMapping
-    fun getStores(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) = storeService.getStores(accessToken)
+    fun getStores(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String) = storeService.getStores(accessToken)
 
     //좌표 기준으로 가게 찾기
     @GetMapping("coordinate")
@@ -25,16 +25,16 @@ class StoreController(private val storeService: StoreService) {
 
     //가게 저장하기
     @PostMapping
-    fun saveStore(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, storeSaveDTO: StoreSaveDTO) =
+    fun saveStore(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, storeSaveDTO: StoreSaveDTO) =
         storeService.saveStore(accessToken, storeSaveDTO)
 
     //가게 수정하기
     @PatchMapping
-    fun editStore(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, storeEditDTO: StoreEditDTO) =
+    fun editStore(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, storeEditDTO: StoreEditDTO) =
         storeService.editStore(accessToken, storeEditDTO)
 
     //가게 개점
     @PostMapping("open")
-    fun setOpen(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String, storeOpenDTO: StoreOpenDTO) =
+    fun setOpen(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, storeOpenDTO: StoreOpenDTO) =
         storeService.setOpen(accessToken, storeOpenDTO)
 }

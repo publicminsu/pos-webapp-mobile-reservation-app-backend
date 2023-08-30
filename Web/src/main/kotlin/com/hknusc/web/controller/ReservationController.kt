@@ -12,34 +12,34 @@ import org.springframework.web.bind.annotation.*
 class ReservationController(private val reservationService: ReservationService) {
     //예약 가져오기
     @GetMapping
-    fun getReservations(@RequestHeader(JwtTokenProvider.Access_Key) accessToken: String) =
+    fun getReservations(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String) =
         reservationService.getReservations(accessToken)
 
     //특정 예약 가져오기
     @GetMapping("{reservationId}")
     fun getReservation(
-        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         @PathVariable("reservationId") reservationId: Int
     ) = reservationService.getReservation(accessToken, reservationId)
 
     //예약 신청 (가게에서)
     @PostMapping
     fun saveReservation(
-        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         reservationSaveDTO: ReservationSaveDTO
     ) = reservationService.saveReservation(accessToken, reservationSaveDTO)
 
     //예약 수정
     @PatchMapping
     fun editReservation(
-        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         reservationEditDTO: ReservationEditDTO
     ) = reservationService.editReservation(accessToken, reservationEditDTO)
 
     //예약 처리.
     @PatchMapping("approve")
     fun approveReservation(
-        @RequestHeader(JwtTokenProvider.Access_Key) accessToken: String,
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         reservationApproveDTO: ReservationApproveDTO
     ) = reservationService.approveReservation(accessToken, reservationApproveDTO)
 }
