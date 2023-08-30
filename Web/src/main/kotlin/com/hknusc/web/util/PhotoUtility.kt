@@ -1,5 +1,7 @@
 package com.hknusc.web.util
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.type.TypeFactory
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import org.springframework.beans.factory.annotation.Value
@@ -10,7 +12,10 @@ import java.nio.file.Files
 import java.util.*
 
 @Component
-class PhotoUtility(@param:Value("\${photo.uploadPath}") private val uploadPath: String) {
+class PhotoUtility(
+    @param:Value("\${photo.uploadPath}") private val uploadPath: String,
+    private val objectMapper: ObjectMapper
+) {
     fun saveImage(photo: MultipartFile?): String? {
         val originalFilename = photo?.originalFilename
         if (!isImage(photo, originalFilename)) {
@@ -21,6 +26,25 @@ class PhotoUtility(@param:Value("\${photo.uploadPath}") private val uploadPath: 
         photo!!.transferTo(File(uploadPath + saveFileName))
         return saveFileName
     }
+
+    fun saveImages(photos: List<MultipartFile>?): List<String> {
+        val photoPaths: MutableList<String> = mutableListOf()
+        photos?.forEach {
+            val path: String? = saveImage(it)
+            if (!path.isNullOrEmpty()) {
+                photoPaths.add(path)
+            }
+        }
+        return photoPaths
+    }
+
+    fun saveImagesAsString(photos: List<MultipartFile>?): String = objectMapper.writeValueAsString(saveImages(photos))
+
+    fun getImagesByString(photos: String): List<String> =
+        objectMapper.readValue(
+            photos,
+            TypeFactory.defaultInstance().constructCollectionType(List::class.java, String::class.java)
+        )
 
     fun deleteImage(path: String) {
         val file = File(uploadPath + path)

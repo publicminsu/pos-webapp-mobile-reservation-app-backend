@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 
 @Component
-class ErrorUtility {
+class ErrorUtility(private val objectMapper: ObjectMapper) {
     fun generateErrorResponse(errorCode: ErrorCode, response: HttpServletResponse) {
         generateErrorResponse(errorCode.status, errorCode.message, response)
     }
@@ -17,7 +17,7 @@ class ErrorUtility {
         response.contentType = "application/json"
         response.characterEncoding = "utf8"
 
-        val errorResponse = ObjectMapper().writeValueAsString(ErrorResponseDTO(status, message))
+        val errorResponse = objectMapper.writeValueAsString(ErrorResponseDTO(status, message))
 
         response.writer.write(errorResponse)
     }

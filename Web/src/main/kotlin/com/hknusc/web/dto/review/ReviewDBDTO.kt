@@ -1,9 +1,9 @@
 package com.hknusc.web.dto.review
 
-import org.springframework.web.multipart.MultipartFile
 import java.sql.Timestamp
 
-data class ReviewDBSaveDTO(
+data class ReviewDBDTO(
+    val id: Int,
     val accountId: Int,
     val storeId: Int,
     val detail: String?,

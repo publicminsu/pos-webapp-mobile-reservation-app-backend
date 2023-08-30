@@ -9,4 +9,5 @@ data class ReviewDTO(
     val detail: String?,
     val writingTime: Timestamp,
     val rating: Int,
+    val photos: List<String>
 )
