@@ -1,6 +1,7 @@
 package com.hknusc.web.service
 
 import com.hknusc.web.dto.review.ReviewDTO
+import com.hknusc.web.dto.review.ReviewSaveDTO
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.repository.ReviewRepository
@@ -25,5 +26,10 @@ class ReviewService(
         } catch (e: Exception) {
             throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
         }
+    }
+
+    fun saveReview(bearerAccessToken: String, reviewSaveDTO: ReviewSaveDTO) {
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+
     }
 }
