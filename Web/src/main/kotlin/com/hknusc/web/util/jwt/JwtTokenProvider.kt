@@ -1,11 +1,10 @@
 package com.hknusc.web.util.jwt
 
-import com.hknusc.web.dto.auth.RefreshTokenDTO
 import com.hknusc.web.dto.auth.RefreshTokenSaveDTO
-import com.hknusc.web.util.exception.CustomException
-import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.repository.AuthRepository
 import com.hknusc.web.service.UserDetailService
+import com.hknusc.web.util.exception.CustomException
+import com.hknusc.web.util.exception.ErrorCode
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -92,6 +91,12 @@ class JwtTokenProvider(
         return storeId
     }
 
+    fun findUserStoreIdByBearerAccessToken(bearerAccessToken: String): Int {
+        val accessToken = resolveToken(bearerAccessToken)
+        val claims = findClaimsByJWT(accessToken)
+        return findUserStoreIdByClaims(claims).toInt()
+    }
+
     fun validateToken(token: String?) {
         if (token.isNullOrEmpty())
             throw CustomException(ErrorCode.EMPTY_TOKEN)
@@ -131,12 +136,6 @@ class JwtTokenProvider(
         httpHeaders.add(Access_Key, "Bearer $accessToken")
         httpHeaders.add(Refresh_Key, "Bearer $refreshToken")
         return httpHeaders
-    }
-
-    fun getUserStoreIdByBearerAccessToken(bearerAccessToken: String): Int {
-        val accessToken = resolveToken(bearerAccessToken)
-        val claims = findClaimsByJWT(accessToken)
-        return findUserStoreIdByClaims(claims).toInt()
     }
 
     companion object {

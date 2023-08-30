@@ -10,5 +10,6 @@
         SELECT *
         FROM REVIEW
         WHERE ID = #{reviewId}
+          AND STORE_ID = #{storeId}
     </select>
 </mapper>

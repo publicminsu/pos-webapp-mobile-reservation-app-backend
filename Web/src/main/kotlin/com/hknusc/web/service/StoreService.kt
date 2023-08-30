@@ -42,8 +42,7 @@ class StoreService(
     }
 
     fun editStore(bearerAccessToken: String, storeEditDTO: StoreEditDTO) {
-        val claims = getClaims(bearerAccessToken)
-        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims).toInt()
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val storeDBEditDTO = StoreDBEditDTO(
             userStoreId,

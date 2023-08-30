@@ -18,13 +18,13 @@ class MenuService(
     private val menuRepository: MenuRepository
 ) {
     fun getMenus(bearerAccessToken: String): List<MenuDTO> {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         return menuRepository.getMenus(userStoreId)
     }
 
     fun getMenu(bearerAccessToken: String, menuId: Int): MenuDTO {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         try {
             return menuRepository.getMenu(menuId, userStoreId)!!
@@ -34,7 +34,7 @@ class MenuService(
     }
 
     fun saveMenu(bearerAccessToken: String, menuSaveDTO: MenuSaveDTO) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val photo = menuSaveDTO.photo
         val photoPath = photoUtility.saveImage(photo)
@@ -55,7 +55,7 @@ class MenuService(
     }
 
     fun editMenu(bearerAccessToken: String, menuEditDTO: MenuEditDTO) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         deleteOldMenuPhoto(menuEditDTO.id, userStoreId)
 
@@ -77,7 +77,7 @@ class MenuService(
     }
 
     fun deleteMenu(bearerAccessToken: String, menuId: Int) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         deleteOldMenuPhoto(menuId, userStoreId)
 

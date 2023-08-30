@@ -15,13 +15,13 @@ class ReservationService(
     private val reservationRepository: ReservationRepository
 ) {
     fun getReservations(bearerAccessToken: String): List<OrderDTO> {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         return reservationRepository.getReservations(userStoreId)
     }
 
     fun getReservation(bearerAccessToken: String, reservationId: Int): OrderDTO {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         try {
             return reservationRepository.getReservation(reservationId, userStoreId)!!
@@ -31,7 +31,7 @@ class ReservationService(
     }
 
     fun saveReservation(bearerAccessToken: String, reservationSaveDTO: ReservationSaveDTO) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val reservationDBSaveDTO = ReservationDBSaveDTO(
             reservationSaveDTO.accountId,
@@ -45,7 +45,7 @@ class ReservationService(
     }
 
     fun editReservation(bearerAccessToken: String, reservationEditDTO: ReservationEditDTO) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val reservationDBEditDTO = ReservationDBEditDTO(
             reservationEditDTO.id,
@@ -68,7 +68,7 @@ class ReservationService(
             throw CustomException(ErrorCode.RESERVATION_WRONG_CODE)
         }
 
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val reservationDBApproveDTO = ReservationDBApproveDTO(
             reservationApproveDTO.id,

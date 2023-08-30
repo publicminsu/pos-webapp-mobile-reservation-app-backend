@@ -4,7 +4,6 @@ import com.hknusc.web.dto.ReceiptDTO
 import com.hknusc.web.dto.order.OrderDTO
 import com.hknusc.web.dto.orderDetail.OrderDetailDTO
 import com.hknusc.web.repository.OrderDetailRepository
-import com.hknusc.web.repository.OrderRepository
 import com.hknusc.web.repository.ReceiptRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
@@ -18,7 +17,7 @@ class ReceiptService(
     private val orderDetailRepository: OrderDetailRepository
 ) {
     fun getReceipt(bearerAccessToken: String, orderId: Int): ReceiptDTO {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
         val orderDTO: OrderDTO
         try {
             orderDTO = receiptRepository.getReceipt(orderId, userStoreId)!!

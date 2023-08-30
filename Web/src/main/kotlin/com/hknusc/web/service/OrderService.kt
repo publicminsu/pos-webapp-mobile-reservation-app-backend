@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service
 @Service
 class OrderService(private val tokenProvider: JwtTokenProvider, private val orderRepository: OrderRepository) {
     fun getOrders(bearerAccessToken: String): List<OrderDTO> {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         return orderRepository.getOrders(userStoreId)
     }
 
     fun getOrder(bearerAccessToken: String, orderId: Int): OrderDTO {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         try {
             return orderRepository.getOrder(orderId, userStoreId)!!
@@ -26,7 +26,7 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
     }
 
     fun saveOrder(bearerAccessToken: String, orderSaveDTO: OrderSaveDTO) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         if (orderRepository.isNotEmptyTable(orderSaveDTO.tableId))
             throw CustomException(ErrorCode.TABLE_NOT_EMPTY)
@@ -45,7 +45,7 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
     }
 
     fun editOrder(bearerAccessToken: String, orderEditDTO: OrderEditDTO) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         val orderDBEditDTO = OrderDBEditDTO(
             orderEditDTO.id,
@@ -62,7 +62,7 @@ class OrderService(private val tokenProvider: JwtTokenProvider, private val orde
     }
 
     fun deleteOrder(bearerAccessToken: String, orderId: Int) {
-        val userStoreId = tokenProvider.getUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
         if (orderRepository.deleteOrder(orderId, userStoreId) == 0)
             throw CustomException(ErrorCode.ORDER_NOT_FOUND)
