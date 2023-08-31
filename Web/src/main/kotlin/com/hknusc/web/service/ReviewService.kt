@@ -41,9 +41,7 @@ class ReviewService(
     }
 
     fun saveReview(bearerAccessToken: String, reviewSaveDTO: ReviewSaveDTO) {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-
-        val claims = tokenProvider.findClaimsByJWT(accessToken)
+        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims)
         val userStoreId = tokenProvider.findUserStoreIdByClaims(claims)
 

@@ -91,14 +91,18 @@ class JwtTokenProvider(
         return storeId.toInt()
     }
 
+    fun findClaimsByBearerAccessToken(bearerAccessToken: String): Claims {
+        val accessToken = resolveToken(bearerAccessToken)
+        return findClaimsByJWT(accessToken)
+    }
+
     fun findUserIdByBearerAccessToken(bearerAccessToken: String): Int {
         val accessToken = resolveToken(bearerAccessToken)
         return findUserIdByJWT(accessToken)
     }
 
     fun findUserStoreIdByBearerAccessToken(bearerAccessToken: String): Int {
-        val accessToken = resolveToken(bearerAccessToken)
-        val claims = findClaimsByJWT(accessToken)
+        val claims = findClaimsByBearerAccessToken(bearerAccessToken)
         return findUserStoreIdByClaims(claims)
     }
 

@@ -60,7 +60,7 @@ class StoreService(
     }
 
     fun setOpen(bearerAccessToken: String, storeOpenDTO: StoreOpenDTO): ResponseEntity<Any> {
-        val claims = getClaims(bearerAccessToken)
+        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims)
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
 
@@ -73,10 +73,5 @@ class StoreService(
             responseEntity.headers(httpHeaders)
         }
         return responseEntity.build()
-    }
-
-    private fun getClaims(bearerAccessToken: String): Claims {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-        return tokenProvider.findClaimsByJWT(accessToken)
     }
 }

@@ -63,14 +63,13 @@ class AuthService(
     }
 
     fun refresh(oldBearerAccessToken: String, oldBearerRefreshToken: String): ResponseEntity<Any> {
-        val oldAccessToken = tokenProvider.resolveToken(oldBearerAccessToken)
         val oldRefreshToken = tokenProvider.resolveToken(oldBearerRefreshToken)
 
         //RefreshToken 검증.
         tokenProvider.validateToken(oldRefreshToken.toString())
 
         //AccessToken 정보 가져오기
-        val claims = tokenProvider.findClaimsByJWT(oldAccessToken)
+        val claims = tokenProvider.findClaimsByBearerAccessToken(oldBearerAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims)
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
         val userStoreId: Int = try {
