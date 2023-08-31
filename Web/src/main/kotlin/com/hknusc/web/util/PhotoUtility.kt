@@ -51,6 +51,13 @@ class PhotoUtility(
         file.delete()
     }
 
+    fun deleteImages(photos: String) {
+        val paths = getImagesByString(photos)
+        paths.forEach {
+            deleteImage(it)
+        }
+    }
+
     private fun isImage(photo: MultipartFile?, originalFilename: String?): Boolean {
         if (photo == null || photo.isEmpty || originalFilename == null) {
             return false

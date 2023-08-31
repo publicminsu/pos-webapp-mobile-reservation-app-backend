@@ -1,5 +1,6 @@
 package com.hknusc.web.controller
 
+import com.hknusc.web.dto.review.ReviewEditDTO
 import com.hknusc.web.dto.review.ReviewSaveDTO
 import com.hknusc.web.service.ReviewService
 import com.hknusc.web.util.jwt.JwtTokenProvider
@@ -26,6 +27,11 @@ class ReviewController(private val reviewService: ReviewService) {
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         reviewSaveDTO: ReviewSaveDTO
     ) = reviewService.saveReview(accessToken, reviewSaveDTO)
+
+    //리뷰 수정하기(테스트용)
+    @PatchMapping
+    fun editReview(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, reviewEditDTO: ReviewEditDTO) =
+        reviewService.editReview(accessToken, reviewEditDTO)
 
     //리뷰 삭제하기(테스트용)
     @DeleteMapping("{reviewId}")

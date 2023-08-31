@@ -2,6 +2,7 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.review.ReviewDBSaveDTO
 import com.hknusc.web.dto.review.ReviewDTO
+import com.hknusc.web.dto.review.ReviewEditDTO
 import com.hknusc.web.dto.review.ReviewSaveDTO
 import com.hknusc.web.repository.ReviewRepository
 import com.hknusc.web.util.PhotoUtility
@@ -57,6 +58,26 @@ class ReviewService(
             )
 
         reviewRepository.saveReview(reviewDBSaveDTO)
+    }
+
+    fun editReview(bearerAccessToken: String, reviewEditDTO: ReviewEditDTO) {
+        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByClaims(claims)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims)
+
+        //이전 이미지 삭제
+        val oldDBReview = try {
+            reviewRepository.getReview(userStoreId, reviewEditDTO.id)!!
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
+        }
+        photoUtility.deleteImages(oldDBReview.photos)
+
+        val reviewDBEditDTO = reviewEditDTO.convertToReviewDB(photoUtility, userId)
+
+        if (reviewRepository.editReview(reviewDBEditDTO) == 0) {
+            throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
+        }
     }
 
     fun deleteReview(bearerAccessToken: String, reviewId: Int) {
