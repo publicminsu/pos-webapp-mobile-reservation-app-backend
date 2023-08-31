@@ -62,8 +62,7 @@ class ReviewService(
     }
 
     fun deleteReview(bearerAccessToken: String, reviewId: Int) {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-        val userId = tokenProvider.findUserIdByJWT(accessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
         if (reviewRepository.deleteReview(userId, reviewId) == 0) {
             throw CustomException(ErrorCode.REVIEW_NOT_FOUND)

@@ -55,7 +55,7 @@ class UserService(
     }
 
     fun getUser(bearerAccessToken: String): UserDTO {
-        val userId = getUserId(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
         try {
             return userRepository.getUser(userId)!!
@@ -75,7 +75,7 @@ class UserService(
     fun getUserByIdList(userGetByIdListDTO: UserGetByIdListDTO) = userRepository.getUserByIdList(userGetByIdListDTO)
 
     fun editUser(bearerAccessToken: String, userEditDTO: UserEditDTO) {
-        val userId = getUserId(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
         val oldUser = userRepository.getUser(userId)!!
 
@@ -102,7 +102,7 @@ class UserService(
 
     fun getDeletedUser() = userRepository.getDeletedUsers()
     fun deleteUser(bearerAccessToken: String) {
-        val userId = getUserId(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
         lateinit var user: UserDTO
         try {
@@ -116,11 +116,6 @@ class UserService(
         val deletedUser = DeletedUserDTO(email = user.email, phoneNumber = user.phoneNumber, deleteTime = curTime)
         userRepository.saveDeletedUser(deletedUser)
         userRepository.deleteUser(userId)
-    }
-
-    private fun getUserId(bearerAccessToken: String): Int {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-        return tokenProvider.findUserIdByJWT(accessToken)
     }
 
     private fun checkDuplicate(

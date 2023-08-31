@@ -15,7 +15,7 @@ class StoreService(
     private val tokenProvider: JwtTokenProvider, private val storeRepository: StoreRepository
 ) {
     fun getStores(bearerAccessToken: String): List<StoreDTO> {
-        val userId = getUserId(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
         return storeRepository.getStores(userId)
     }
@@ -24,7 +24,7 @@ class StoreService(
         storeRepository.getStoresByCoordinate(latitude, longitude, distance)
 
     fun saveStore(bearerAccessToken: String, storeSaveDTO: StoreSaveDTO) {
-        val userId = getUserId(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
         val storeDBSaveDTO = StoreDBSaveDTO(
             userId,
@@ -78,10 +78,5 @@ class StoreService(
     private fun getClaims(bearerAccessToken: String): Claims {
         val accessToken = tokenProvider.resolveToken(bearerAccessToken)
         return tokenProvider.findClaimsByJWT(accessToken)
-    }
-
-    private fun getUserId(bearerAccessToken: String): Int {
-        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
-        return tokenProvider.findUserIdByJWT(accessToken)
     }
 }
