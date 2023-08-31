@@ -26,4 +26,11 @@ class ReviewController(private val reviewService: ReviewService) {
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         reviewSaveDTO: ReviewSaveDTO
     ) = reviewService.saveReview(accessToken, reviewSaveDTO)
+
+    //리뷰 삭제하기(테스트용)
+    @DeleteMapping("{reviewId}")
+    fun deleteReview(
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
+        @PathVariable("reviewId") reviewId: Int
+    ) = reviewService.deleteReview(accessToken, reviewId)
 }

@@ -16,4 +16,10 @@
         INSERT INTO REVIEW(ACCOUNT_ID, STORE_ID, DETAIL, WRITING_TIME, RATING, PHOTOS)
         VALUES (#{accountId}, #{storeId}, #{detail}, #{writingTime}, #{rating}, #{photos})
     </insert>
+    <delete id="deleteReview" parameterType="int">
+        DELETE
+        FROM REVIEW
+        WHERE ID = #{reviewId}
+          AND ACCOUNT_ID = #{userId}
+    </delete>
 </mapper>

@@ -1,6 +1,5 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.review.ReviewDBDTO
 import com.hknusc.web.dto.review.ReviewDBSaveDTO
 import com.hknusc.web.dto.review.ReviewDTO
 import com.hknusc.web.dto.review.ReviewSaveDTO
@@ -60,5 +59,14 @@ class ReviewService(
             )
 
         reviewRepository.saveReview(reviewDBSaveDTO)
+    }
+
+    fun deleteReview(bearerAccessToken: String, reviewId: Int) {
+        val accessToken = tokenProvider.resolveToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByJWT(accessToken)
+
+        if (reviewRepository.deleteReview(userId, reviewId) == 0) {
+            throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
+        }
     }
 }
