@@ -81,10 +81,20 @@ class ReviewService(
     }
 
     fun deleteReview(bearerAccessToken: String, reviewId: Int) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
+        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByClaims(claims)
+        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims)
+
+        //이전 이미지 삭제
+        val oldDBReview = try {
+            reviewRepository.getReview(userStoreId, reviewId)!!
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
+        }
 
         if (reviewRepository.deleteReview(userId, reviewId) == 0) {
             throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
         }
+        photoUtility.deleteImages(oldDBReview.photos)
     }
 }
