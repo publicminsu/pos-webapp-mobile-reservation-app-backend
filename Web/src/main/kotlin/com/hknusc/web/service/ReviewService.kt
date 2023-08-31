@@ -24,7 +24,7 @@ class ReviewService(
 
         val reviews: MutableList<ReviewDTO> = mutableListOf()
         dbReviews.forEach {
-            reviews.add(dbReviewConvertToReview(it))
+            reviews.add(it.convertToReview(photoUtility))
         }
         return reviews
     }
@@ -38,7 +38,7 @@ class ReviewService(
             throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
         }
 
-        return dbReviewConvertToReview(dbReview)
+        return dbReview.convertToReview(photoUtility)
     }
 
     fun saveReview(bearerAccessToken: String, reviewSaveDTO: ReviewSaveDTO) {
@@ -60,17 +60,5 @@ class ReviewService(
             )
 
         reviewRepository.saveReview(reviewDBSaveDTO)
-    }
-
-    private fun dbReviewConvertToReview(reviewDBDTO: ReviewDBDTO): ReviewDTO {
-        return ReviewDTO(
-            reviewDBDTO.id,
-            reviewDBDTO.accountId,
-            reviewDBDTO.storeId,
-            reviewDBDTO.detail,
-            reviewDBDTO.writingTime,
-            reviewDBDTO.rating,
-            photoUtility.getImagesByString(reviewDBDTO.photos)
-        )
     }
 }
