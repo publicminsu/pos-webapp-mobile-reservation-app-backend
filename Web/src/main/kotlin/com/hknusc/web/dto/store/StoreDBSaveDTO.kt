@@ -11,4 +11,6 @@ data class StoreDBSaveDTO(
     val canReservation: Boolean?,
     val operatingTime: String?,
     val isOpen: Boolean = false,
+    val profilePhoto: String?,
+    val photos: String
 )

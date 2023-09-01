@@ -10,4 +10,6 @@ data class StoreDBEditDTO(
     val phoneNumber: String?,
     val canReservation: Boolean?,
     val operatingTime: String?,
+    val profilePhoto: String?,
+    val photos: String
 )

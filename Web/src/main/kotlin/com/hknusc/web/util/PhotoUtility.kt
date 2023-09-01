@@ -27,17 +27,6 @@ class PhotoUtility(
         return saveFileName
     }
 
-    fun saveImages(photos: List<MultipartFile>?): List<String> {
-        val photoPaths: MutableList<String> = mutableListOf()
-        photos?.forEach {
-            val path: String? = saveImage(it)
-            if (!path.isNullOrEmpty()) {
-                photoPaths.add(path)
-            }
-        }
-        return photoPaths
-    }
-
     fun saveImagesAsString(photos: List<MultipartFile>?): String = objectMapper.writeValueAsString(saveImages(photos))
 
     fun getImagesByString(photos: String): List<String> =
@@ -56,6 +45,17 @@ class PhotoUtility(
         paths.forEach {
             deleteImage(it)
         }
+    }
+
+    private fun saveImages(photos: List<MultipartFile>?): List<String> {
+        val photoPaths: MutableList<String> = mutableListOf()
+        photos?.forEach {
+            val path: String? = saveImage(it)
+            if (!path.isNullOrEmpty()) {
+                photoPaths.add(path)
+            }
+        }
+        return photoPaths
     }
 
     private fun isImage(photo: MultipartFile?, originalFilename: String?): Boolean {

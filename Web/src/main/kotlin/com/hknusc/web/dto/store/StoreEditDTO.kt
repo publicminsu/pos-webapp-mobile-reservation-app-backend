@@ -1,5 +1,8 @@
 package com.hknusc.web.dto.store
 
+import com.hknusc.web.util.PhotoUtility
+import org.springframework.web.multipart.MultipartFile
+
 data class StoreEditDTO(
     val name: String,
     val latitude: Double,
@@ -9,5 +12,21 @@ data class StoreEditDTO(
     val phoneNumber: String?,
     val canReservation: Boolean?,
     val operatingTime: String?,
-    val isOpen: Boolean = false,
-)
+    val profilePhoto: MultipartFile?,
+    val photos: List<MultipartFile>?
+) {
+    fun convertToStoreDB(photoUtility: PhotoUtility, storeId: Int) =
+        StoreDBEditDTO(
+            storeId,
+            name,
+            latitude,
+            longitude,
+            address,
+            info,
+            phoneNumber,
+            canReservation,
+            operatingTime,
+            profilePhoto = photoUtility.saveImage(profilePhoto),
+            photos = photoUtility.saveImagesAsString(photos)
+        )
+}

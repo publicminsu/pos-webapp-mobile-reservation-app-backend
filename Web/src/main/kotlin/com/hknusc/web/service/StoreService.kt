@@ -2,6 +2,7 @@ package com.hknusc.web.service
 
 import com.hknusc.web.dto.store.*
 import com.hknusc.web.repository.StoreRepository
+import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtTokenProvider
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class StoreService(
-    private val tokenProvider: JwtTokenProvider, private val storeRepository: StoreRepository
+    private val tokenProvider: JwtTokenProvider,
+    private val photoUtility: PhotoUtility,
+    private val storeRepository: StoreRepository
 ) {
     fun getStores(bearerAccessToken: String): List<StoreDTO> {
         val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
@@ -26,17 +29,7 @@ class StoreService(
     fun saveStore(bearerAccessToken: String, storeSaveDTO: StoreSaveDTO) {
         val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        val storeDBSaveDTO = StoreDBSaveDTO(
-            userId,
-            storeSaveDTO.name,
-            storeSaveDTO.latitude,
-            storeSaveDTO.longitude,
-            storeSaveDTO.address,
-            storeSaveDTO.info,
-            storeSaveDTO.phoneNumber,
-            storeSaveDTO.canReservation,
-            storeSaveDTO.operatingTime
-        )
+        val storeDBSaveDTO = storeSaveDTO.convertToStoreDB(photoUtility, userId)
 
         storeRepository.saveStore(storeDBSaveDTO)
     }
@@ -44,17 +37,7 @@ class StoreService(
     fun editStore(bearerAccessToken: String, storeEditDTO: StoreEditDTO) {
         val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        val storeDBEditDTO = StoreDBEditDTO(
-            userStoreId,
-            storeEditDTO.name,
-            storeEditDTO.latitude,
-            storeEditDTO.longitude,
-            storeEditDTO.address,
-            storeEditDTO.info,
-            storeEditDTO.phoneNumber,
-            storeEditDTO.canReservation,
-            storeEditDTO.operatingTime
-        )
+        val storeDBEditDTO = storeEditDTO.convertToStoreDB(photoUtility, userStoreId)
 
         storeRepository.editStore(storeDBEditDTO)
     }
