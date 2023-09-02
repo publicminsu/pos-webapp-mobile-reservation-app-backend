@@ -20,7 +20,15 @@ class StoreService(
     fun getStores(bearerAccessToken: String): List<StoreDTO> {
         val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        return storeRepository.getStores(userId)
+        val storeDB = storeRepository.getStores(userId)
+
+        val storeList: MutableList<StoreDTO> = mutableListOf()
+        storeDB.forEach {
+            val store = it.convertToStore(photoUtility)
+            storeList.add(store)
+        }
+
+        return storeList
     }
 
     fun getStoresByCoordinate(latitude: Double, longitude: Double, distance: Double) =

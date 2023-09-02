@@ -11,4 +11,7 @@ data class StoreDTO(
     val phoneNumber: String?,
     val canReservation: Boolean?,
     val operatingTime: String?,
+    val isOpen: Boolean,
+    val profilePhoto: String?,
+    val photos: List<String>
 )

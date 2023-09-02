@@ -17,15 +17,16 @@
     </select>
     <insert id="saveStore" parameterType="com.hknusc.web.dto.store.StoreDBSaveDTO">
         INSERT INTO STORE(ACCOUNT_ID, NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
-                          OPERATING_TIME, IS_OPEN)
+                          OPERATING_TIME, IS_OPEN, PROFILE_PHOTO, PHOTOS)
         VALUES (#{accountId}, #{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
-                #{canReservation}, #{operatingTime}, #{isOpen})
+                #{canReservation}, #{operatingTime}, #{isOpen}, #{profilePhoto}, #{photos})
     </insert>
     <update id="editStore" parameterType="com.hknusc.web.dto.store.StoreDBEditDTO">
         UPDATE STORE
         SET (NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
-             OPERATING_TIME)= (#{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
-                               #{canReservation}, #{operatingTime})
+             OPERATING_TIME, PROFILE_PHOTO, PHOTOS)= (#{name}, #{latitude}, #{longitude}, #{address}, #{info},
+                                                      #{phoneNumber},
+                                                      #{canReservation}, #{operatingTime}, #{profilePhoto}, #{photos})
         WHERE ID = #{id}
     </update>
     <update id="setOpen" parameterType="com.hknusc.web.dto.store.StoreOpenDTO">
