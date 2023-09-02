@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper
 @Mapper
 interface StoreRepository {
     fun getStores(userId: Int): List<StoreDBDTO>
+    fun getStore(userId: Int, storeId: Int): StoreDBDTO
     fun getStoresByCoordinate(latitude: Double, longitude: Double, distance: Double): List<DistanceStoreDTO>
     fun saveStore(storeDBSaveDTO: StoreDBSaveDTO)
     fun editStore(storeDBEditDTO: StoreDBEditDTO)

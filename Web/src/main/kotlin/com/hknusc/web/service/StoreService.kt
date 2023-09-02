@@ -20,15 +20,25 @@ class StoreService(
     fun getStores(bearerAccessToken: String): List<StoreDTO> {
         val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        val storeDB = storeRepository.getStores(userId)
+        val storesDB = storeRepository.getStores(userId)
 
         val storeList: MutableList<StoreDTO> = mutableListOf()
-        storeDB.forEach {
+        storesDB.forEach {
             val store = it.convertToStore(photoUtility)
             storeList.add(store)
         }
 
         return storeList
+    }
+
+    fun getStore(bearerAccessToken: String): StoreDTO {
+        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByClaims(claims)
+        val storeId = tokenProvider.findUserStoreIdByClaims(claims)
+
+        val storeDB = storeRepository.getStore(userId, storeId)
+
+        return storeDB.convertToStore(photoUtility)
     }
 
     fun getStoresByCoordinate(latitude: Double, longitude: Double, distance: Double) =

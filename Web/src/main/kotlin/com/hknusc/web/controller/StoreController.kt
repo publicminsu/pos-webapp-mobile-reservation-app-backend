@@ -14,6 +14,11 @@ class StoreController(private val storeService: StoreService) {
     @GetMapping
     fun getStores(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String) = storeService.getStores(accessToken)
 
+    //현재 토큰으로 개점한 가게 가져오기
+    @GetMapping("{storeId}")
+    fun getStore(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, @PathVariable storeId: Int) =
+        storeService.getStore(accessToken)
+
     //좌표 기준으로 가게 찾기
     @GetMapping("coordinate")
     fun getStoresByCoordinate(

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hknusc.web.repository.StoreRepository">
-    <select id="getStores" parameterType="int" resultType="com.hknusc.web.dto.store.StoreDTO">
+    <select id="getStores" parameterType="int" resultType="com.hknusc.web.dto.store.StoreDBDTO">
         SELECT *
         FROM STORE
         WHERE ACCOUNT_ID = #{userId}
+    </select>
+    <select id="getStore" parameterType="int" resultType="com.hknusc.web.dto.store.StoreDBDTO">
+        SELECT *
+        FROM STORE
+        WHERE ID = #{storeId}
+          AND ACCOUNT_ID = #{userId}
     </select>
     <select id="getStoresByCoordinate" parameterType="double" resultType="com.hknusc.web.dto.store.DistanceStoreDTO">
         SELECT *
