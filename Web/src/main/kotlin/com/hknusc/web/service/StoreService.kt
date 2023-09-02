@@ -53,9 +53,15 @@ class StoreService(
     }
 
     fun editStore(bearerAccessToken: String, storeEditDTO: StoreEditDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByClaims(claims)
+        val storeId = tokenProvider.findUserStoreIdByClaims(claims)
 
-        val storeDBEditDTO = storeEditDTO.convertToStoreDB(photoUtility, userStoreId)
+        val storeDB = storeRepository.getStore(userId, storeId)
+        storeDB.profilePhoto?.let { photoUtility.deleteImage(it) }
+        photoUtility.deleteImages(storeDB.photos)
+
+        val storeDBEditDTO = storeEditDTO.convertToStoreDB(photoUtility, storeId)
 
         storeRepository.editStore(storeDBEditDTO)
     }
