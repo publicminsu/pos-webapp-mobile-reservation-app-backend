@@ -4,6 +4,7 @@ import com.hknusc.web.dto.user.*
 import com.hknusc.web.repository.CheckRepository
 import com.hknusc.web.repository.UserRepository
 import com.hknusc.web.util.MailUtility
+import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.jwt.JwtAuthInfo
@@ -18,6 +19,7 @@ class UserService(
     @param:Value("\${frontEnd.emailURL}") private val emailURL: String,
     private val tokenProvider: JwtTokenProvider,
     private val mailUtility: MailUtility,
+    private val photoUtility: PhotoUtility,
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository,
     private val checkRepository: CheckRepository
@@ -29,18 +31,13 @@ class UserService(
         val nickname: String = userSaveDTO.nickname
         val phoneNumber: String = userSaveDTO.phoneNumber
 
+        checkEmailDuplicate(email, "")
         checkDuplicate(
-            email, nickname, phoneNumber,
-            "", "", ""
+            nickname, phoneNumber,
+            "", ""
         )
 
-        val userDBSaveDTO =
-            UserDBSaveDTO(
-                email,
-                passwordEncoder.encode(userSaveDTO.password),
-                nickname,
-                phoneNumber
-            )
+        val userDBSaveDTO = userSaveDTO.convertToUserDB(photoUtility, passwordEncoder)
 
         try {
             userRepository.saveUser(userDBSaveDTO)
@@ -79,19 +76,14 @@ class UserService(
 
         val oldUser = userRepository.getUser(userId)!!
 
-        val userEmail = userEditDTO.email
         val userNickname = userEditDTO.nickname
         val userPhoneNumber = userEditDTO.phoneNumber
 
-        checkDuplicate(userEmail, userNickname, userPhoneNumber, oldUser.email, oldUser.nickname, oldUser.phoneNumber)
+        checkDuplicate(userNickname, userPhoneNumber, oldUser.nickname, oldUser.phoneNumber)
 
-        val userDBEditDTO = UserDBEditDTO(
-            userId,
-            userEmail,
-            userNickname,
-            userPhoneNumber,
-            userEditDTO.paymentCard
-        )
+        oldUser.profilePhoto?.let { photoUtility.deleteImage(it) }
+
+        val userDBEditDTO = userEditDTO.convertToUserDB(photoUtility, userId)
 
         try {
             userRepository.editUser(userDBEditDTO)
@@ -118,13 +110,17 @@ class UserService(
         userRepository.deleteUser(userId)
     }
 
-    private fun checkDuplicate(
-        email: String, nickname: String, phoneNumber: String,
-        oldEmail: String, oldNickname: String, oldPhoneNumber: String
-    ) {
+    private fun checkEmailDuplicate(email: String, oldEmail: String) {
         if ((oldEmail != email) && checkRepository.checkEmail(email)) {
             throw CustomException(ErrorCode.EMAIL_DUPLICATE)
-        } else if ((oldNickname != nickname) && checkRepository.checkNickname(nickname)) {
+        }
+    }
+
+    private fun checkDuplicate(
+        nickname: String, phoneNumber: String,
+        oldNickname: String, oldPhoneNumber: String
+    ) {
+        if ((oldNickname != nickname) && checkRepository.checkNickname(nickname)) {
             throw CustomException(ErrorCode.NICKNAME_DUPLICATE)
         } else if ((oldPhoneNumber != phoneNumber) && checkRepository.checkPhoneNumber(phoneNumber)) {
             throw CustomException(ErrorCode.PHONE_NUMBER_DUPLICATE)

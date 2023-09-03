@@ -7,5 +7,6 @@ data class UserDTO(
     var nickname: String,
     var phoneNumber: String,
     var paymentCard: String?,
-    var isVerified: Boolean
+    var isVerified: Boolean,
+    val profilePhoto: String?
 )

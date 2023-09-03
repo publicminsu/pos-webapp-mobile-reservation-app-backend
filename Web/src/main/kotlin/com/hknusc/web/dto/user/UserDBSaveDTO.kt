@@ -1,10 +1,11 @@
 package com.hknusc.web.dto.user
 
 data class UserDBSaveDTO(
+    var id: Int = 0,
     val email: String,
     val password: String,
     val nickname: String,
     val phoneNumber: String,
-    var id: Int = 0,
-    val isVerified: Boolean = false
+    val isVerified: Boolean = false,
+    val profilePhoto: String?
 )
