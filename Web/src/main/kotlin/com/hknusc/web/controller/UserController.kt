@@ -5,6 +5,7 @@ import com.hknusc.web.dto.user.UserGetByIdListDTO
 import com.hknusc.web.dto.user.UserSaveDTO
 import com.hknusc.web.service.UserService
 import com.hknusc.web.util.jwt.JwtTokenProvider
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -30,7 +31,7 @@ class UserController(private val userService: UserService) {
 
     //회원 가입 (이메일로 인증)
     @PostMapping
-    fun saveUser(userSaveDTO: UserSaveDTO) = userService.saveUser(userSaveDTO)
+    fun saveUser(@Valid userSaveDTO: UserSaveDTO) = userService.saveUser(userSaveDTO)
 
     //회원 수정
     //이메일, 비밀번호는 쉽게 변경할 수 없어야 한다고 생각된다. 전화번호도 마찬가지이다. 중복된 번호가 입력되면 안된다. 하지만 전화번호는 허용해두었다.

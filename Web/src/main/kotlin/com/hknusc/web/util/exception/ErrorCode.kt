@@ -37,5 +37,7 @@ enum class ErrorCode(val status: HttpStatus, val message: String) {
     NICKNAME_DUPLICATE(HttpStatus.CONFLICT, "닉네임이 중복되었습니다."),
     PHONE_NUMBER_DUPLICATE(HttpStatus.CONFLICT, "전화번호가 중복되었습니다."),
 
-    FILE_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "파일의 크기가 너무 큽니다.")
+    FILE_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "파일의 크기가 너무 큽니다."),
+
+    
 }
