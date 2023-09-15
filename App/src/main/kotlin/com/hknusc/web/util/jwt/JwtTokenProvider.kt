@@ -56,7 +56,6 @@ class JwtTokenProvider(
             .setExpiration(Date(now.time + accessTokenExpireTime))
             .claim("userId", jwtAuthInfo.id)
             .claim("userEmail", jwtAuthInfo.email)
-            .claim("userStoreId", jwtAuthInfo.storeId)
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
@@ -84,13 +83,6 @@ class JwtTokenProvider(
         return claims["userEmail"].toString()
     }
 
-    fun findUserStoreIdByClaims(claims: Claims): Int {
-        val storeId = claims["userStoreId"].toString()
-        if (storeId == "0")
-            throw CustomException(ErrorCode.STORE_NOT_OPEN)
-        return storeId.toInt()
-    }
-
     fun findClaimsByBearerAccessToken(bearerAccessToken: String): Claims {
         val accessToken = resolveToken(bearerAccessToken)
         return findClaimsByJWT(accessToken)
@@ -99,11 +91,6 @@ class JwtTokenProvider(
     fun findUserIdByBearerAccessToken(bearerAccessToken: String): Int {
         val accessToken = resolveToken(bearerAccessToken)
         return findUserIdByJWT(accessToken)
-    }
-
-    fun findUserStoreIdByBearerAccessToken(bearerAccessToken: String): Int {
-        val claims = findClaimsByBearerAccessToken(bearerAccessToken)
-        return findUserStoreIdByClaims(claims)
     }
 
     fun validateToken(token: String?) {
@@ -133,8 +120,8 @@ class JwtTokenProvider(
     /*
     RTR (Refresh Token Rotation) RefreshToken 사용될 때마다 재발급
      */
-    fun generateTokenHeader(userId: Int, userEmail: String, userStoreId: Int = 0): HttpHeaders {
-        val jwtAuthInfo = JwtAuthInfo(userId, userEmail, userStoreId)
+    fun generateTokenHeader(userId: Int, userEmail: String): HttpHeaders {
+        val jwtAuthInfo = JwtAuthInfo(userId, userEmail)
         val accessToken = generateAccessToken(jwtAuthInfo)
         val refreshToken = generateRefreshToken(jwtAuthInfo)
 

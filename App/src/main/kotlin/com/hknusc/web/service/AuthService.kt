@@ -72,11 +72,6 @@ class AuthService(
         val claims = tokenProvider.findClaimsByBearerAccessToken(oldBearerAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims)
         val userEmail = tokenProvider.findUserEmailByClaims(claims)
-        val userStoreId: Int = try {
-            tokenProvider.findUserStoreIdByClaims(claims)
-        } catch (e: Exception) {
-            0
-        }
 
         //가져온 정보를 토대로 DB에 저장된 RefreshToken 가져오기
         val savedRefreshToken = authRepository.getRefreshToken(userId).refreshToken
@@ -89,7 +84,7 @@ class AuthService(
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
 
-        val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(userId, userEmail, userStoreId)
+        val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(userId, userEmail)
         return ResponseEntity(httpHeaders, HttpStatus.OK)
     }
 
@@ -120,7 +115,7 @@ class AuthService(
             throw CustomException(ErrorCode.USER_NOT_FOUND)
         }
 
-        val jwtAuthInfo = JwtAuthInfo(user.id, email, 0)
+        val jwtAuthInfo = JwtAuthInfo(user.id, email)
         val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
 
         mailUtility.send("비밀번호 재설정", "링크: $passwordURL$token", email)

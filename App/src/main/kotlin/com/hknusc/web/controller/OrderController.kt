@@ -14,26 +14,26 @@ class OrderController(private val orderService: OrderService) {
     fun getOrders(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String) = orderService.getOrders(accessToken)
 
     //특정 주문 내역 가져오기
-    @GetMapping("{orderId}")
+    @GetMapping("{storeId}/{orderId}")
     fun getOrder(
-        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
-        @PathVariable("orderId") orderId: Int
-    ) = orderService.getOrder(accessToken, orderId)
+        @PathVariable storeId: Int,
+        @PathVariable orderId: Int
+    ) = orderService.getOrder(storeId, orderId)
 
     //주문 내역 저장
-    @PostMapping
-    fun saveOrder(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, orderSaveDTO: OrderSaveDTO) =
-        orderService.saveOrder(accessToken, orderSaveDTO)
+    @PostMapping("{storeId}")
+    fun saveOrder(@PathVariable storeId: Int, orderSaveDTO: OrderSaveDTO) =
+        orderService.saveOrder(storeId, orderSaveDTO)
 
     //주문 내역 수정
-    @PatchMapping
-    fun editOrder(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, orderEditDTO: OrderEditDTO) =
-        orderService.editOrder(accessToken, orderEditDTO)
+    @PatchMapping("{storeId}")
+    fun editOrder(@PathVariable storeId: Int, orderEditDTO: OrderEditDTO) =
+        orderService.editOrder(storeId, orderEditDTO)
 
     //주문 내역 삭제
-    @DeleteMapping("{orderId}")
+    @DeleteMapping("{storeId}/{orderId}")
     fun deleteOrder(
-        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
-        @PathVariable("orderId") orderId: Int
-    ) = orderService.deleteOrder(accessToken, orderId)
+        @PathVariable storeId: Int,
+        @PathVariable orderId: Int
+    ) = orderService.deleteOrder(storeId, orderId)
 }

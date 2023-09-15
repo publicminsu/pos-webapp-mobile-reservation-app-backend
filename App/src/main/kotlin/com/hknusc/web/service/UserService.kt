@@ -42,7 +42,7 @@ class UserService(
         try {
             userRepository.saveUser(userDBSaveDTO)
 
-            val jwtAuthInfo = JwtAuthInfo(userDBSaveDTO.id, email, 0)
+            val jwtAuthInfo = JwtAuthInfo(userDBSaveDTO.id, email)
             val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
 
             mailUtility.send("이메일 인증", "링크: $emailURL$token", email)
