@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.OrderDetailRepository">
+    <select id="getOrderDetails" parameterType="int" resultType="com.hknusc.web.dto.orderDetail.OrderDetailDTO">
+        SELECT *
+        FROM ORDER_DETAIL
+        WHERE ORDER_ID = #{orderId}
+    </select>
+    <insert id="saveOrderDetail" parameterType="com.hknusc.web.dto.orderDetail.OrderDetailSaveDTO">
+        INSERT INTO ORDER_DETAIL(ORDER_ID, MENU_ID, AMOUNT)
+        VALUES (#{orderId}, #{menuId}, #{amount})
+    </insert>
+    <update id="editOrderDetail" parameterType="com.hknusc.web.dto.orderDetail.OrderDetailEditDTO">
+        UPDATE ORDER_DETAIL
+        SET (MENU_ID, AMOUNT) = (#{menuId}, #{amount})
+        WHERE ID = #{id}
+    </update>
+    <delete id="deleteOrderDetail" parameterType="int">
+        DELETE
+        FROM ORDER_DETAIL
+        WHERE ID = #{orderDetailId}
+    </delete>
+</mapper>

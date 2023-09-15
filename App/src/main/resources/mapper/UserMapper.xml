@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.UserRepository">
+    <select id="getUsers" resultType="com.hknusc.web.dto.user.UserDTO">
+        SELECT *
+        FROM ACCOUNT
+    </select>
+    <select id="getUser" parameterType="int" resultType="com.hknusc.web.dto.user.UserDTO">
+        SELECT *
+        FROM ACCOUNT
+        WHERE ID = #{id}
+    </select>
+    <select id="getUserByIdList" parameterType="com.hknusc.web.dto.user.UserGetByIdListDTO"
+            resultType="com.hknusc.web.dto.user.UserDTO">
+        SELECT *
+        FROM ACCOUNT
+        WHERE ID IN
+        <foreach collection="userIdList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getUserByUserEmail" parameterType="string" resultType="com.hknusc.web.dto.user.UserDTO">
+        SELECT *
+        FROM ACCOUNT
+        WHERE EMAIL = #{email}
+    </select>
+    <insert id="saveUser" parameterType="com.hknusc.web.dto.user.UserDBSaveDTO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO ACCOUNT(EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, IS_VERIFIED, PROFILE_PHOTO)
+        VALUES (#{email}, #{password}, #{nickname}, #{phoneNumber}, #{isVerified}, #{profilePhoto})
+    </insert>
+    <update id="editUser" parameterType="com.hknusc.web.dto.user.UserDBEditDTO">
+        UPDATE ACCOUNT
+        SET (NICKNAME, PHONE_NUMBER, PAYMENT_CARD, PROFILE_PHOTO)
+                = (#{nickname}, #{phoneNumber}, #{paymentCard}, #{profilePhoto})
+        WHERE ID = #{id}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        DELETE
+        FROM ACCOUNT
+        WHERE ID = #{id}
+    </delete>
+
+    <select id="getDeletedUsers" resultType="com.hknusc.web.dto.user.DeletedUserDTO">
+        SELECT *
+        FROM DELETED_ACCOUNT
+    </select>
+    <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.user.DeletedUserSaveDTO">
+        INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER, DELETE_TIME)
+        VALUES (#{email}, #{phoneNumber}, #{deleteTime})
+    </insert>
+
+    <update id="editPassword" parameterType="com.hknusc.web.dto.auth.PasswordDBEditDTO">
+        UPDATE ACCOUNT
+        SET PASSWORD= #{password}
+        WHERE ID = #{userId}
+    </update>
+    <update id="confirmEmail" parameterType="int">
+        UPDATE ACCOUNT
+        SET IS_VERIFIED= TRUE
+        WHERE ID = #{id}
+          AND IS_VERIFIED = FALSE
+    </update>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.MenuRepository">
+    <select id="getMenus" parameterType="int" resultType="com.hknusc.web.dto.menu.MenuDTO">
+        SELECT *
+        FROM MENU
+        WHERE STORE_ID = #{storeId}
+    </select>
+    <select id="getMenu" parameterType="int" resultType="com.hknusc.web.dto.menu.MenuDTO">
+        SELECT *
+        FROM MENU
+        WHERE ID = #{menuId}
+          AND STORE_ID = #{storeId}
+    </select>
+    <insert id="saveMenu" parameterType="com.hknusc.web.dto.menu.MenuDBSaveDTO">
+        INSERT INTO MENU(STORE_ID, NAME, PRICE, PHOTO, CATEGORY)
+        VALUES (#{storeId}, #{name}, #{price}, #{photo}, #{category})
+    </insert>
+    <update id="editMenu" parameterType="com.hknusc.web.dto.menu.MenuDTO">
+        UPDATE MENU
+        SET (NAME, PRICE, PHOTO, CATEGORY)
+                = (#{name}, #{price}, #{photo}, #{category})
+        WHERE ID = #{id}
+          AND STORE_ID = #{storeId}
+    </update>
+    <delete id="deleteMenu" parameterType="int">
+        DELETE
+        FROM MENU
+        WHERE ID = #{menuId}
+          AND STORE_ID = #{storeId}
+    </delete>
+</mapper>

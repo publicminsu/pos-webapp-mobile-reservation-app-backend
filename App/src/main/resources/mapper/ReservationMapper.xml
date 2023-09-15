@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.ReservationRepository">
+    <select id="getReservations" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+        SELECT *
+        FROM ORDER_ITEM
+        WHERE ORDER_CODE BETWEEN 100 AND 109
+          AND STORE_ID = #{storeId}
+    </select>
+    <select id="getReservation" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+        SELECT *
+        FROM ORDER_ITEM
+        WHERE ID = #{reservationId}
+          AND ORDER_CODE BETWEEN 100 AND 109
+          AND STORE_ID = #{storeId}
+    </select>
+    <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBSaveDTO">
+        INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, ORDER_CODE)
+        VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{orderCode})
+    </insert>
+    <update id="editReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBEditDTO">
+        UPDATE ORDER_ITEM
+        SET (TABLE_ID, RESERVATION_TIME, ORDER_CODE)
+                = (#{tableId}, #{reservationTime}, #{orderCode})
+        WHERE ID = #{id}
+          AND STORE_ID = #{storeId}
+    </update>
+    <update id="approveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBApproveDTO">
+        UPDATE ORDER_ITEM
+        SET (ORDER_CODE, RESERVATION_DENY_DETAIL)
+                = (#{orderCode}, #{reservationDenyDetail})
+        WHERE ID = #{id}
+          AND ORDER_CODE = 103
+          AND STORE_ID = #{storeId}
+    </update>
+</mapper>

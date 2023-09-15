@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.ReceiptRepository">
+    <select id="getReceipt" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+        SELECT *
+        FROM ORDER_ITEM
+        WHERE ID = #{orderId}
+          AND STORE_ID = #{storeId}
+          AND ORDER_CODE BETWEEN 400 AND 409
+    </select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.TableRepository">
+    <select id="getTables" parameterType="int" resultType="com.hknusc.web.dto.table.TableDTO">
+        SELECT *
+        FROM TABLE_ITEM
+        WHERE STORE_ID = #{storeId}
+    </select>
+    <select id="getTable" parameterType="int" resultType="com.hknusc.web.dto.table.TableDTO">
+        SELECT *
+        FROM TABLE_ITEM
+        WHERE ID = #{tableId}
+          AND STORE_ID = #{storeId}
+    </select>
+    <insert id="saveTable" parameterType="com.hknusc.web.dto.table.TableListDBSaveDTO">
+        INSERT INTO TABLE_ITEM(STORE_ID, NAME, COORD_X, COORD_Y, WIDTH, HEIGHT, PRIVATE_KEY)
+        VALUES
+        <foreach collection="tableList" item="table" separator=",">
+            (#{storeId}, #{table.name}, #{table.coordX}, #{table.coordY}, #{table.width}, #{table.height},
+            #{table.privateKey})
+        </foreach>
+    </insert>
+    <delete id="deleteTable" parameterType="int">
+        DELETE
+        FROM TABLE_ITEM
+        WHERE STORE_ID = #{storeId}
+    </delete>
+</mapper>

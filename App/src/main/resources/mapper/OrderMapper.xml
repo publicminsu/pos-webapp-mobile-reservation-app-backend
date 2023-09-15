@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.OrderRepository">
+    <select id="getOrders" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+        SELECT *
+        FROM ORDER_ITEM
+        WHERE STORE_ID = #{storeId}
+    </select>
+    <select id="getOrder" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+        SELECT *
+        FROM ORDER_ITEM
+        WHERE ID = #{orderId}
+          AND STORE_ID = #{storeId}
+    </select>
+    <insert id="saveOrder" parameterType="com.hknusc.web.dto.order.OrderDBSaveDTO">
+        INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, ORDER_CODE,
+                               RESERVATION_DENY_DETAIL)
+        VALUES (#{accountId}, #{storeId}, #{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{orderCode},
+                #{reservationDenyDetail})
+    </insert>
+    <update id="editOrder" parameterType="com.hknusc.web.dto.order.OrderDTO">
+        UPDATE ORDER_ITEM
+        SET (TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, ORDER_CODE)
+                = (#{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{orderCode})
+        WHERE ID = #{id}
+          AND STORE_ID = #{storeId}
+    </update>
+    <delete id="deleteOrder" parameterType="int">
+        DELETE
+        FROM ORDER_ITEM
+        WHERE ID = #{orderId}
+          AND STORE_ID = #{storeId}
+    </delete>
+    <select id="isNotEmptyTable" parameterType="int" resultType="boolean">
+        SELECT EXISTS(SELECT 1
+                      FROM ORDER_ITEM
+                      WHERE TABLE_ID = #{tableId}
+                        AND ORDER_CODE BETWEEN 200 AND 399)
+    </select>
+    <select id="getOrderByTableId" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+        SELECT *
+        FROM ORDER_ITEM
+        WHERE TABLE_ID = #{tableId}
+          AND ORDER_CODE BETWEEN 200 AND 399
+    </select>
+</mapper>
