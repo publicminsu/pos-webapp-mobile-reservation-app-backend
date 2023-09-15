@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.multipart.MultipartFile
 
 data class UserSaveDTO(
-    @field:Email
+    @Email
     val email: String,
     @PasswordValid
     val password: String,

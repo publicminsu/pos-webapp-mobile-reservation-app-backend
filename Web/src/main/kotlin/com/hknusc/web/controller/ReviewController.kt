@@ -4,6 +4,7 @@ import com.hknusc.web.dto.review.ReviewEditDTO
 import com.hknusc.web.dto.review.ReviewSaveDTO
 import com.hknusc.web.service.ReviewService
 import com.hknusc.web.util.jwt.JwtTokenProvider
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -25,12 +26,15 @@ class ReviewController(private val reviewService: ReviewService) {
     @PostMapping
     fun saveReview(
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
-        reviewSaveDTO: ReviewSaveDTO
+        @Valid reviewSaveDTO: ReviewSaveDTO
     ) = reviewService.saveReview(accessToken, reviewSaveDTO)
 
     //리뷰 수정하기(테스트용)
     @PatchMapping
-    fun editReview(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, reviewEditDTO: ReviewEditDTO) =
+    fun editReview(
+        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
+        @Valid reviewEditDTO: ReviewEditDTO
+    ) =
         reviewService.editReview(accessToken, reviewEditDTO)
 
     //리뷰 삭제하기(테스트용)

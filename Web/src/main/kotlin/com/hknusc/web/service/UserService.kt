@@ -105,7 +105,7 @@ class UserService(
 
         // 필요하다면 비밀번호 확인
         val curTime = Timestamp(System.currentTimeMillis())
-        val deletedUser = DeletedUserDTO(email = user.email, phoneNumber = user.phoneNumber, deleteTime = curTime)
+        val deletedUser = DeletedUserSaveDTO(email = user.email, phoneNumber = user.phoneNumber, deleteTime = curTime)
         userRepository.saveDeletedUser(deletedUser)
         userRepository.deleteUser(userId)
     }

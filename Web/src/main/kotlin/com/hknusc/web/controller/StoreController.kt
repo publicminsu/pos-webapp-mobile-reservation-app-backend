@@ -5,6 +5,7 @@ import com.hknusc.web.dto.store.StoreOpenDTO
 import com.hknusc.web.dto.store.StoreSaveDTO
 import com.hknusc.web.service.StoreService
 import com.hknusc.web.util.jwt.JwtTokenProvider
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -30,12 +31,12 @@ class StoreController(private val storeService: StoreService) {
 
     //가게 저장하기
     @PostMapping
-    fun saveStore(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, storeSaveDTO: StoreSaveDTO) =
+    fun saveStore(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, @Valid storeSaveDTO: StoreSaveDTO) =
         storeService.saveStore(accessToken, storeSaveDTO)
 
     //가게 수정하기
     @PatchMapping
-    fun editStore(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, storeEditDTO: StoreEditDTO) =
+    fun editStore(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, @Valid storeEditDTO: StoreEditDTO) =
         storeService.editStore(accessToken, storeEditDTO)
 
     //가게 개점

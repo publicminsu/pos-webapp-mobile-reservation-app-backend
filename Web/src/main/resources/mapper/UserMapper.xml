@@ -45,7 +45,7 @@
         SELECT *
         FROM DELETED_ACCOUNT
     </select>
-    <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.user.DeletedUserDTO">
+    <insert id="saveDeletedUser" parameterType="com.hknusc.web.dto.user.DeletedUserSaveDTO">
         INSERT INTO DELETED_ACCOUNT(EMAIL, PHONE_NUMBER, DELETE_TIME)
         VALUES (#{email}, #{phoneNumber}, #{deleteTime})
     </insert>

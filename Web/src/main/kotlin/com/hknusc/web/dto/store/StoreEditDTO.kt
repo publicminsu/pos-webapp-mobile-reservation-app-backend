@@ -1,6 +1,7 @@
 package com.hknusc.web.dto.store
 
 import com.hknusc.web.util.PhotoUtility
+import com.hknusc.web.util.validation.constraints.PhoneNumberValid
 import org.springframework.web.multipart.MultipartFile
 
 data class StoreEditDTO(
@@ -9,6 +10,7 @@ data class StoreEditDTO(
     val longitude: Double,
     val address: String?,
     val info: String?,
+    @PhoneNumberValid
     val phoneNumber: String?,
     val canReservation: Boolean?,
     val operatingTime: String?,

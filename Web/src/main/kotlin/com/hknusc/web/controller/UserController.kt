@@ -36,7 +36,7 @@ class UserController(private val userService: UserService) {
     //회원 수정
     //이메일, 비밀번호는 쉽게 변경할 수 없어야 한다고 생각된다. 전화번호도 마찬가지이다. 중복된 번호가 입력되면 안된다. 하지만 전화번호는 허용해두었다.
     @PatchMapping
-    fun editUser(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, userEditDTO: UserEditDTO) =
+    fun editUser(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String, @Valid userEditDTO: UserEditDTO) =
         userService.editUser(accessToken, userEditDTO)
 
     //삭제된 회원 가져오기

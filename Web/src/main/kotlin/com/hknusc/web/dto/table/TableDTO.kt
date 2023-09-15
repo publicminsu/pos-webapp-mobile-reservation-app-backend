@@ -4,9 +4,9 @@ data class TableDTO(
     var id: Int,
     var storeId: Int,
     var name: String?,
-    var coordX: String,
-    var coordY: String,
-    var width: String,
-    var height: String,
+    var coordX: Double,
+    var coordY: Double,
+    var width: Double,
+    var height: Double,
     var privateKey: String,
 )

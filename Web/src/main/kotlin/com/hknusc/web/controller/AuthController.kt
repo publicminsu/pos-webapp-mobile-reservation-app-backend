@@ -6,6 +6,7 @@ import com.hknusc.web.dto.auth.LoginDTO
 import com.hknusc.web.dto.auth.ResetPasswordDTO
 import com.hknusc.web.util.jwt.JwtTokenProvider
 import com.hknusc.web.service.AuthService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -37,6 +38,6 @@ class AuthController(private val authService: AuthService) {
 
     //비밀번호 재설정 이메일 확인
     @PostMapping("reset/confirm")
-    fun confirmResetPasswordEmail(confirmResetPasswordDTO: ConfirmResetPasswordDTO) =
+    fun confirmResetPasswordEmail(@Valid confirmResetPasswordDTO: ConfirmResetPasswordDTO) =
         authService.confirmResetPasswordEmail(confirmResetPasswordDTO)
 }

@@ -14,7 +14,7 @@ interface UserRepository {
     fun editUser(userDBEditDTO: UserDBEditDTO)
     fun deleteUser(id: Int)
     fun getDeletedUsers(): List<DeletedUserDTO>
-    fun saveDeletedUser(deletedUserDTO: DeletedUserDTO)
+    fun saveDeletedUser(deletedUserSaveDTO: DeletedUserSaveDTO)
     fun editPassword(passwordDBEditDTO: PasswordDBEditDTO)
     fun confirmEmail(id: Int): Int
 }

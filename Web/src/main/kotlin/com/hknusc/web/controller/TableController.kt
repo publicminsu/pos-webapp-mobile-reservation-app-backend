@@ -3,6 +3,7 @@ package com.hknusc.web.controller
 import com.hknusc.web.dto.table.TableListSaveDTO
 import com.hknusc.web.service.TableService
 import com.hknusc.web.util.jwt.JwtTokenProvider
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -23,7 +24,7 @@ class TableController(private val tableService: TableService) {
     @PostMapping
     fun saveTable(
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
-        tableListSaveDTO: TableListSaveDTO
+        @Valid tableListSaveDTO: TableListSaveDTO
     ) = tableService.saveTable(accessToken, tableListSaveDTO)
 
 
