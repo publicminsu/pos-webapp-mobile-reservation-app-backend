@@ -21,44 +21,12 @@ class TableService(
     private val orderRepository: OrderRepository,
     private val orderDetailRepository: OrderDetailRepository
 ) {
-    fun getTables(bearerAccessToken: String): List<TableDTO> {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+    fun getTables(storeId: Int) = tableRepository.getTables(storeId)
 
-        return tableRepository.getTables(userStoreId)
-    }
-
-    fun getTable(bearerAccessToken: String, tableId: Int): TableDTO {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        try {
-            return tableRepository.getTable(tableId, userStoreId)!!
-        } catch (_: Exception) {
-            throw CustomException(ErrorCode.TABLE_NOT_FOUND)
-        }
-    }
-
-    fun saveTable(bearerAccessToken: String, tableListSaveDTO: TableListSaveDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        tableRepository.deleteTable(userStoreId)
-
-        if (tableListSaveDTO.tableList == null)
-            return
-
-        val tableListDBSaveDTO = TableListDBSaveDTO(
-            userStoreId,
-            tableListSaveDTO.tableList!!
-        )
-
-        tableRepository.saveTable(tableListDBSaveDTO)
-    }
-
-    fun getTablesOrdersDetails(bearerAccessToken: String): List<TableOrderDetailDTO> {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
+    fun getTablesOrdersDetails(storeId: Int): List<TableOrderDetailDTO> {
         val tablesOrdersDetails: MutableList<TableOrderDetailDTO> = mutableListOf()
 
-        val tables = tableRepository.getTables(userStoreId)
+        val tables = tableRepository.getTables(storeId)
 
         for (table in tables) {
 
