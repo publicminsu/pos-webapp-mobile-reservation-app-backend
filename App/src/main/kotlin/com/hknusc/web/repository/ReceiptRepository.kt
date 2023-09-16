@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper
 
 @Mapper
 interface ReceiptRepository {
-    fun getReceipt(orderId: Int, storeId: Int): OrderDTO?
+    fun getReceipts(userId: Int): List<OrderDTO>
 }

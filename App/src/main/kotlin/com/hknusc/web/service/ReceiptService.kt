@@ -16,15 +16,17 @@ class ReceiptService(
     private val receiptRepository: ReceiptRepository,
     private val orderDetailRepository: OrderDetailRepository
 ) {
-    fun getReceipt(bearerAccessToken: String, orderId: Int): ReceiptDTO {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-        val orderDTO: OrderDTO
-        try {
-            orderDTO = receiptRepository.getReceipt(orderId, userStoreId)!!
-        } catch (e: Exception) {
-            throw CustomException(ErrorCode.ORDER_NOT_FOUND)
+    fun getReceipts(bearerAccessToken: String): List<ReceiptDTO> {
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
+        val orders = receiptRepository.getReceipts(userId)
+
+        val receipts: MutableList<ReceiptDTO> = mutableListOf()
+
+        orders.forEach {
+            val orderDetails: List<OrderDetailDTO> = orderDetailRepository.getOrderDetails(it.id)
+            val receipt = ReceiptDTO(it, orderDetails)
+            receipts.add(receipt)
         }
-        val orderDetails: List<OrderDetailDTO> = orderDetailRepository.getOrderDetails(orderId)
-        return ReceiptDTO(orderDTO, orderDetails)
+        return receipts
     }
 }
