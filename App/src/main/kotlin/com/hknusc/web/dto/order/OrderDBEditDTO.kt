@@ -5,7 +5,7 @@ import java.sql.Timestamp
 
 data class OrderDBEditDTO(
     var id: Int,
-    var storeId: Int,
+    var accountId: Int,
     var tableId: Int,
     var orderTime: Timestamp?,
     var paymentTime: Timestamp?,

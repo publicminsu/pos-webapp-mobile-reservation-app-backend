@@ -4,12 +4,12 @@
     <select id="getOrders" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
-        WHERE STORE_ID = #{storeId}
+        WHERE ACCOUNT_ID = #{userId}
     </select>
-    <select id="getOrder" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+    <select id="getOrdersByStoreId" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
-        WHERE ID = #{orderId}
+        WHERE ACCOUNT_ID = #{userId}
           AND STORE_ID = #{storeId}
     </select>
     <insert id="saveOrder" parameterType="com.hknusc.web.dto.order.OrderDBSaveDTO">
@@ -18,18 +18,18 @@
         VALUES (#{accountId}, #{storeId}, #{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{orderCode},
                 #{reservationDenyDetail})
     </insert>
-    <update id="editOrder" parameterType="com.hknusc.web.dto.order.OrderDTO">
+    <update id="editOrder" parameterType="com.hknusc.web.dto.order.OrderDBEditDTO">
         UPDATE ORDER_ITEM
         SET (TABLE_ID, ORDER_TIME, PAYMENT_TIME, RESERVATION_TIME, ORDER_CODE)
                 = (#{tableId}, #{orderTime}, #{paymentTime}, #{reservationTime}, #{orderCode})
         WHERE ID = #{id}
-          AND STORE_ID = #{storeId}
+          AND ACCOUNT_ID = #{accountId}
     </update>
     <delete id="deleteOrder" parameterType="int">
         DELETE
         FROM ORDER_ITEM
         WHERE ID = #{orderId}
-          AND STORE_ID = #{storeId}
+          AND ACCOUNT_ID = #{userId}
     </delete>
     <select id="isNotEmptyTable" parameterType="int" resultType="boolean">
         SELECT EXISTS(SELECT 1

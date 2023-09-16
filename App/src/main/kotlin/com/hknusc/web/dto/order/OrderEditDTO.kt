@@ -10,4 +10,14 @@ data class OrderEditDTO(
     var paymentTime: Timestamp?,
     var reservationTime: Timestamp?,
     var orderCode: OrderCode,
-)
+) {
+    fun convertToOrderDB(accountId: Int) = OrderDBEditDTO(
+        id = id,
+        accountId = accountId,
+        tableId = tableId,
+        orderTime = orderTime,
+        paymentTime = paymentTime,
+        reservationTime = reservationTime,
+        orderCode = orderCode
+    )
+}
