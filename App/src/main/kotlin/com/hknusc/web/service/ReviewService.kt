@@ -18,9 +18,9 @@ class ReviewService(
     private val reviewRepository: ReviewRepository
 ) {
     fun getReviews(bearerAccessToken: String): List<ReviewDTO> {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        val dbReviews = reviewRepository.getReviews(userStoreId)
+        val dbReviews = reviewRepository.getReviews(userId)
 
         val reviews: MutableList<ReviewDTO> = mutableListOf()
         dbReviews.forEach {
@@ -29,45 +29,32 @@ class ReviewService(
         return reviews
     }
 
-    fun getReview(bearerAccessToken: String, reviewId: Int): ReviewDTO {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+    fun getReviewsByStore(bearerAccessToken: String, storeId: Int): List<ReviewDTO> {
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        val dbReview = try {
-            reviewRepository.getReview(userStoreId, reviewId)!!
-        } catch (e: Exception) {
-            throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
+        val dbReviews = reviewRepository.getReviewsByStore(userId, storeId)
+
+        val reviews: MutableList<ReviewDTO> = mutableListOf()
+        dbReviews.forEach {
+            reviews.add(it.convertToReview(photoUtility))
         }
-
-        return dbReview.convertToReview(photoUtility)
+        return reviews
     }
 
     fun saveReview(bearerAccessToken: String, reviewSaveDTO: ReviewSaveDTO) {
-        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
-        val userId = tokenProvider.findUserIdByClaims(claims)
-        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        val photos: String = photoUtility.saveImagesAsString(reviewSaveDTO.photos)
-        val reviewDBSaveDTO =
-            ReviewDBSaveDTO(
-                userId,
-                userStoreId,
-                reviewSaveDTO.detail,
-                reviewSaveDTO.writingTime,
-                reviewSaveDTO.rating,
-                photos
-            )
+        val reviewDBSaveDTO = reviewSaveDTO.convertToReviewDB(photoUtility, userId)
 
         reviewRepository.saveReview(reviewDBSaveDTO)
     }
 
     fun editReview(bearerAccessToken: String, reviewEditDTO: ReviewEditDTO) {
-        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
-        val userId = tokenProvider.findUserIdByClaims(claims)
-        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
         //이전 이미지 삭제
         val oldDBReview = try {
-            reviewRepository.getReview(userStoreId, reviewEditDTO.id)!!
+            reviewRepository.getReview(userId, reviewEditDTO.id)!!
         } catch (e: Exception) {
             throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
         }
@@ -83,11 +70,10 @@ class ReviewService(
     fun deleteReview(bearerAccessToken: String, reviewId: Int) {
         val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
         val userId = tokenProvider.findUserIdByClaims(claims)
-        val userStoreId = tokenProvider.findUserStoreIdByClaims(claims)
 
         //이전 이미지 삭제
         val oldDBReview = try {
-            reviewRepository.getReview(userStoreId, reviewId)!!
+            reviewRepository.getReview(userId, reviewId)!!
         } catch (e: Exception) {
             throw CustomException(ErrorCode.REVIEW_NOT_FOUND)
         }

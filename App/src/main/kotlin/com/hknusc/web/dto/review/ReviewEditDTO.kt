@@ -12,6 +12,13 @@ data class ReviewEditDTO(
     @PositiveOrZero val rating: Int,
     val photos: List<MultipartFile>?
 ) {
-    fun convertToReviewDB(photoUtility: PhotoUtility, accountId: Int): ReviewDBEditDTO =
-        ReviewDBEditDTO(id, accountId, detail, writingTime, rating, photoUtility.saveImagesAsString(photos))
+    fun convertToReviewDB(photoUtility: PhotoUtility, accountId: Int) =
+        ReviewDBEditDTO(
+            id = id,
+            accountId = accountId,
+            detail = detail,
+            writingTime = writingTime,
+            rating = rating,
+            photos = photoUtility.saveImagesAsString(photos)
+        )
 }

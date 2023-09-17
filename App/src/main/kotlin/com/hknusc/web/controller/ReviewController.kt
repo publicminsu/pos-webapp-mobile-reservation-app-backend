@@ -16,11 +16,11 @@ class ReviewController(private val reviewService: ReviewService) {
         reviewService.getReviews(accessToken)
 
     //특정 리뷰 가져오기
-    @GetMapping("{reviewId}")
-    fun getReview(
+    @GetMapping("{storeId}")
+    fun getReviewsByStore(
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
-        @PathVariable("reviewId") reviewId: Int
-    ) = reviewService.getReview(accessToken, reviewId)
+        @PathVariable storeId: Int
+    ) = reviewService.getReviewsByStore(accessToken, storeId)
 
     //리뷰 저장하기(테스트용)
     @PostMapping

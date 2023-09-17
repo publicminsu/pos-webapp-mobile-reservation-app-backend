@@ -4,13 +4,19 @@
     <select id="getReviews" parameterType="int" resultType="com.hknusc.web.dto.review.ReviewDBDTO">
         SELECT *
         FROM REVIEW
-        WHERE STORE_ID = #{storeId}
+        WHERE ACCOUNT_ID = #{userId}
     </select>
     <select id="getReview" parameterType="int" resultType="com.hknusc.web.dto.review.ReviewDBDTO">
         SELECT *
         FROM REVIEW
         WHERE ID = #{reviewId}
-          AND STORE_ID = #{storeId}
+          AND ACCOUNT_ID = #{userId}
+    </select>
+    <select id="getReviewsByStore" parameterType="int" resultType="com.hknusc.web.dto.review.ReviewDBDTO">
+        SELECT *
+        FROM REVIEW
+        WHERE STORE_ID = #{storeId}
+          AND ACCOUNT_ID = #{userId}
     </select>
     <insert id="saveReview" parameterType="com.hknusc.web.dto.review.ReviewDBSaveDTO">
         INSERT INTO REVIEW(ACCOUNT_ID, STORE_ID, DETAIL, WRITING_TIME, RATING, PHOTOS)

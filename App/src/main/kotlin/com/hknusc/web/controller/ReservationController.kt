@@ -14,9 +14,9 @@ class ReservationController(private val reservationService: ReservationService) 
     fun getReservations(@RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String) =
         reservationService.getReservations(accessToken)
 
-    //특정 예약 가져오기
+    //특정 상점 예약 가져오기
     @GetMapping("{storeId}")
-    fun getReservation(
+    fun getReservationsByStore(
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         @PathVariable storeId: Int
     ) = reservationService.getReservationsByStore(accessToken, storeId)
