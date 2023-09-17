@@ -1,6 +1,5 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.reservation.ReservationApproveDTO
 import com.hknusc.web.dto.reservation.ReservationEditDTO
 import com.hknusc.web.dto.reservation.ReservationSaveDTO
 import com.hknusc.web.service.ReservationService
@@ -16,11 +15,11 @@ class ReservationController(private val reservationService: ReservationService) 
         reservationService.getReservations(accessToken)
 
     //특정 예약 가져오기
-    @GetMapping("{reservationId}")
+    @GetMapping("{storeId}")
     fun getReservation(
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
-        @PathVariable("reservationId") reservationId: Int
-    ) = reservationService.getReservation(accessToken, reservationId)
+        @PathVariable storeId: Int
+    ) = reservationService.getReservationsByStore(accessToken, storeId)
 
     //예약 신청 (가게에서)
     @PostMapping
@@ -35,11 +34,4 @@ class ReservationController(private val reservationService: ReservationService) 
         @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
         reservationEditDTO: ReservationEditDTO
     ) = reservationService.editReservation(accessToken, reservationEditDTO)
-
-    //예약 처리.
-    @PatchMapping("approve")
-    fun approveReservation(
-        @RequestHeader(JwtTokenProvider.ACCESS_KEY) accessToken: String,
-        reservationApproveDTO: ReservationApproveDTO
-    ) = reservationService.approveReservation(accessToken, reservationApproveDTO)
 }

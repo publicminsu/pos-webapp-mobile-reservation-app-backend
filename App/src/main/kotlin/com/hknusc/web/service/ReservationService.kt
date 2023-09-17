@@ -15,70 +15,28 @@ class ReservationService(
     private val reservationRepository: ReservationRepository
 ) {
     fun getReservations(bearerAccessToken: String): List<OrderDTO> {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        return reservationRepository.getReservations(userStoreId)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
+        return reservationRepository.getReservations(userId)
     }
 
-    fun getReservation(bearerAccessToken: String, reservationId: Int): OrderDTO {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        try {
-            return reservationRepository.getReservation(reservationId, userStoreId)!!
-        } catch (e: Exception) {
-            throw CustomException(ErrorCode.RESERVATION_NOT_FOUND)
-        }
+    fun getReservationsByStore(bearerAccessToken: String, storeId: Int): List<OrderDTO> {
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
+        return reservationRepository.getReservationsByStore(userId, storeId)
     }
 
     fun saveReservation(bearerAccessToken: String, reservationSaveDTO: ReservationSaveDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        val reservationDBSaveDTO = ReservationDBSaveDTO(
-            reservationSaveDTO.accountId,
-            userStoreId,
-            reservationSaveDTO.tableId,
-            reservationSaveDTO.reservationTime,
-            reservationSaveDTO.orderCode
-        )
-
+        val reservationDBSaveDTO = reservationSaveDTO.convertToReservationDB(userId)
         reservationRepository.saveReservation(reservationDBSaveDTO)
     }
 
     fun editReservation(bearerAccessToken: String, reservationEditDTO: ReservationEditDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
 
-        val reservationDBEditDTO = ReservationDBEditDTO(
-            reservationEditDTO.id,
-            userStoreId,
-            reservationEditDTO.tableId,
-            reservationEditDTO.reservationTime,
-            reservationEditDTO.orderCode
-        )
-
+        val reservationDBEditDTO = reservationEditDTO.convertToReservationDB(userId)
         if (reservationRepository.editReservation(reservationDBEditDTO) == 0) {
             throw CustomException(ErrorCode.RESERVATION_NOT_FOUND)
-        }
-    }
-
-    fun approveReservation(bearerAccessToken: String, reservationApproveDTO: ReservationApproveDTO) {
-        val orderCode: OrderCode = reservationApproveDTO.orderCode
-        val reservationDenyDetail: String? = reservationApproveDTO.reservationDenyDetail
-
-        if (orderCode != OrderCode.RESERVATION && orderCode != OrderCode.RESERVATION_DENY) {
-            throw CustomException(ErrorCode.RESERVATION_WRONG_CODE)
-        }
-
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        val reservationDBApproveDTO = ReservationDBApproveDTO(
-            reservationApproveDTO.id,
-            userStoreId,
-            orderCode,
-            reservationDenyDetail
-        )
-
-        if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
-            throw CustomException(ErrorCode.RESERVATION_APPROVE_FAIL)
         }
     }
 }

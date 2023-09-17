@@ -8,4 +8,12 @@ data class ReservationEditDTO(
     var tableId: Int,
     var reservationTime: Timestamp,
     var orderCode: OrderCode,
-)
+) {
+    fun convertToReservationDB(accountId: Int) = ReservationDBEditDTO(
+        id = id,
+        accountId = accountId,
+        tableId = tableId,
+        reservationTime = reservationTime,
+        orderCode = orderCode
+    )
+}

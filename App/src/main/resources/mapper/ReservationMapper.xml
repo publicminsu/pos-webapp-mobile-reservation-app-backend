@@ -4,13 +4,13 @@
     <select id="getReservations" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
-        WHERE ORDER_CODE BETWEEN 100 AND 109
-          AND STORE_ID = #{storeId}
+        WHERE ACCOUNT_ID = #{userId}
+          AND ORDER_CODE BETWEEN 100 AND 109
     </select>
-    <select id="getReservation" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
+    <select id="getReservationsByStore" parameterType="int" resultType="com.hknusc.web.dto.order.OrderDTO">
         SELECT *
         FROM ORDER_ITEM
-        WHERE ID = #{reservationId}
+        WHERE ACCOUNT_ID = #{userId}
           AND ORDER_CODE BETWEEN 100 AND 109
           AND STORE_ID = #{storeId}
     </select>
@@ -23,14 +23,6 @@
         SET (TABLE_ID, RESERVATION_TIME, ORDER_CODE)
                 = (#{tableId}, #{reservationTime}, #{orderCode})
         WHERE ID = #{id}
-          AND STORE_ID = #{storeId}
-    </update>
-    <update id="approveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBApproveDTO">
-        UPDATE ORDER_ITEM
-        SET (ORDER_CODE, RESERVATION_DENY_DETAIL)
-                = (#{orderCode}, #{reservationDenyDetail})
-        WHERE ID = #{id}
-          AND ORDER_CODE = 103
-          AND STORE_ID = #{storeId}
+          AND ACCOUNT_ID = #{accountId}
     </update>
 </mapper>
