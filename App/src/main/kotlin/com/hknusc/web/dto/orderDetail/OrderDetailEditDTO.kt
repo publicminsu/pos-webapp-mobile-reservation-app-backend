@@ -5,6 +5,6 @@ import jakarta.validation.constraints.PositiveOrZero
 data class OrderDetailEditDTO(
     var id: Int,
     var menuId: Int,
-    @PositiveOrZero
+    @field:PositiveOrZero
     var amount: Int,
 )

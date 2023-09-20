@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile
 
 data class MenuSaveDTO(
     val name: String,
-    @PositiveOrZero
+    @field:PositiveOrZero
     val price: Int,
     val photo: MultipartFile?,
     val category: String?

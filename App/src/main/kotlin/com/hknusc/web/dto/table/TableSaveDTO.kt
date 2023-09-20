@@ -6,9 +6,9 @@ data class TableSaveDTO(
     var name: String? = null,
     var coordX: Double = 0.0,
     var coordY: Double = 0.0,
-    @PositiveOrZero
+    @field:PositiveOrZero
     var width: Double = 0.0,
-    @PositiveOrZero
+    @field:PositiveOrZero
     var height: Double = 0.0,
     var privateKey: String = "",
 )

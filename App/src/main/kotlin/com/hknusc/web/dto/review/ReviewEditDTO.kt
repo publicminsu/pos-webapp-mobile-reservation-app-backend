@@ -9,7 +9,8 @@ data class ReviewEditDTO(
     val id: Int,
     val detail: String?,
     val writingTime: Timestamp,
-    @PositiveOrZero val rating: Int,
+    @field:PositiveOrZero
+    val rating: Int,
     val photos: List<MultipartFile>?
 ) {
     fun convertToReviewDB(photoUtility: PhotoUtility, accountId: Int) =

@@ -7,7 +7,7 @@ import java.sql.Timestamp
 data class ReviewSaveDTO(
     val detail: String?,
     val writingTime: Timestamp,
-    @PositiveOrZero
+    @field:PositiveOrZero
     val rating: Int,
     val photos: List<MultipartFile>?
 )
