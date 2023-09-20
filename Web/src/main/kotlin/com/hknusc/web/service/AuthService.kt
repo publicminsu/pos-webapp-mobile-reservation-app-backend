@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
+    @param:Value("\${frontEnd.emailURL}") private val emailURL: String,
     @param:Value("\${frontEnd.passwordURL}") private val passwordURL: String,
     private val tokenProvider: JwtTokenProvider,
     private val mailUtility: MailUtility,
@@ -108,6 +109,28 @@ class AuthService(
 
         val httpHeaders: HttpHeaders = tokenProvider.generateTokenHeader(userId, userEmail)
         return ResponseEntity(httpHeaders, HttpStatus.OK)
+    }
+
+    fun resendConfirmEmail(email: String) {
+        val user = try {
+            userRepository.getUserByUserEmail(email)!!
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.USER_NOT_FOUND)
+        }
+
+        //이메일 이미 인증된 경우
+        if (user.isVerified) {
+            throw CustomException(ErrorCode.EMAIL_ALREADY_VERIFIED)
+        }
+
+        try {
+            val jwtAuthInfo = JwtAuthInfo(user.id, email, 0)
+            val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
+
+            mailUtility.send("이메일 인증", "링크: $emailURL$token", email)
+        } catch (e: Exception) {
+            throw CustomException(ErrorCode.SIGNUP_FAIL)
+        }
     }
 
     fun sendResetPasswordEmail(resetPasswordDTO: ResetPasswordDTO) {
