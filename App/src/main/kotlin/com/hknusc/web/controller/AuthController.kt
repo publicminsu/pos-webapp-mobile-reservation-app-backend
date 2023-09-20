@@ -31,6 +31,10 @@ class AuthController(private val authService: AuthService) {
     @PostMapping("email")
     fun confirmEmail(confirmEmailDTO: ConfirmEmailDTO) = authService.confirmEmail(confirmEmailDTO)
 
+    //이메일 인증 다시 보내기 (인증 안된 로그인 경우 선택)
+    @GetMapping("email/{email}")
+    fun resendConfirmEmail(@PathVariable email: String) = authService.resendConfirmEmail(email)
+
     //비밀번호 재설정 이메일 보내기
     @PostMapping("reset")
     fun sendResetPasswordEmail(resetPasswordDTO: ResetPasswordDTO) =
