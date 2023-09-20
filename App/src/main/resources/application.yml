@@ -2,6 +2,8 @@
 server:
   tomcat:
     max-swallow-size: -1
+    # 임시 포트
+  port: 8081
 
 spring:
   profiles:
