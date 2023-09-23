@@ -16,9 +16,7 @@ class ReviewService(
     private val photoUtility: PhotoUtility,
     private val reviewRepository: ReviewRepository
 ) {
-    fun getReviews(bearerAccessToken: String): List<ReviewDTO> {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun getReviews(userId: Int): List<ReviewDTO> {
         val dbReviews = reviewRepository.getReviews(userId)
 
         val reviews: MutableList<ReviewDTO> = mutableListOf()
@@ -40,9 +38,7 @@ class ReviewService(
         return reviews
     }
 
-    fun saveReview(bearerAccessToken: String, reviewSaveDTO: ReviewSaveDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun saveReview(userId: Int, reviewSaveDTO: ReviewSaveDTO) {
         val reviewDBSaveDTO = reviewSaveDTO.convertToReviewDB(photoUtility, userId)
 
         reviewRepository.saveReview(reviewDBSaveDTO)

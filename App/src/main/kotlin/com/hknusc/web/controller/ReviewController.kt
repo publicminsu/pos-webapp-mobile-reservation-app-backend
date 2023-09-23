@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*
 class ReviewController(private val reviewService: ReviewService) {
     //리뷰 가져오기
     @GetMapping
-    fun getReviews(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String) =
-        reviewService.getReviews(accessToken)
+    fun getReviews(@RequestAttribute userId: Int) =
+        reviewService.getReviews(userId)
 
     //특정 리뷰 가져오기
     @GetMapping("{storeId}")
@@ -25,9 +25,9 @@ class ReviewController(private val reviewService: ReviewService) {
     //리뷰 저장하기(테스트용)
     @PostMapping
     fun saveReview(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         @Valid reviewSaveDTO: ReviewSaveDTO
-    ) = reviewService.saveReview(accessToken, reviewSaveDTO)
+    ) = reviewService.saveReview(userId, reviewSaveDTO)
 
     //리뷰 수정하기(테스트용)
     @PatchMapping

@@ -51,9 +51,7 @@ class UserService(
         }
     }
 
-    fun getUser(bearerAccessToken: String): UserDTO {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun getUser(userId: Int): UserDTO {
         try {
             return userRepository.getUser(userId)!!
         } catch (e: Exception) {
@@ -71,9 +69,7 @@ class UserService(
 
     fun getUserByIdList(userGetByIdListDTO: UserGetByIdListDTO) = userRepository.getUserByIdList(userGetByIdListDTO)
 
-    fun editUser(bearerAccessToken: String, userEditDTO: UserEditDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun editUser(userId: Int, userEditDTO: UserEditDTO) {
         val oldUser = userRepository.getUser(userId)!!
 
         val userNickname = userEditDTO.nickname
