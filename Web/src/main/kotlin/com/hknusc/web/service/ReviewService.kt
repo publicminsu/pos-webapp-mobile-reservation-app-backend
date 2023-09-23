@@ -8,12 +8,12 @@ import com.hknusc.web.repository.ReviewRepository
 import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
 class ReviewService(
-    private val tokenProvider: JwtTokenProvider,
+    private val tokenProvider: JWTTokenProvider,
     private val photoUtility: PhotoUtility,
     private val reviewRepository: ReviewRepository
 ) {

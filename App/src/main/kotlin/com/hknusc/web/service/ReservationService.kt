@@ -3,15 +3,14 @@ package com.hknusc.web.service
 import com.hknusc.web.dto.order.OrderDTO
 import com.hknusc.web.dto.reservation.*
 import com.hknusc.web.repository.ReservationRepository
-import com.hknusc.web.util.type.OrderCode
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
 class ReservationService(
-    private val tokenProvider: JwtTokenProvider,
+    private val tokenProvider: JWTTokenProvider,
     private val reservationRepository: ReservationRepository
 ) {
     fun getReservations(bearerAccessToken: String): List<OrderDTO> {

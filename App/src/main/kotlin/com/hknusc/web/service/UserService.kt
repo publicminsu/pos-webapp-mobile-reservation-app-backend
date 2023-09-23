@@ -7,8 +7,8 @@ import com.hknusc.web.util.MailUtility
 import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JwtAuthInfo
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JWTAuthenticationInfo
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -17,7 +17,7 @@ import java.sql.Timestamp
 @Service
 class UserService(
     @param:Value("\${frontEnd.emailURL}") private val emailURL: String,
-    private val tokenProvider: JwtTokenProvider,
+    private val tokenProvider: JWTTokenProvider,
     private val mailUtility: MailUtility,
     private val photoUtility: PhotoUtility,
     private val passwordEncoder: PasswordEncoder,
@@ -42,8 +42,8 @@ class UserService(
         try {
             userRepository.saveUser(userDBSaveDTO)
 
-            val jwtAuthInfo = JwtAuthInfo(userDBSaveDTO.id, email)
-            val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
+            val jwtAuthenticationInfo = JWTAuthenticationInfo(userDBSaveDTO.id, email)
+            val token: String = tokenProvider.generateAccessToken(jwtAuthenticationInfo)
 
             mailUtility.send("이메일 인증", "링크: $emailURL$token", email)
         } catch (e: Exception) {

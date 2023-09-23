@@ -1,9 +1,6 @@
 package com.hknusc.web.controller
 
-import com.hknusc.web.dto.table.TableListSaveDTO
 import com.hknusc.web.service.TableService
-import com.hknusc.web.util.jwt.JwtTokenProvider
-import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -13,7 +10,7 @@ class TableController(private val tableService: TableService) {
     //개점된 가게에서 전체 테이블 가져오기
     @GetMapping("{storeId}")
     fun getTables(@PathVariable storeId: Int) = tableService.getTables(storeId)
-    
+
     //테이블에 존재하는 주문 가져오기
     @GetMapping("orders/{storeId}")
     fun getTablesOrdersDetails(@PathVariable storeId: Int) =

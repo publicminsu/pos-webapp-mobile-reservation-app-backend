@@ -1,6 +1,5 @@
 package com.hknusc.web.util.jwt
 
-import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.exception.ErrorUtility
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component
 import java.io.IOException
 
 @Component
-class JwtAuthenticationEntryPoint(private val errorUtility: ErrorUtility) : AuthenticationEntryPoint {
+class JWTAuthenticationEntryPoint(private val errorUtility: ErrorUtility) : AuthenticationEntryPoint {
     @Throws(IOException::class, ServletException::class)
     override fun commence(
         request: HttpServletRequest,

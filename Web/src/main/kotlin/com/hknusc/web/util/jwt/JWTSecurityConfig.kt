@@ -6,12 +6,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
-class JwtSecurityConfig(private val tokenProvider: JwtTokenProvider, private val errorUtility: ErrorUtility) :
+class JWTSecurityConfig(private val tokenProvider: JWTTokenProvider, private val errorUtility: ErrorUtility) :
     SecurityConfigurerAdapter<DefaultSecurityFilterChain?, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         http.addFilterBefore(
-            JwtAuthenticationFilter(tokenProvider),
+            JWTAuthenticationFilter(tokenProvider),
             UsernamePasswordAuthenticationFilter::class.java
-        ).addFilterBefore(JWTExceptionHandler(errorUtility), JwtAuthenticationFilter::class.java)
+        ).addFilterBefore(JWTExceptionHandler(errorUtility), JWTAuthenticationFilter::class.java)
     }
 }

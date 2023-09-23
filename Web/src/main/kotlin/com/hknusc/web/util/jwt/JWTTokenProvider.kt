@@ -21,12 +21,12 @@ import java.security.Key
 import java.util.*
 
 @Component
-class JwtTokenProvider(
+class JWTTokenProvider(
     @param:Value("\${jwt.secretKey}") private val secretKey: String,
     private val userDetailService: UserDetailService,
     private val authRepository: AuthRepository
 ) : InitializingBean {
-    val logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
+    val logger = LoggerFactory.getLogger(JWTTokenProvider::class.java)
     lateinit var key: Key
     val accessTokenExpireTime = 30 * 60 * 1000L//30분
     val refreshTokenExpireTime = 60 * 60 * 24 * 1000L
@@ -34,7 +34,7 @@ class JwtTokenProvider(
         key = Keys.hmacShaKeyFor(secretKey.toByteArray())
     }
 
-    fun generateRefreshToken(jwtAuthInfo: JwtAuthInfo): String {
+    fun generateRefreshToken(jwtAuthInfo: JWTAuthenticationInfo): String {
         val now = Date()
         return Jwts.builder()
             .setHeaderParam("typ", "REFRESH_TOKEN")
@@ -46,7 +46,7 @@ class JwtTokenProvider(
             .compact()
     }
 
-    fun generateAccessToken(jwtAuthInfo: JwtAuthInfo): String {
+    fun generateAccessToken(jwtAuthInfo: JWTAuthenticationInfo): String {
         val now = Date()
         return Jwts.builder()
             .setHeaderParam("typ", "ACCESS_TOKEN")
@@ -56,6 +56,7 @@ class JwtTokenProvider(
             .setExpiration(Date(now.time + accessTokenExpireTime))
             .claim("userId", jwtAuthInfo.id)
             .claim("userEmail", jwtAuthInfo.email)
+            .claim("userStoreId", jwtAuthInfo.storeId)
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
@@ -83,6 +84,13 @@ class JwtTokenProvider(
         return claims["userEmail"].toString()
     }
 
+    fun findUserStoreIdByClaims(claims: Claims): Int {
+        val storeId = claims["userStoreId"].toString()
+        if (storeId == "0")
+            throw CustomException(ErrorCode.STORE_NOT_OPEN)
+        return storeId.toInt()
+    }
+
     fun findClaimsByBearerAccessToken(bearerAccessToken: String): Claims {
         val accessToken = resolveToken(bearerAccessToken)
         return findClaimsByJWT(accessToken)
@@ -91,6 +99,11 @@ class JwtTokenProvider(
     fun findUserIdByBearerAccessToken(bearerAccessToken: String): Int {
         val accessToken = resolveToken(bearerAccessToken)
         return findUserIdByJWT(accessToken)
+    }
+
+    fun findUserStoreIdByBearerAccessToken(bearerAccessToken: String): Int {
+        val claims = findClaimsByBearerAccessToken(bearerAccessToken)
+        return findUserStoreIdByClaims(claims)
     }
 
     fun validateToken(token: String?) {
@@ -120,8 +133,8 @@ class JwtTokenProvider(
     /*
     RTR (Refresh Token Rotation) RefreshToken 사용될 때마다 재발급
      */
-    fun generateTokenHeader(userId: Int, userEmail: String): HttpHeaders {
-        val jwtAuthInfo = JwtAuthInfo(userId, userEmail)
+    fun generateTokenHeader(userId: Int, userEmail: String, userStoreId: Int = 0): HttpHeaders {
+        val jwtAuthInfo = JWTAuthenticationInfo(userId, userEmail, userStoreId)
         val accessToken = generateAccessToken(jwtAuthInfo)
         val refreshToken = generateRefreshToken(jwtAuthInfo)
 

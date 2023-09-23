@@ -9,14 +9,14 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 
-class JwtAuthenticationFilter(private val jwtTokenProvider: JwtTokenProvider) : OncePerRequestFilter() {
+class JWTAuthenticationFilter(private val jwtTokenProvider: JWTTokenProvider) : OncePerRequestFilter() {
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val bearerToken = request.getHeader(JwtTokenProvider.ACCESS_KEY)
+        val bearerToken = request.getHeader(JWTTokenProvider.ACCESS_KEY)
 
         if (bearerToken != null) {
             val accessToken: String? = jwtTokenProvider.resolveToken(bearerToken)

@@ -5,15 +5,14 @@ import com.hknusc.web.repository.StoreRepository
 import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JwtTokenProvider
-import io.jsonwebtoken.Claims
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
 class StoreService(
-    private val tokenProvider: JwtTokenProvider,
+    private val tokenProvider: JWTTokenProvider,
     private val photoUtility: PhotoUtility,
     private val storeRepository: StoreRepository
 ) {

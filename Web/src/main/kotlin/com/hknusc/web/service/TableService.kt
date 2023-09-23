@@ -11,12 +11,12 @@ import com.hknusc.web.repository.OrderRepository
 import com.hknusc.web.repository.TableRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
 class TableService(
-    private val tokenProvider: JwtTokenProvider,
+    private val tokenProvider: JWTTokenProvider,
     private val tableRepository: TableRepository,
     private val orderRepository: OrderRepository,
     private val orderDetailRepository: OrderDetailRepository

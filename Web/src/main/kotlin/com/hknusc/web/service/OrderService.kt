@@ -4,11 +4,11 @@ import com.hknusc.web.dto.order.*
 import com.hknusc.web.repository.OrderRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
-class OrderService(private val tokenProvider: JwtTokenProvider, private val orderRepository: OrderRepository) {
+class OrderService(private val tokenProvider: JWTTokenProvider, private val orderRepository: OrderRepository) {
     fun getOrders(bearerAccessToken: String): List<OrderDTO> {
         val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 

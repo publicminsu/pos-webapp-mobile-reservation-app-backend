@@ -7,8 +7,8 @@ import com.hknusc.web.repository.UserRepository
 import com.hknusc.web.util.MailUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JwtAuthInfo
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JWTAuthenticationInfo
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service
 class AuthService(
     @param:Value("\${frontEnd.emailURL}") private val emailURL: String,
     @param:Value("\${frontEnd.passwordURL}") private val passwordURL: String,
-    private val tokenProvider: JwtTokenProvider,
+    private val tokenProvider: JWTTokenProvider,
     private val mailUtility: MailUtility,
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository,
@@ -124,7 +124,7 @@ class AuthService(
         }
 
         try {
-            val jwtAuthInfo = JwtAuthInfo(user.id, email, 0)
+            val jwtAuthInfo = JWTAuthenticationInfo(user.id, email, 0)
             val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
 
             mailUtility.send("이메일 인증", "링크: $emailURL$token", email)
@@ -143,7 +143,7 @@ class AuthService(
             throw CustomException(ErrorCode.USER_NOT_FOUND)
         }
 
-        val jwtAuthInfo = JwtAuthInfo(user.id, email, 0)
+        val jwtAuthInfo = JWTAuthenticationInfo(user.id, email, 0)
         val token: String = tokenProvider.generateAccessToken(jwtAuthInfo)
 
         mailUtility.send("비밀번호 재설정", "링크: $passwordURL$token", email)

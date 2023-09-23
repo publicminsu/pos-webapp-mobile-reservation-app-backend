@@ -1,14 +1,13 @@
 package com.hknusc.web.config
 
 import com.hknusc.web.util.exception.ErrorUtility
-import com.hknusc.web.util.jwt.JwtAccessDeniedHandler
-import com.hknusc.web.util.jwt.JwtAuthenticationEntryPoint
-import com.hknusc.web.util.jwt.JwtSecurityConfig
-import com.hknusc.web.util.jwt.JwtTokenProvider
+import com.hknusc.web.util.jwt.JWTAccessDeniedHandler
+import com.hknusc.web.util.jwt.JWTAuthenticationEntryPoint
+import com.hknusc.web.util.jwt.JWTSecurityConfig
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import com.hknusc.web.util.type.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -19,9 +18,9 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtTokenProvider: JwtTokenProvider,
-    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-    private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
+    private val jwtTokenProvider: JWTTokenProvider,
+    private val jwtAuthenticationEntryPoint: JWTAuthenticationEntryPoint,
+    private val jwtAccessDeniedHandler: JWTAccessDeniedHandler,
     private val errorUtility: ErrorUtility
 ) {
     @Bean
@@ -47,7 +46,7 @@ class SecurityConfig(
 
             .formLogin().disable()
 
-            .apply(JwtSecurityConfig(jwtTokenProvider, errorUtility))
+            .apply(JWTSecurityConfig(jwtTokenProvider, errorUtility))
         return http.build()
     }
 }
