@@ -63,22 +63,12 @@ class AuthService(
         return ResponseEntity(HttpStatus.OK)
     }
 
-    fun refresh(oldBearerAccessToken: String, oldBearerRefreshToken: String): ResponseEntity<Any> {
+    fun refresh(userId: Int, userEmail: String, userStoreId: Int, oldBearerRefreshToken: String): ResponseEntity<Any> {
         val oldRefreshToken = tokenProvider.resolveToken(oldBearerRefreshToken)
 
         //RefreshToken 검증.
         tokenProvider.validateToken(oldRefreshToken.toString())
-
-        //AccessToken 정보 가져오기
-        val claims = tokenProvider.findClaimsByBearerAccessToken(oldBearerAccessToken)
-        val userId = tokenProvider.findUserIdByClaims(claims)
-        val userEmail = tokenProvider.findUserEmailByClaims(claims)
-        val userStoreId: Int = try {
-            tokenProvider.findUserStoreIdByClaims(claims)
-        } catch (e: Exception) {
-            0
-        }
-
+        
         //가져온 정보를 토대로 DB에 저장된 RefreshToken 가져오기
         val savedRefreshToken = authRepository.getRefreshToken(userId).refreshToken
 

@@ -11,7 +11,7 @@ data class StoreSaveDTO(
     val address: String?,
     val info: String?,
     @PhoneNumberValid
-    val phoneNumber: String?,
+    val phoneNumber: String,
     val canReservation: Boolean?,
     val operatingTime: String?,
     val profilePhoto: MultipartFile?,

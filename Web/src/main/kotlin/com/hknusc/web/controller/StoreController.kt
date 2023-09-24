@@ -4,7 +4,6 @@ import com.hknusc.web.dto.store.StoreEditDTO
 import com.hknusc.web.dto.store.StoreOpenDTO
 import com.hknusc.web.dto.store.StoreSaveDTO
 import com.hknusc.web.service.StoreService
-import com.hknusc.web.util.jwt.JWTTokenProvider
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
@@ -13,34 +12,25 @@ import org.springframework.web.bind.annotation.*
 class StoreController(private val storeService: StoreService) {
     //현재 인증된 사용자의 가게 가져오기
     @GetMapping
-    fun getStores(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String) = storeService.getStores(accessToken)
+    fun getStores(@RequestAttribute userId: Int) = storeService.getStores(userId)
 
     //현재 토큰으로 개점한 가게 가져오기
     @GetMapping("{storeId}")
-    fun getStore(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String, @PathVariable storeId: Int) =
-        storeService.getStore(accessToken)
-
-    //좌표 기준으로 가게 찾기
-    @GetMapping("coordinate")
-    fun getStoresByCoordinate(
-        @RequestParam latitude: Double,
-        @RequestParam longitude: Double,
-        @RequestParam distance: Double
-    ) =
-        storeService.getStoresByCoordinate(latitude, longitude, distance)
+    fun getStore(@RequestAttribute userId: Int, @RequestAttribute userStoreId: Int, @PathVariable storeId: Int) =
+        storeService.getStore(userId, userStoreId)
 
     //가게 저장하기
     @PostMapping
-    fun saveStore(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String, @Valid storeSaveDTO: StoreSaveDTO) =
-        storeService.saveStore(accessToken, storeSaveDTO)
+    fun saveStore(@RequestAttribute userId: Int, @Valid storeSaveDTO: StoreSaveDTO) =
+        storeService.saveStore(userId, storeSaveDTO)
 
     //가게 수정하기
     @PatchMapping
-    fun editStore(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String, @Valid storeEditDTO: StoreEditDTO) =
-        storeService.editStore(accessToken, storeEditDTO)
+    fun editStore(@RequestAttribute userId: Int, userStoreId: Int, @Valid storeEditDTO: StoreEditDTO) =
+        storeService.editStore(userId, userStoreId, storeEditDTO)
 
     //가게 개점
     @PostMapping("open")
-    fun setOpen(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String, storeOpenDTO: StoreOpenDTO) =
-        storeService.setOpen(accessToken, storeOpenDTO)
+    fun setOpen(@RequestAttribute userId: Int, @RequestAttribute userEmail: String, storeOpenDTO: StoreOpenDTO) =
+        storeService.setOpen(userId, userEmail, storeOpenDTO)
 }

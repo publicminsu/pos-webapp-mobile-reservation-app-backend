@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class ReceiptService(
-    private val tokenProvider: JWTTokenProvider,
     private val receiptRepository: ReceiptRepository,
     private val orderDetailRepository: OrderDetailRepository
 ) {
-    fun getReceipt(bearerAccessToken: String, orderId: Int): ReceiptDTO {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+    fun getReceipt(userStoreId: Int, orderId: Int): ReceiptDTO {
         val orderDTO: OrderDTO
         try {
             orderDTO = receiptRepository.getReceipt(orderId, userStoreId)!!

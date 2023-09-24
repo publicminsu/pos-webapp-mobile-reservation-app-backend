@@ -1,33 +1,26 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.order.*
+import com.hknusc.web.dto.order.OrderDBEditDTO
+import com.hknusc.web.dto.order.OrderDBSaveDTO
+import com.hknusc.web.dto.order.OrderEditDTO
+import com.hknusc.web.dto.order.OrderSaveDTO
 import com.hknusc.web.repository.OrderRepository
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
-class OrderService(private val tokenProvider: JWTTokenProvider, private val orderRepository: OrderRepository) {
-    fun getOrders(bearerAccessToken: String): List<OrderDTO> {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+class OrderService(private val orderRepository: OrderRepository) {
+    fun getOrders(userStoreId: Int) = orderRepository.getOrders(userStoreId)
 
-        return orderRepository.getOrders(userStoreId)
+    fun getOrder(userStoreId: Int, orderId: Int) = try {
+        orderRepository.getOrder(orderId, userStoreId)!!
+    } catch (e: Exception) {
+        throw CustomException(ErrorCode.ORDER_NOT_FOUND)
     }
 
-    fun getOrder(bearerAccessToken: String, orderId: Int): OrderDTO {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
 
-        try {
-            return orderRepository.getOrder(orderId, userStoreId)!!
-        } catch (e: Exception) {
-            throw CustomException(ErrorCode.ORDER_NOT_FOUND)
-        }
-    }
-
-    fun saveOrder(bearerAccessToken: String, orderSaveDTO: OrderSaveDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
+    fun saveOrder(userStoreId: Int, orderSaveDTO: OrderSaveDTO) {
         if (orderRepository.isNotEmptyTable(orderSaveDTO.tableId))
             throw CustomException(ErrorCode.TABLE_NOT_EMPTY)
 
@@ -44,9 +37,7 @@ class OrderService(private val tokenProvider: JWTTokenProvider, private val orde
         orderRepository.saveOrder(orderDBSaveDTO)
     }
 
-    fun editOrder(bearerAccessToken: String, orderEditDTO: OrderEditDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
+    fun editOrder(userStoreId: Int, orderEditDTO: OrderEditDTO) {
         val orderDBEditDTO = OrderDBEditDTO(
             orderEditDTO.id,
             userStoreId,
@@ -61,9 +52,7 @@ class OrderService(private val tokenProvider: JWTTokenProvider, private val orde
             throw CustomException(ErrorCode.ORDER_NOT_FOUND)
     }
 
-    fun deleteOrder(bearerAccessToken: String, orderId: Int) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
+    fun deleteOrder(userStoreId: Int, orderId: Int) {
         if (orderRepository.deleteOrder(orderId, userStoreId) == 0)
             throw CustomException(ErrorCode.ORDER_NOT_FOUND)
     }

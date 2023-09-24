@@ -17,7 +17,7 @@ class UserController(private val userService: UserService) {
 
     //현재 사용자를 가져온다.
     @GetMapping
-    fun getUser(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String) = userService.getUser(accessToken)
+    fun getUser(@RequestAttribute userId: Int) = userService.getUser(userId)
 
     //특정 사용자를 가져온다.
     @GetMapping("{userId}")
@@ -36,8 +36,8 @@ class UserController(private val userService: UserService) {
     //회원 수정
     //이메일, 비밀번호는 쉽게 변경할 수 없어야 한다고 생각된다. 전화번호도 마찬가지이다. 중복된 번호가 입력되면 안된다. 하지만 전화번호는 허용해두었다.
     @PatchMapping
-    fun editUser(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String, @Valid userEditDTO: UserEditDTO) =
-        userService.editUser(accessToken, userEditDTO)
+    fun editUser(@RequestAttribute userId: Int, @Valid userEditDTO: UserEditDTO) =
+        userService.editUser(userId, userEditDTO)
 
     //삭제된 회원 가져오기
     @GetMapping("deletedUser") // 테스트용
@@ -45,6 +45,6 @@ class UserController(private val userService: UserService) {
 
     //회원 삭제
     @DeleteMapping//삭제 과정은 더 생각해봐야 할 요소, ex. 비밀번호 확인
-    fun deleteUser(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String) =
-        userService.deleteUser(accessToken)
+    fun deleteUser(@RequestAttribute userId: Int) =
+        userService.deleteUser(userId)
 }

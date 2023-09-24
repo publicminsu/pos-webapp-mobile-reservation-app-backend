@@ -8,34 +8,22 @@ import com.hknusc.web.repository.MenuRepository
 import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.exception.CustomException
 import com.hknusc.web.util.exception.ErrorCode
-import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.stereotype.Service
 
 @Service
 class MenuService(
-    private val tokenProvider: JWTTokenProvider,
     private val photoUtility: PhotoUtility,
     private val menuRepository: MenuRepository
 ) {
-    fun getMenus(bearerAccessToken: String): List<MenuDTO> {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
+    fun getMenus(userStoreId: Int) = menuRepository.getMenus(userStoreId)
 
-        return menuRepository.getMenus(userStoreId)
+    fun getMenu(userStoreId: Int, menuId: Int) = try {
+        menuRepository.getMenu(menuId, userStoreId)!!
+    } catch (_: Exception) {
+        throw CustomException(ErrorCode.MENU_NOT_FOUND)
     }
 
-    fun getMenu(bearerAccessToken: String, menuId: Int): MenuDTO {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
-        try {
-            return menuRepository.getMenu(menuId, userStoreId)!!
-        } catch (_: Exception) {
-            throw CustomException(ErrorCode.MENU_NOT_FOUND)
-        }
-    }
-
-    fun saveMenu(bearerAccessToken: String, menuSaveDTO: MenuSaveDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
+    fun saveMenu(userStoreId: Int, menuSaveDTO: MenuSaveDTO) {
         val photo = menuSaveDTO.photo
         val photoPath = photoUtility.saveImage(photo)
 
@@ -54,9 +42,7 @@ class MenuService(
         }
     }
 
-    fun editMenu(bearerAccessToken: String, menuEditDTO: MenuEditDTO) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
+    fun editMenu(userStoreId: Int, menuEditDTO: MenuEditDTO) {
         deleteOldMenuPhoto(menuEditDTO.id, userStoreId)
 
         val photo = menuEditDTO.photo
@@ -76,9 +62,7 @@ class MenuService(
         }
     }
 
-    fun deleteMenu(bearerAccessToken: String, menuId: Int) {
-        val userStoreId = tokenProvider.findUserStoreIdByBearerAccessToken(bearerAccessToken)
-
+    fun deleteMenu(userStoreId: Int, menuId: Int) {
         deleteOldMenuPhoto(menuId, userStoreId)
 
         if (menuRepository.deleteMenu(menuId, userStoreId) == 0) {

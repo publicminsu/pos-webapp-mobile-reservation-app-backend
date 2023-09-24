@@ -12,20 +12,4 @@
         WHERE ID = #{reviewId}
           AND STORE_ID = #{storeId}
     </select>
-    <insert id="saveReview" parameterType="com.hknusc.web.dto.review.ReviewDBSaveDTO">
-        INSERT INTO REVIEW(ACCOUNT_ID, STORE_ID, DETAIL, WRITING_TIME, RATING, PHOTOS)
-        VALUES (#{accountId}, #{storeId}, #{detail}, #{writingTime}, #{rating}, #{photos})
-    </insert>
-    <update id="editReview" parameterType="com.hknusc.web.dto.review.ReviewDBEditDTO">
-        UPDATE REVIEW
-        SET (DETAIL, WRITING_TIME, RATING, PHOTOS)= (#{detail}, #{writingTime}, #{rating}, #{photos})
-        WHERE ID = #{id}
-          AND ACCOUNT_ID = #{accountId}
-    </update>
-    <delete id="deleteReview" parameterType="int">
-        DELETE
-        FROM REVIEW
-        WHERE ID = #{reviewId}
-          AND ACCOUNT_ID = #{userId}
-    </delete>
 </mapper>

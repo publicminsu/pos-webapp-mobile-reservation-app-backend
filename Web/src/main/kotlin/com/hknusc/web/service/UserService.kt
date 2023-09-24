@@ -51,15 +51,12 @@ class UserService(
         }
     }
 
-    fun getUser(bearerAccessToken: String): UserDTO {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
-        try {
-            return userRepository.getUser(userId)!!
-        } catch (e: Exception) {
-            throw CustomException(ErrorCode.USER_NOT_FOUND)
-        }
+    fun getUser(userId: Int) = try {
+        userRepository.getUser(userId)!!
+    } catch (e: Exception) {
+        throw CustomException(ErrorCode.USER_NOT_FOUND)
     }
+
 
     fun getUserById(userId: Int): UserDTO {
         try {
@@ -71,9 +68,7 @@ class UserService(
 
     fun getUserByIdList(userGetByIdListDTO: UserGetByIdListDTO) = userRepository.getUserByIdList(userGetByIdListDTO)
 
-    fun editUser(bearerAccessToken: String, userEditDTO: UserEditDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun editUser(userId: Int, userEditDTO: UserEditDTO) {
         val oldUser = userRepository.getUser(userId)!!
 
         val userNickname = userEditDTO.nickname
@@ -93,9 +88,7 @@ class UserService(
     }
 
     fun getDeletedUser() = userRepository.getDeletedUsers()
-    fun deleteUser(bearerAccessToken: String) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun deleteUser(userId: Int) {
         lateinit var user: UserDTO
         try {
             user = userRepository.getUser(userId)!!

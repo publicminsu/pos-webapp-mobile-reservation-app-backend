@@ -11,7 +11,7 @@ class PhoneNumberValidator : ConstraintValidator<PhoneNumberValid, String> {
             return false
         }
 
-        val pattern = Pattern.compile("^01([0-1|6-9])-?\\d{3,4}-?\\d{4}")
+        val pattern = Pattern.compile("^01([0-1|6-9])-?\\d{3,4}-?\\d{4}$")
         return pattern.matcher(value).find()
     }
 }

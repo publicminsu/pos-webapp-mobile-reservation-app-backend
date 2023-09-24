@@ -12,15 +12,6 @@
         WHERE ID = #{storeId}
           AND ACCOUNT_ID = #{userId}
     </select>
-    <select id="getStoresByCoordinate" parameterType="double" resultType="com.hknusc.web.dto.store.DistanceStoreDTO">
-        SELECT *
-        FROM (SELECT *,
-                     EARTH_DISTANCE(LL_TO_EARTH(LATITUDE, LONGITUDE),
-                                    LL_TO_EARTH(#{latitude}, #{longitude})) AS DISTANCE
-              FROM STORE) AS _
-        <![CDATA[ WHERE DISTANCE <= #{distance}
-        ]]>
-    </select>
     <insert id="saveStore" parameterType="com.hknusc.web.dto.store.StoreDBSaveDTO">
         INSERT INTO STORE(ACCOUNT_ID, NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
                           OPERATING_TIME, IS_OPEN, PROFILE_PHOTO, PHOTOS)

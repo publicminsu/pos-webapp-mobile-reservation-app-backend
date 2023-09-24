@@ -4,8 +4,8 @@ import com.hknusc.web.dto.auth.ConfirmEmailDTO
 import com.hknusc.web.dto.auth.ConfirmResetPasswordDTO
 import com.hknusc.web.dto.auth.LoginDTO
 import com.hknusc.web.dto.auth.ResetPasswordDTO
-import com.hknusc.web.util.jwt.JWTTokenProvider
 import com.hknusc.web.service.AuthService
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
@@ -23,9 +23,11 @@ class AuthController(private val authService: AuthService) {
     //인증 재발급 (만료된 인증을 새로운 인증으로 교체)
     @GetMapping("refresh")
     fun refresh(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
+        @RequestAttribute userEmail: String,
+        @RequestAttribute userStoreId: Int,
         @RequestHeader(JWTTokenProvider.REFRESH_KEY) refreshToken: String
-    ) = authService.refresh(accessToken, refreshToken)
+    ) = authService.refresh(userId, userEmail, userStoreId, refreshToken)
 
     //이메일 인증 확인
     @PostMapping("email")

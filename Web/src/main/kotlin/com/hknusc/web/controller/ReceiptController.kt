@@ -1,7 +1,6 @@
 package com.hknusc.web.controller
 
 import com.hknusc.web.service.ReceiptService
-import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 class ReceiptController(private val receiptService: ReceiptService) {
     @GetMapping("{orderId}")
     fun getReceipt(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userStoreId: Int,
         @PathVariable("orderId") orderId: Int
-    ) = receiptService.getReceipt(accessToken, orderId)
+    ) = receiptService.getReceipt(userStoreId, orderId)
 }
