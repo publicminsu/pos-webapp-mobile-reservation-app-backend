@@ -1,5 +1,6 @@
-package com.hknusc.web.util.jwt
+package com.hknusc.web.util.Interceptor
 
+import com.hknusc.web.util.jwt.JWTTokenProvider
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
