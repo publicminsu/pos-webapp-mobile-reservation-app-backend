@@ -18,9 +18,9 @@ class ReviewController(private val reviewService: ReviewService) {
     //특정 리뷰 가져오기
     @GetMapping("{storeId}")
     fun getReviewsByStore(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         @PathVariable storeId: Int
-    ) = reviewService.getReviewsByStore(accessToken, storeId)
+    ) = reviewService.getReviewsByStore(userId, storeId)
 
     //리뷰 저장하기(테스트용)
     @PostMapping
@@ -32,15 +32,15 @@ class ReviewController(private val reviewService: ReviewService) {
     //리뷰 수정하기(테스트용)
     @PatchMapping
     fun editReview(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         @Valid reviewEditDTO: ReviewEditDTO
     ) =
-        reviewService.editReview(accessToken, reviewEditDTO)
+        reviewService.editReview(userId, reviewEditDTO)
 
     //리뷰 삭제하기(테스트용)
     @DeleteMapping("{reviewId}")
     fun deleteReview(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         @PathVariable("reviewId") reviewId: Int
-    ) = reviewService.deleteReview(accessToken, reviewId)
+    ) = reviewService.deleteReview(userId, reviewId)
 }

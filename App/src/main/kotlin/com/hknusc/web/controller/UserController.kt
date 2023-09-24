@@ -45,6 +45,6 @@ class UserController(private val userService: UserService) {
 
     //회원 삭제
     @DeleteMapping//삭제 과정은 더 생각해봐야 할 요소, ex. 비밀번호 확인
-    fun deleteUser(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String) =
-        userService.deleteUser(accessToken)
+    fun deleteUser(@RequestAttribute userId: Int) =
+        userService.deleteUser(userId)
 }

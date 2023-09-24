@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.*
 class OrderController(private val orderService: OrderService) {
     //주문 내역 가져오기
     @GetMapping
-    fun getOrders(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String) = orderService.getOrders(accessToken)
+    fun getOrders(@RequestAttribute userId: Int) = orderService.getOrders(userId)
 
     //특정 주문 내역 가져오기
     @GetMapping("{storeId}")
     fun getOrdersByStoreId(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         @PathVariable storeId: Int
-    ) = orderService.getOrdersByStoreId(accessToken, storeId)
+    ) = orderService.getOrdersByStoreId(userId, storeId)
 
     //주문 내역 저장
     @PostMapping
     fun saveOrder(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         orderSaveDTO: OrderSaveDTO
     ) =
-        orderService.saveOrder(accessToken, orderSaveDTO)
+        orderService.saveOrder(userId, orderSaveDTO)
 
     //주문 내역 수정
     @PatchMapping
     fun editOrder(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         orderEditDTO: OrderEditDTO
     ) =
-        orderService.editOrder(accessToken, orderEditDTO)
+        orderService.editOrder(userId, orderEditDTO)
 
     //주문 내역 삭제
     @DeleteMapping("{orderId}")
     fun deleteOrder(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         @PathVariable orderId: Int
-    ) = orderService.deleteOrder(accessToken, orderId)
+    ) = orderService.deleteOrder(userId, orderId)
 }

@@ -26,9 +26,7 @@ class ReviewService(
         return reviews
     }
 
-    fun getReviewsByStore(bearerAccessToken: String, storeId: Int): List<ReviewDTO> {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun getReviewsByStore(userId: Int, storeId: Int): List<ReviewDTO> {
         val dbReviews = reviewRepository.getReviewsByStore(userId, storeId)
 
         val reviews: MutableList<ReviewDTO> = mutableListOf()
@@ -44,9 +42,7 @@ class ReviewService(
         reviewRepository.saveReview(reviewDBSaveDTO)
     }
 
-    fun editReview(bearerAccessToken: String, reviewEditDTO: ReviewEditDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun editReview(userId: Int, reviewEditDTO: ReviewEditDTO) {
         //이전 이미지 삭제
         val oldDBReview = try {
             reviewRepository.getReview(userId, reviewEditDTO.id)!!
@@ -62,10 +58,7 @@ class ReviewService(
         }
     }
 
-    fun deleteReview(bearerAccessToken: String, reviewId: Int) {
-        val claims = tokenProvider.findClaimsByBearerAccessToken(bearerAccessToken)
-        val userId = tokenProvider.findUserIdByClaims(claims)
-
+    fun deleteReview(userId: Int, reviewId: Int) {
         //이전 이미지 삭제
         val oldDBReview = try {
             reviewRepository.getReview(userId, reviewId)!!

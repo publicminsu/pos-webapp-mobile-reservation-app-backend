@@ -10,6 +10,6 @@ class ReceiptController(private val receiptService: ReceiptService) {
     //사용자의 모든 결제 상태 주문 가져오기
     @GetMapping
     fun getReceipt(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
-    ) = receiptService.getReceipts(accessToken)
+        @RequestAttribute userId: Int
+    ) = receiptService.getReceipts(userId)
 }

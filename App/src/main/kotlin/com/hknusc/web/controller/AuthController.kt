@@ -23,9 +23,10 @@ class AuthController(private val authService: AuthService) {
     //인증 재발급 (만료된 인증을 새로운 인증으로 교체)
     @GetMapping("refresh")
     fun refresh(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
+        @RequestAttribute userEmail: String,
         @RequestHeader(JWTTokenProvider.REFRESH_KEY) refreshToken: String
-    ) = authService.refresh(accessToken, refreshToken)
+    ) = authService.refresh(userId, userEmail, refreshToken)
 
     //이메일 인증 확인
     @PostMapping("email")

@@ -13,8 +13,7 @@ class ReceiptService(
     private val receiptRepository: ReceiptRepository,
     private val orderDetailRepository: OrderDetailRepository
 ) {
-    fun getReceipts(bearerAccessToken: String): List<ReceiptDTO> {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
+    fun getReceipts(userId: Int): List<ReceiptDTO> {
         val orders = receiptRepository.getReceipts(userId)
 
         val receipts: MutableList<ReceiptDTO> = mutableListOf()

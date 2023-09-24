@@ -89,9 +89,7 @@ class UserService(
     }
 
     fun getDeletedUser() = userRepository.getDeletedUsers()
-    fun deleteUser(bearerAccessToken: String) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun deleteUser(userId: Int) {
         lateinit var user: UserDTO
         try {
             user = userRepository.getUser(userId)!!

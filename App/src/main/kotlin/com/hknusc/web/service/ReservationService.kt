@@ -13,26 +13,17 @@ class ReservationService(
     private val tokenProvider: JWTTokenProvider,
     private val reservationRepository: ReservationRepository
 ) {
-    fun getReservations(bearerAccessToken: String): List<OrderDTO> {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-        return reservationRepository.getReservations(userId)
-    }
+    fun getReservations(userId: Int) = reservationRepository.getReservations(userId)
 
-    fun getReservationsByStore(bearerAccessToken: String, storeId: Int): List<OrderDTO> {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-        return reservationRepository.getReservationsByStore(userId, storeId)
-    }
+    fun getReservationsByStore(userId: Int, storeId: Int) =
+        reservationRepository.getReservationsByStore(userId, storeId)
 
-    fun saveReservation(bearerAccessToken: String, reservationSaveDTO: ReservationSaveDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun saveReservation(userId: Int, reservationSaveDTO: ReservationSaveDTO) {
         val reservationDBSaveDTO = reservationSaveDTO.convertToReservationDB(userId)
         reservationRepository.saveReservation(reservationDBSaveDTO)
     }
 
-    fun editReservation(bearerAccessToken: String, reservationEditDTO: ReservationEditDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun editReservation(userId: Int, reservationEditDTO: ReservationEditDTO) {
         val reservationDBEditDTO = reservationEditDTO.convertToReservationDB(userId)
         if (reservationRepository.editReservation(reservationDBEditDTO) == 0) {
             throw CustomException(ErrorCode.RESERVATION_NOT_FOUND)

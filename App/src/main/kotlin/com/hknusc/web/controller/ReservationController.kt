@@ -11,27 +11,27 @@ import org.springframework.web.bind.annotation.*
 class ReservationController(private val reservationService: ReservationService) {
     //예약 가져오기
     @GetMapping
-    fun getReservations(@RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String) =
-        reservationService.getReservations(accessToken)
+    fun getReservations(@RequestAttribute userId: Int) =
+        reservationService.getReservations(userId)
 
     //특정 상점 예약 가져오기
     @GetMapping("{storeId}")
     fun getReservationsByStore(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         @PathVariable storeId: Int
-    ) = reservationService.getReservationsByStore(accessToken, storeId)
+    ) = reservationService.getReservationsByStore(userId, storeId)
 
     //예약 신청 (가게에서)
     @PostMapping
     fun saveReservation(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         reservationSaveDTO: ReservationSaveDTO
-    ) = reservationService.saveReservation(accessToken, reservationSaveDTO)
+    ) = reservationService.saveReservation(userId, reservationSaveDTO)
 
     //예약 수정
     @PatchMapping
     fun editReservation(
-        @RequestHeader(JWTTokenProvider.ACCESS_KEY) accessToken: String,
+        @RequestAttribute userId: Int,
         reservationEditDTO: ReservationEditDTO
-    ) = reservationService.editReservation(accessToken, reservationEditDTO)
+    ) = reservationService.editReservation(userId, reservationEditDTO)
 }

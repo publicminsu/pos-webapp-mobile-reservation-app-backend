@@ -9,21 +9,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class OrderService(private val tokenProvider: JWTTokenProvider, private val orderRepository: OrderRepository) {
-    fun getOrders(bearerAccessToken: String): List<OrderDTO> {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
+    fun getOrders(userId: Int) = orderRepository.getOrders(userId)
 
-        return orderRepository.getOrders(userId)
-    }
+    fun getOrdersByStoreId(userId: Int, storeId: Int) = orderRepository.getOrdersByStoreId(userId, storeId)
 
-    fun getOrdersByStoreId(bearerAccessToken: String, storeId: Int): List<OrderDTO> {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
-        return orderRepository.getOrdersByStoreId(userId, storeId)
-    }
-
-    fun saveOrder(bearerAccessToken: String, orderSaveDTO: OrderSaveDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun saveOrder(userId: Int, orderSaveDTO: OrderSaveDTO) {
         if (orderRepository.isNotEmptyTable(orderSaveDTO.tableId))
             throw CustomException(ErrorCode.TABLE_NOT_EMPTY)
 
@@ -31,17 +21,14 @@ class OrderService(private val tokenProvider: JWTTokenProvider, private val orde
         orderRepository.saveOrder(orderDBSaveDTO)
     }
 
-    fun editOrder(bearerAccessToken: String, orderEditDTO: OrderEditDTO) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
+    fun editOrder(userId: Int, orderEditDTO: OrderEditDTO) {
         val orderDBEditDTO = orderEditDTO.convertToOrderDB(userId)
 
         if (orderRepository.editOrder(orderDBEditDTO) == 0)
             throw CustomException(ErrorCode.ORDER_NOT_FOUND)
     }
 
-    fun deleteOrder(bearerAccessToken: String, orderId: Int) {
-        val userId = tokenProvider.findUserIdByBearerAccessToken(bearerAccessToken)
-
+    fun deleteOrder(userId: Int, orderId: Int) {
         if (orderRepository.deleteOrder(userId, orderId) == 0)
             throw CustomException(ErrorCode.ORDER_NOT_FOUND)
     }
