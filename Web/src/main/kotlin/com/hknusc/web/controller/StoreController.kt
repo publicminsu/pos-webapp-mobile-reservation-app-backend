@@ -26,7 +26,11 @@ class StoreController(private val storeService: StoreService) {
 
     //가게 수정하기
     @PatchMapping
-    fun editStore(@RequestAttribute userId: Int, userStoreId: Int, @Valid storeEditDTO: StoreEditDTO) =
+    fun editStore(
+        @RequestAttribute userId: Int,
+        @RequestAttribute userStoreId: Int,
+        @Valid storeEditDTO: StoreEditDTO
+    ) =
         storeService.editStore(userId, userStoreId, storeEditDTO)
 
     //가게 개점
