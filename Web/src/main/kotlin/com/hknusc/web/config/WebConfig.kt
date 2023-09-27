@@ -11,6 +11,7 @@ class WebConfig(private val jwtInterceptor: JWTInterceptor, private val storeInt
     WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(jwtInterceptor)
-        registry.addInterceptor(storeInterceptor).excludePathPatterns("/auth/**", "/check/**", "/users/**")
+        registry.addInterceptor(storeInterceptor)
+            .excludePathPatterns("/auth/**", "/check/**", "/users/**", "/stores/open", "/stores")
     }
 }
