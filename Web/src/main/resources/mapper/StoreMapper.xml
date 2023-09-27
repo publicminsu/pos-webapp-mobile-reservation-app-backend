@@ -12,18 +12,18 @@
         WHERE ID = #{storeId}
           AND ACCOUNT_ID = #{userId}
     </select>
-    <insert id="saveStore" parameterType="com.hknusc.web.dto.store.StoreDBSaveDTO">
+    <insert id="saveStore" parameterType="com.hknusc.web.dto.store.StoreDBSaveDTO" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO STORE(ACCOUNT_ID, NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
-                          OPERATING_TIME, IS_OPEN, PROFILE_PHOTO, PHOTOS)
+                          IS_OPEN, PROFILE_PHOTO, PHOTOS)
         VALUES (#{accountId}, #{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
-                #{canReservation}, #{operatingTime}, #{isOpen}, #{profilePhoto}, #{photos})
+                #{canReservation}, #{isOpen}, #{profilePhoto}, #{photos})
     </insert>
     <update id="editStore" parameterType="com.hknusc.web.dto.store.StoreDBEditDTO">
         UPDATE STORE
         SET (NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
-             OPERATING_TIME, PROFILE_PHOTO, PHOTOS)= (#{name}, #{latitude}, #{longitude}, #{address}, #{info},
-                                                      #{phoneNumber},
-                                                      #{canReservation}, #{operatingTime}, #{profilePhoto}, #{photos})
+             PROFILE_PHOTO, PHOTOS)= (#{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
+                                      #{canReservation}, #{profilePhoto}, #{photos})
         WHERE ID = #{id}
     </update>
     <update id="setOpen" parameterType="com.hknusc.web.dto.store.StoreOpenDTO">

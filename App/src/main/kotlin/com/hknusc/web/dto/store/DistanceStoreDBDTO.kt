@@ -2,10 +2,10 @@ package com.hknusc.web.dto.store
 
 import com.hknusc.web.util.PhotoUtility
 import com.hknusc.web.util.type.OperatingDay
-import com.hknusc.web.util.validation.constraints.PhoneNumberValid
-import org.springframework.web.multipart.MultipartFile
 
-data class StoreSaveDTO(
+data class DistanceStoreDBDTO(
+    val id: Int,
+    val accountId: Int,
     val name: String,
     val latitude: Double,
     val longitude: Double,
@@ -13,11 +13,13 @@ data class StoreSaveDTO(
     val info: String?,
     val phoneNumber: String?,
     val canReservation: Boolean?,
-    var operatingDays: List<OperatingDay>?,
-    val profilePhoto: MultipartFile?,
-    val photos: List<MultipartFile>?
+    val isOpen: Boolean = false,
+    val profilePhoto: String?,
+    val photos: String,
+    val distance: Double,
 ) {
-    fun convertToStoreDB(photoUtility: PhotoUtility, accountId: Int) = StoreDBSaveDTO(
+    fun convertToStore(photoUtility: PhotoUtility, operatingDays: List<OperatingDay>?) = DistanceStoreDTO(
+        id = id,
         accountId = accountId,
         name = name,
         latitude = latitude,
@@ -26,7 +28,10 @@ data class StoreSaveDTO(
         info = info,
         phoneNumber = phoneNumber,
         canReservation = canReservation,
-        profilePhoto = photoUtility.saveImage(profilePhoto),
-        photos = photoUtility.saveImagesAsString(photos)
+        operatingDays = operatingDays,
+        isOpen = isOpen,
+        profilePhoto = profilePhoto,
+        photos = photoUtility.getImagesByString(photos),
+        distance = distance
     )
 }

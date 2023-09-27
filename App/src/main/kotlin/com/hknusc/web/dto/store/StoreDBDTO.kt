@@ -1,6 +1,7 @@
 package com.hknusc.web.dto.store
 
 import com.hknusc.web.util.PhotoUtility
+import com.hknusc.web.util.type.OperatingDay
 
 data class StoreDBDTO(
     val id: Int,
@@ -12,12 +13,11 @@ data class StoreDBDTO(
     val info: String?,
     val phoneNumber: String?,
     val canReservation: Boolean?,
-    val operatingTime: String?,
     val isOpen: Boolean,
     val profilePhoto: String?,
     val photos: String
 ) {
-    fun convertToStore(photoUtility: PhotoUtility) = StoreDTO(
+    fun convertToStore(photoUtility: PhotoUtility, operatingDays: List<OperatingDay>?) = StoreDTO(
         id = id,
         accountId = accountId,
         name = name,
@@ -27,9 +27,9 @@ data class StoreDBDTO(
         info = info,
         phoneNumber = phoneNumber,
         canReservation = canReservation,
-        operatingTime = operatingTime,
-        profilePhoto = profilePhoto,
+        operatingDays = operatingDays,
         isOpen = isOpen,
+        profilePhoto = profilePhoto,
         photos = photoUtility.getImagesByString(photos)
     )
 }

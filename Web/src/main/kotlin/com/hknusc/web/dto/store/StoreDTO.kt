@@ -1,5 +1,7 @@
 package com.hknusc.web.dto.store
 
+import com.hknusc.web.util.type.OperatingDay
+
 data class StoreDTO(
     val id: Int,
     val accountId: Int,
@@ -10,7 +12,7 @@ data class StoreDTO(
     val info: String?,
     val phoneNumber: String?,
     val canReservation: Boolean?,
-    val operatingTime: String?,
+    val operatingDays: List<OperatingDay>?,
     val isOpen: Boolean,
     val profilePhoto: String?,
     val photos: List<String>

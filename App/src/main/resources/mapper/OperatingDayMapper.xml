@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.OperatingDayRepository">
+    <resultMap id="operatingDayMap" type="com.hknusc.web.util.type.OperatingDay">
+        <result property="week" column="WEEK"/>
+        <collection property="operatingTimes" resultMap="operatingTimeMap"/>
+    </resultMap>
+    <resultMap id="operatingTimeMap" type="com.hknusc.web.util.type.OperatingTime">
+        <result property="openTime" column="OPEN_TIME"/>
+        <result property="closeTime" column="CLOSE_TIME"/>
+    </resultMap>
+    <select id="getDays" parameterType="int" resultMap="operatingDayMap">
+        SELECT *
+        FROM OPERATING_DAY
+        WHERE STORE_ID = #{userStoreId}
+    </select>
+</mapper>

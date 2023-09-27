@@ -1,5 +1,7 @@
 package com.hknusc.web.dto.store
 
+import com.hknusc.web.util.type.OperatingDay
+
 data class StoreDBEditDTO(
     val id: Int,
     val name: String,
@@ -9,7 +11,6 @@ data class StoreDBEditDTO(
     val info: String?,
     val phoneNumber: String?,
     val canReservation: Boolean?,
-    val operatingTime: String?,
     val profilePhoto: String?,
     val photos: String
 )
