@@ -5,5 +5,6 @@ data class MenuDBSaveDTO(
     val name: String,
     val price: Int,
     val photo: String?,
-    val category: String?
+    val category: String?,
+    val detail: String?
 )

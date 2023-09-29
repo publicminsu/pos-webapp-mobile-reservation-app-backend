@@ -24,16 +24,7 @@ class MenuService(
     }
 
     fun saveMenu(userStoreId: Int, menuSaveDTO: MenuSaveDTO) {
-        val photo = menuSaveDTO.photo
-        val photoPath = photoUtility.saveImage(photo)
-
-        val menuDBSaveDTO = MenuDBSaveDTO(
-            storeId = userStoreId,
-            name = menuSaveDTO.name,
-            price = menuSaveDTO.price,
-            photo = photoPath,
-            category = menuSaveDTO.category
-        )
+        val menuDBSaveDTO = menuSaveDTO.convertToMenuDB(userStoreId, photoUtility)
 
         try {
             menuRepository.saveMenu(menuDBSaveDTO)
@@ -45,17 +36,7 @@ class MenuService(
     fun editMenu(userStoreId: Int, menuEditDTO: MenuEditDTO) {
         deleteOldMenuPhoto(menuEditDTO.id, userStoreId)
 
-        val photo = menuEditDTO.photo
-        val photoPath = photoUtility.saveImage(photo)
-
-        val menuDTO = MenuDTO(
-            id = menuEditDTO.id,
-            storeId = userStoreId,
-            name = menuEditDTO.name,
-            price = menuEditDTO.price,
-            photo = photoPath,
-            category = menuEditDTO.category
-        )
+        val menuDTO = menuEditDTO.convertToMenu(userStoreId, photoUtility)
 
         if (menuRepository.editMenu(menuDTO) == 0) {
             throw CustomException(ErrorCode.MENU_NOT_FOUND)
