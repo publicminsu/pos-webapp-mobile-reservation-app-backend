@@ -1,10 +1,8 @@
 package com.hknusc.web.dto.notification
 
-import com.hknusc.web.util.type.NotificationStatus
-import com.hknusc.web.util.type.NotificationType
+import com.hknusc.web.util.type.SSEEvent
 
 data class NotificationDTO(
-    var notificationType: NotificationType = NotificationType.TEST,
-    var notificationStatus: NotificationStatus = NotificationStatus.INSERT,
+    var sseEvent: SSEEvent = SSEEvent.SERVER_CONNECT,
     var typeId: Int = 0
 )

@@ -19,10 +19,11 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
+    private val corsConfig: CorsConfig,
     private val jwtTokenProvider: JWTTokenProvider,
     private val jwtAuthenticationEntryPoint: JWTAuthenticationEntryPoint,
     private val jwtAccessDeniedHandler: JWTAccessDeniedHandler,
-    private val errorUtility: ErrorUtility
+    private val errorUtility: ErrorUtility,
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -31,12 +32,12 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .httpBasic().disable()
-            .cors().disable()
+            .cors().configurationSource(corsConfig.corsConfigurationSource()).and()
             .csrf().disable()
 
             .authorizeHttpRequests()
             .requestMatchers("/auth/**", "/users/**", "/reviews/**", "/check/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/notifications").permitAll()
+            .requestMatchers("/notifications/**").permitAll()
             .anyRequest().hasRole(Role.USER.toString())
             .and()
 

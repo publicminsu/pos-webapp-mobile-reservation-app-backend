@@ -2,9 +2,8 @@ package com.hknusc.web.dto.reservation
 
 import com.hknusc.web.dto.notification.NotificationDTO
 import com.hknusc.web.dto.notification.ServerNotificationDTO
-import com.hknusc.web.util.type.NotificationStatus
-import com.hknusc.web.util.type.NotificationType
 import com.hknusc.web.util.type.OrderCode
+import com.hknusc.web.util.type.SSEEvent
 import java.sql.Timestamp
 
 data class ReservationDBSaveDTO(
@@ -18,6 +17,6 @@ data class ReservationDBSaveDTO(
     fun convertToServerNotification() =
         ServerNotificationDTO(
             targetSSEId = storeId,
-            notificationDTO = NotificationDTO(NotificationType.RESERVATION, NotificationStatus.INSERT, id)
+            notificationDTO = NotificationDTO(SSEEvent.RESERVATION_INSERT, id)
         )
 }

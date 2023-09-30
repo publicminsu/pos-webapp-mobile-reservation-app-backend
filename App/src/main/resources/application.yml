@@ -50,6 +50,7 @@ photo:
 
 ## 주소 입력 맨 뒤의 /까지 추가
 frontEnd:
+  clientURL: http://localhost:3000
   emailURL: localhost:3000/
   passwordURL: localhost:3000/password/
 
