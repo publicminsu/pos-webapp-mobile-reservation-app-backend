@@ -14,7 +14,9 @@
           AND ORDER_CODE BETWEEN 100 AND 109
           AND STORE_ID = #{storeId}
     </select>
-    <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBSaveDTO">
+    <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBSaveDTO"
+            useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, ORDER_CODE)
         VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{orderCode})
     </insert>
