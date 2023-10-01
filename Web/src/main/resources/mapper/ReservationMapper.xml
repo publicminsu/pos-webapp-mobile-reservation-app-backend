@@ -14,6 +14,15 @@
           AND ORDER_CODE BETWEEN 100 AND 109
           AND STORE_ID = #{storeId}
     </select>
+    <select id="getReservationsByList" resultType="com.hknusc.web.dto.order.OrderDTO">
+        SELECT *
+        FROM ORDER_ITEM
+        WHERE ID IN
+        <foreach collection="reservationIdArray" item="reservationId" open="(" separator="," close=")">
+            #{reservationId}
+        </foreach>
+        AND STORE_ID = #{storeId}
+    </select>
     <insert id="saveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBSaveDTO">
         INSERT INTO ORDER_ITEM(ACCOUNT_ID, STORE_ID, TABLE_ID, RESERVATION_TIME, ORDER_CODE)
         VALUES (#{accountId}, #{storeId}, #{tableId}, #{reservationTime}, #{orderCode})

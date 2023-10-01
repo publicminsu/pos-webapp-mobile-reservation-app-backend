@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper
 interface ReservationRepository {
     fun getReservations(storeId: Int): List<OrderDTO>
     fun getReservation(reservationId: Int, storeId: Int): OrderDTO?
+    fun getReservationsByList(storeId: Int, reservationIdArray: List<Int>): List<OrderDTO>
     fun saveReservation(reservationDBSaveDTO: ReservationDBSaveDTO)
     fun editReservation(reservationDBEditDTO: ReservationDBEditDTO): Int
     fun approveReservation(reservationDBApproveDTO: ReservationDBApproveDTO): Int

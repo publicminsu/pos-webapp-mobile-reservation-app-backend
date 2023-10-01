@@ -21,6 +21,12 @@ class ReservationController(private val reservationService: ReservationService) 
         @PathVariable("reservationId") reservationId: Int
     ) = reservationService.getReservation(userStoreId, reservationId)
 
+    @GetMapping("list")
+    fun getReservationsByList(
+        @RequestAttribute userStoreId: Int,
+        @RequestParam(value = "id") reservationIdArray: List<Int>
+    ) = reservationService.getReservationsByList(userStoreId, reservationIdArray)
+
     //예약 신청 (가게에서)
     @PostMapping
     fun saveReservation(

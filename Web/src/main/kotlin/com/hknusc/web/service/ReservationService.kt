@@ -21,6 +21,8 @@ class ReservationService(
         throw CustomException(ErrorCode.RESERVATION_NOT_FOUND)
     }
 
+    fun getReservationsByList(userStoreId: Int, reservationIdArray: List<Int>) =
+        reservationRepository.getReservationsByList(userStoreId, reservationIdArray)
 
     fun saveReservation(userStoreId: Int, reservationSaveDTO: ReservationSaveDTO) {
         val reservationDBSaveDTO = ReservationDBSaveDTO(
