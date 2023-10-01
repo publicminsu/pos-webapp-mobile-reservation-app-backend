@@ -61,8 +61,6 @@ class ReservationService(
             throw CustomException(ErrorCode.RESERVATION_APPROVE_FAIL)
         }
 
-        print(reservationDBApproveDTO)
-
         val serverNotification = reservationDBApproveDTO.convertToServerNotification()
         postNotification(serverNotification)
     }
