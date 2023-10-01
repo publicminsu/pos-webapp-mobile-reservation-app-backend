@@ -1,6 +1,5 @@
 package com.hknusc.web.service
 
-import com.hknusc.web.dto.notification.NotificationDTO
 import com.hknusc.web.dto.notification.ServerNotificationDTO
 import com.hknusc.web.repository.EmitterRepository
 import com.hknusc.web.util.type.SSEEvent
@@ -16,34 +15,35 @@ class NotificationService(private val emitterRepository: EmitterRepository) {
         val sseEmitter = createEmitter(id)
 
         //503 에러 방지를 위한 더미 데이터
-        val dummy = NotificationDTO(SSEEvent.SERVER_CONNECT, 0)
-        sendToClient(id, dummy)
+        val dummy = ServerNotificationDTO(
+            targetSSEId = id,
+            sseEvent = SSEEvent.SERVER_CONNECT,
+            eventTargetId = 0
+        )
+        sendToClient(dummy)
 
         return sseEmitter
     }
 
     fun notify(serverNotificationDTO: ServerNotificationDTO) {
-        val userId = serverNotificationDTO.targetSSEId
-        val data = try {
-            serverNotificationDTO.notificationDTO!!
-        } catch (e: Exception) {
-            //비어있는 경우
-            return
-        }
-        sendToClient(userId, data)
+        sendToClient(serverNotificationDTO)
     }
 
-    private fun sendToClient(id: Int, data: NotificationDTO) {
-        val sseEmitter = emitterRepository.get(id)
+    private fun sendToClient(serverNotificationDTO: ServerNotificationDTO) {
+        val targetSSEId = serverNotificationDTO.targetSSEId
+        val sseEvent = serverNotificationDTO.sseEvent
+        val eventTargetId = serverNotificationDTO.eventTargetId
+
+        val sseEmitter = emitterRepository.get(targetSSEId)
 
         if (sseEmitter != null) {
             try {
                 sseEmitter.send(
-                    SseEmitter.event().id(id.toString())
-                        .name(data.sseEvent.name).data(data.typeId)
+                    SseEmitter.event().id(targetSSEId.toString())
+                        .name(sseEvent.name).data(eventTargetId)
                 )
             } catch (e: IOException) {
-                emitterRepository.deleteById(id)
+                emitterRepository.deleteById(targetSSEId)
                 sseEmitter.completeWithError(e)
             }
         }

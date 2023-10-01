@@ -1,6 +1,5 @@
 package com.hknusc.web.dto.reservation
 
-import com.hknusc.web.dto.notification.NotificationDTO
 import com.hknusc.web.dto.notification.ServerNotificationDTO
 import com.hknusc.web.util.type.OrderCode
 import com.hknusc.web.util.type.SSEEvent
@@ -17,6 +16,7 @@ data class ReservationDBSaveDTO(
     fun convertToServerNotification() =
         ServerNotificationDTO(
             targetSSEId = storeId,
-            notificationDTO = NotificationDTO(SSEEvent.RESERVATION_INSERT, id)
+            sseEvent = SSEEvent.RESERVATION_INSERT,
+            eventTargetId = id,
         )
 }
