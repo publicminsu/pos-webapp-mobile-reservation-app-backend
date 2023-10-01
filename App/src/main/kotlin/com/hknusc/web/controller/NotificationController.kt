@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("notifications")
 class NotificationController(private val notificationService: NotificationService) {
-    @GetMapping("subscribe/{id}", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
-    fun subscribe(@PathVariable id: Int) = notificationService.subscribe(id)
+    //사용자 번호
+    @GetMapping("subscribe", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    fun subscribe(@RequestAttribute userId: Int) = notificationService.subscribe(userId)
 
     @PostMapping
     fun notify(@RequestBody serverNotificationDTO: ServerNotificationDTO) =
