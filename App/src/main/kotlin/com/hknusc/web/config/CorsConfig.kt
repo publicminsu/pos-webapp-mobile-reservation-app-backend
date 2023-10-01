@@ -1,6 +1,5 @@
 package com.hknusc.web.config
 
-import com.hknusc.web.util.jwt.JWTTokenProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,16 +13,9 @@ class CorsConfig(@param:Value("\${frontEnd.clientURL}") private val clientURL: S
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf(clientURL)
-        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
-        configuration.allowedHeaders =
-            listOf(
-                "Origin",
-                "X-Requested-With",
-                "Content-Type",
-                "Authorization",
-                JWTTokenProvider.ACCESS_KEY,
-                JWTTokenProvider.REFRESH_KEY
-            )
+        configuration.addAllowedMethod("*")
+        configuration.addAllowedHeader("*")
+        configuration.addExposedHeader("*")
         configuration.maxAge = 3000L
         configuration.allowCredentials = true
         val source = UrlBasedCorsConfigurationSource()
