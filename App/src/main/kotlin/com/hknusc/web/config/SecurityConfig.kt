@@ -18,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
+    private val corsConfig: CorsConfig,
     private val jwtTokenProvider: JWTTokenProvider,
     private val jwtAuthenticationEntryPoint: JWTAuthenticationEntryPoint,
     private val jwtAccessDeniedHandler: JWTAccessDeniedHandler,
@@ -30,7 +31,7 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .httpBasic().disable()
-            .cors().disable()
+            .cors().configurationSource(corsConfig.corsConfigurationSource()).and()
             .csrf().disable()
 
             .authorizeHttpRequests()

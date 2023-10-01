@@ -1,6 +1,7 @@
 package com.hknusc.web.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.hknusc.web.dto.notification.ServerNotificationDTO
 import com.hknusc.web.dto.reservation.ReservationEditDTO
 import com.hknusc.web.dto.reservation.ReservationSaveDTO
 import com.hknusc.web.repository.ReservationRepository
@@ -25,13 +26,20 @@ class ReservationService(
         reservationRepository.saveReservation(reservationDBSaveDTO)
 
         val serverNotification = reservationDBSaveDTO.convertToServerNotification()
-        webClientService.post("notifications", serverNotification)
+        postNotification(serverNotification)
     }
 
     fun editReservation(userId: Int, reservationEditDTO: ReservationEditDTO) {
         val reservationDBEditDTO = reservationEditDTO.convertToReservationDB(userId)
+
         if (reservationRepository.editReservation(reservationDBEditDTO) == 0) {
             throw CustomException(ErrorCode.RESERVATION_NOT_FOUND)
         }
+        
+        val serverNotification = reservationDBEditDTO.convertToServerNotification()
+        postNotification(serverNotification)
     }
+
+    private fun postNotification(serverNotification: ServerNotificationDTO) =
+        webClientService.post("notifications", serverNotification)
 }

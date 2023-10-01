@@ -28,9 +28,14 @@
     <update id="approveReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBApproveDTO">
         UPDATE ORDER_ITEM
         SET (ORDER_CODE, RESERVATION_DENY_DETAIL)
-                = (#{orderCode}, #{reservationDenyDetail})
+        = (#{orderCode}, #{reservationDenyDetail})
         WHERE ID = #{id}
-          AND ORDER_CODE = 103
-          AND STORE_ID = #{storeId}
+        AND ORDER_CODE = 103
+        AND STORE_ID = #{storeId}
+        <selectKey resultType="int" keyProperty="accountId" order="AFTER">
+            SELECT ACCOUNT_ID
+            FROM ORDER_ITEM
+            WHERE ID = #{id}
+        </selectKey>
     </update>
 </mapper>

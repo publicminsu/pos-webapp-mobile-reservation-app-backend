@@ -1,5 +1,6 @@
 package com.hknusc.web.service
 
+import com.hknusc.web.dto.notification.ServerNotificationDTO
 import com.hknusc.web.dto.reservation.*
 import com.hknusc.web.repository.ReservationRepository
 import com.hknusc.web.util.exception.CustomException
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ReservationService(
+    private val webClientService: WebClientService,
     private val reservationRepository: ReservationRepository
 ) {
     fun getReservations(userStoreId: Int) = reservationRepository.getReservations(userStoreId)
@@ -48,21 +50,23 @@ class ReservationService(
 
     fun approveReservation(userStoreId: Int, reservationApproveDTO: ReservationApproveDTO) {
         val orderCode: OrderCode = reservationApproveDTO.orderCode
-        val reservationDenyDetail: String? = reservationApproveDTO.reservationDenyDetail
 
         if (orderCode != OrderCode.RESERVATION && orderCode != OrderCode.RESERVATION_DENY) {
             throw CustomException(ErrorCode.RESERVATION_WRONG_CODE)
         }
 
-        val reservationDBApproveDTO = ReservationDBApproveDTO(
-            reservationApproveDTO.id,
-            userStoreId,
-            orderCode,
-            reservationDenyDetail
-        )
+        val reservationDBApproveDTO = reservationApproveDTO.convertToReservationDB(userStoreId)
 
         if (reservationRepository.approveReservation(reservationDBApproveDTO) == 0) {
             throw CustomException(ErrorCode.RESERVATION_APPROVE_FAIL)
         }
+
+        print(reservationDBApproveDTO)
+
+        val serverNotification = reservationDBApproveDTO.convertToServerNotification()
+        postNotification(serverNotification)
     }
+
+    private fun postNotification(serverNotification: ServerNotificationDTO) =
+        webClientService.post("notifications", serverNotification)
 }

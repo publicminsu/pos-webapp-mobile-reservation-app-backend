@@ -23,8 +23,13 @@
     <update id="editReservation" parameterType="com.hknusc.web.dto.reservation.ReservationDBEditDTO">
         UPDATE ORDER_ITEM
         SET (TABLE_ID, RESERVATION_TIME, ORDER_CODE)
-                = (#{tableId}, #{reservationTime}, #{orderCode})
+        = (#{tableId}, #{reservationTime}, #{orderCode})
         WHERE ID = #{id}
-          AND ACCOUNT_ID = #{accountId}
+        AND ACCOUNT_ID = #{accountId}
+        <selectKey resultType="int" keyProperty="storeId" order="AFTER">
+            SELECT STORE_ID
+            FROM ORDER_ITEM
+            WHERE ID = #{id}
+        </selectKey>
     </update>
 </mapper>
