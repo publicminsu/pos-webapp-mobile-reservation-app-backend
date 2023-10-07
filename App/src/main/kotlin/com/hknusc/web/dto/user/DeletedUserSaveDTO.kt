@@ -5,5 +5,4 @@ import java.sql.Timestamp
 data class DeletedUserSaveDTO(
     var email: String,
     var phoneNumber: String,
-    var deleteTime: Timestamp,
 )

@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("users")
 class UserController(private val userService: UserService) {
-    //모든 사용자를 가져온다.
-    @GetMapping("all")//계획상 사용할 일이 없다. 테스트용으로 두었다.
-    fun getUsers() = userService.getUsers()
-
     //현재 사용자를 가져온다.
     @GetMapping
     fun getUser(@RequestAttribute userId: Int) = userService.getUser(userId)
@@ -38,10 +34,6 @@ class UserController(private val userService: UserService) {
     @PatchMapping
     fun editUser(@RequestAttribute userId: Int, @Valid userEditDTO: UserEditDTO) =
         userService.editUser(userId, userEditDTO)
-
-    //삭제된 회원 가져오기
-    @GetMapping("deletedUser") // 테스트용
-    fun getDeletedUser() = userService.getDeletedUser()
 
     //회원 삭제
     @DeleteMapping//삭제 과정은 더 생각해봐야 할 요소, ex. 비밀번호 확인

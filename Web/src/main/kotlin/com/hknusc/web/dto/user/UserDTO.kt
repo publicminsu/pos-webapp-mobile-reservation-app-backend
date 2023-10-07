@@ -9,4 +9,6 @@ data class UserDTO(
     var paymentCard: String?,
     var isVerified: Boolean,
     val profilePhoto: String?
-)
+) {
+    fun convertToDeletedUserSave() = DeletedUserSaveDTO(email = email, phoneNumber = phoneNumber)
+}

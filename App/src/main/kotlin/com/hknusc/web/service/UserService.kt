@@ -24,8 +24,6 @@ class UserService(
     private val userRepository: UserRepository,
     private val checkRepository: CheckRepository
 ) {
-    fun getUsers() = userRepository.getUsers()
-
     fun saveUser(userSaveDTO: UserSaveDTO) {
         val email: String = userSaveDTO.email
         val nickname: String = userSaveDTO.nickname
@@ -88,7 +86,6 @@ class UserService(
         }
     }
 
-    fun getDeletedUser() = userRepository.getDeletedUsers()
     fun deleteUser(userId: Int) {
         lateinit var user: UserDTO
         try {
@@ -98,8 +95,7 @@ class UserService(
         }
 
         // 필요하다면 비밀번호 확인
-        val curTime = Timestamp(System.currentTimeMillis())
-        val deletedUser = DeletedUserSaveDTO(email = user.email, phoneNumber = user.phoneNumber, deleteTime = curTime)
+        val deletedUser = user.convertToDeletedUserSave()
         userRepository.saveDeletedUser(deletedUser)
         userRepository.deleteUser(userId)
     }
