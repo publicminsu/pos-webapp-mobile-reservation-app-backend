@@ -1,6 +1,7 @@
 package com.hknusc.web.dto.store
 
 import com.hknusc.web.util.type.OperatingDay
+import com.hknusc.web.util.type.StoreCategory
 
 data class StoreDBSaveDTO(
     var id: Int = 0,
@@ -14,5 +15,6 @@ data class StoreDBSaveDTO(
     val canReservation: Boolean?,
     val isOpen: Boolean = false,
     val profilePhoto: String?,
-    val photos: String
+    val photos: String,
+    val storeCategory: StoreCategory,
 )

@@ -1,6 +1,7 @@
 package com.hknusc.web.dto.store
 
 import com.hknusc.web.util.type.OperatingDay
+import com.hknusc.web.util.type.StoreCategory
 
 data class StoreDBEditDTO(
     val id: Int,
@@ -12,5 +13,6 @@ data class StoreDBEditDTO(
     val phoneNumber: String?,
     val canReservation: Boolean?,
     val profilePhoto: String?,
-    val photos: String
+    val photos: String,
+    val storeCategory: StoreCategory,
 )

@@ -10,9 +10,6 @@ class StoreController(private val storeService: StoreService) {
     //좌표 기준으로 가게 찾기
     @GetMapping
     fun getStoresByCoordinate(
-//        @RequestParam latitude: Double,
-//        @RequestParam longitude: Double,
-//        @RequestParam distance: Double
         distanceDTO: DistanceDTO
     ) =
         storeService.getStoresByCoordinate(distanceDTO)

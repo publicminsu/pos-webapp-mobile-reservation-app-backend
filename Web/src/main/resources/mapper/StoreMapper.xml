@@ -15,15 +15,16 @@
     <insert id="saveStore" parameterType="com.hknusc.web.dto.store.StoreDBSaveDTO" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO STORE(ACCOUNT_ID, NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
-                          IS_OPEN, PROFILE_PHOTO, PHOTOS)
+                          IS_OPEN, PROFILE_PHOTO, PHOTOS, STORE_CATEGORY)
         VALUES (#{accountId}, #{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
-                #{canReservation}, #{isOpen}, #{profilePhoto}, #{photos})
+                #{canReservation}, #{isOpen}, #{profilePhoto}, #{photos}, #{storeCategory})
     </insert>
     <update id="editStore" parameterType="com.hknusc.web.dto.store.StoreDBEditDTO">
         UPDATE STORE
         SET (NAME, LATITUDE, LONGITUDE, ADDRESS, INFO, PHONE_NUMBER, CAN_RESERVATION,
-             PROFILE_PHOTO, PHOTOS)= (#{name}, #{latitude}, #{longitude}, #{address}, #{info}, #{phoneNumber},
-                                      #{canReservation}, #{profilePhoto}, #{photos})
+             PROFILE_PHOTO, PHOTOS, STORE_CATEGORY)= (#{name}, #{latitude}, #{longitude}, #{address}, #{info},
+                                                      #{phoneNumber},
+                                                      #{canReservation}, #{profilePhoto}, #{photos}, #{storeCategory})
         WHERE ID = #{id}
     </update>
     <update id="setOpen" parameterType="com.hknusc.web.dto.store.StoreOpenDTO">

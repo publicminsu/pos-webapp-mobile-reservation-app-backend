@@ -1,6 +1,7 @@
 package com.hknusc.web.dto.store
 
 import com.hknusc.web.util.type.OperatingDay
+import com.hknusc.web.util.type.StoreCategory
 
 data class DistanceStoreDTO(
     val id: Int,
@@ -16,5 +17,6 @@ data class DistanceStoreDTO(
     val isOpen: Boolean = false,
     val profilePhoto: String?,
     val photos: List<String>,
+    val storeCategory: StoreCategory,
     val distance: Double,
 )
