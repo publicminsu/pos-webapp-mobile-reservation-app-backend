@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.FavoriteRepository">
+    <select id="getFavoriteStores" parameterType="int" resultType="com.hknusc.web.dto.store.StoreDBDTO">
+        SELECT *
+        FROM STORE
+        WHERE ID IN
+              (SELECT STORE_ID
+               FROM FAVORITE_STORE
+               WHERE FAVORITE_STORE.ACCOUNT_ID = #{userId})
+    </select>
+    <insert id="saveFavorite" parameterType="com.hknusc.web.dto.favorite.FavoriteDTO">
+        INSERT INTO FAVORITE_STORE(STORE_ID, ACCOUNT_ID)
+        VALUES (#{storeId}, #{accountId})
+    </insert>
+    <delete id="deleteFavorite" parameterType="com.hknusc.web.dto.favorite.FavoriteDTO">
+        DELETE
+        FROM FAVORITE_STORE
+        WHERE STORE_ID = #{storeId}
+          AND ACCOUNT_ID = #{accountId}
+    </delete>
+</mapper>
