@@ -8,12 +8,12 @@
 
 프론트엔드
 -------------
-온라인 웹앱
-https://github.com/joonmoogo/react-pos-client
-모바일 앱
+온라인 웹앱<br>
+https://github.com/joonmoogo/react-pos-client<br>
+모바일 앱<br>
 https://github.com/kwn04081/MobilePos
 
 사용한 방법
 -------------
-JWT로 로그인을 구현했다.
+JWT로 로그인을 구현했다.<br>
 예약 알림을 위해 SSE를 활용하여서 서버와 클라이언트를 연결해 뒀다.
