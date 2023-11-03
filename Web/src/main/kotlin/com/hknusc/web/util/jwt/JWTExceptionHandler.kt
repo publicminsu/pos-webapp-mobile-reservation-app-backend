@@ -1,7 +1,6 @@
 package com.hknusc.web.util.jwt
 
 import com.hknusc.web.util.exception.CustomException
-import com.hknusc.web.util.exception.ErrorCode
 import com.hknusc.web.util.exception.ErrorUtility
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

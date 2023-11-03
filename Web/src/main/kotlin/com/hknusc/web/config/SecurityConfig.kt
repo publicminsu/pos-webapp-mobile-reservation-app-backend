@@ -37,7 +37,7 @@ class SecurityConfig(
 
             .authorizeHttpRequests()
             .requestMatchers("/auth/**", "/users/**", "/reviews/**", "/check/**").permitAll()
-            .requestMatchers("/notifications/**").permitAll()
+            .requestMatchers("/notifications/**", "/table-orders/**").permitAll()
             .anyRequest().hasRole(Role.USER.toString())
             .and()
 

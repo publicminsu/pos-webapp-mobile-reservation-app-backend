@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hknusc.web.repository.TableOrderRepository">
+    <select id="getStoresByCoordinate" parameterType="com.hknusc.web.dto.store.DistanceDTO"
+            resultType="com.hknusc.web.dto.store.DistanceStoreDBDTO">
+        SELECT *
+        FROM (SELECT *,
+                     EARTH_DISTANCE(LL_TO_EARTH(LATITUDE, LONGITUDE),
+                                    LL_TO_EARTH(#{latitude}, #{longitude})) AS DISTANCE
+              FROM STORE) AS _
+        <![CDATA[ WHERE DISTANCE <= #{distance}
+        ]]>
+    </select>
+    <select id="getMenusByTableId" parameterType="int" resultType="com.hknusc.web.dto.menu.MenuDTO">
+        SELECT *
+        FROM MENU
+        WHERE STORE_ID =
+              (SELECT TABLE_ITEM.STORE_ID
+               FROM TABLE_ITEM
+               WHERE TABLE_ITEM.ID = #{tableId})
+    </select>
+</mapper>

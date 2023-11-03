@@ -18,7 +18,15 @@ class WebConfig(
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(jwtInterceptor)
         registry.addInterceptor(storeInterceptor)
-            .excludePathPatterns("/auth/**", "/check/**", "/users/**", "/stores/open", "/stores", "/notifications/**")
+            .excludePathPatterns(
+                "/auth/**",
+                "/check/**",
+                "/users/**",
+                "/stores/open",
+                "/stores",
+                "/notifications/**",
+                "/table-orders/**",
+            )
     }
 
     override fun addCorsMappings(registry: CorsRegistry) {
